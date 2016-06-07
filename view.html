@@ -1,36 +1,8 @@
 <script type="text/ng-template" id="campusMap.html">
-    <div>
-        <div class="fieldName" style="margin:10px; display:inline-block;">Click anywhere on the map to start navigating.</div>
-        <div class="fieldName" style="text-align: right; display:inline-block; margin-left: 10px;" ng-click="transitMode(isLeafletMap);"><a id="transitModeLink">Switch to Transit Mode</a><i id="transitModeIcon" style="vertical-align: baseline!important;display: inline-block; font-size: 1.8rem;"
-            class="icon-bus"></i></div>
-    </div>
-    <!--<div id="campusMapMessage" class="fieldName accent" style="margin:10px; float: left;">{{campusMapMessage}} <a ng-if="campusMapMessage != ''" ng-click="hideMessage()">Clear</a> </div> -->
-    <leaflet lcenter="leafletCenter" maxbounds="maxBounds" controls="controls" layers="layers" width="100%"
-    height="500px" id="campusMap" defaults="defaults"></leaflet>
-    <div id="mapPage" style="display: none;">
-        <div id="map_canvas">
-            <ui-gmap-google-map center="gMap.map.center" zoom="gMap.map.zoom" draggable="true" control="gMap.map.control"
-            options="gMap.options">
-                <ui-gmap-map-control template="control.transitDirections.html" position="RIGHT_TOP" index="-1" controller="transitDirectionsCtrl"></ui-gmap-map-control>
-            </ui-gmap-google-map>
-        </div>
-    </div>
-
-    <div class="widgetPage widgetView" id="directionsPage" style="display:none;">
-        <button class="btn btn-sm btn-primary" style="float:right;" onclick="$('#transitModeLink').parent().show(); $('#directionsPage').hide(); $('#mapPage').show();">Back</button>
-        <div id="directionsContainer"></div>
-    </div>
-
-    <a id="campusMapLink" style="margin: 10px;" href="https://uwaterloo.ca/map/" target="_blank">Check out the Official UWaterloo campus map</a>
-</script>
-
-<script type="text/ng-template" id="transitMode.html">
-
-</script>
-
-<script type="text/ng-template" id="control.transitDirections.html">
-    <button class="btn btn-sm btn-primary directionBtn dark-background" ng-click="showDirections()" style="right:5px !important; border:none!important;"><i class="icon-share"></i>
-    </button>
+    <campusmap id="map"
+               style="border: 1px solid black; width: 100%; height: 600px;"
+               map="map"
+               />
 </script>
 
 <script type="text/ng-template" id="campusMapSettings.html">
@@ -41,79 +13,28 @@
             </div>
             <div class="modal-body" id="mapLayersAccordion">
                 <uib-accordion close-others="true">
-                    <uib-accordion-group is-open="placesOpen">
+                    <uib-accordion-group ng-repeat="layer in map.value.layers" is-open="groupOpen[layer.id]">
                         <uib-accordion-heading>
                             <div>
-                                Places <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': placesOpen, 'glyphicon-chevron-right': !placesOpen}"></i>
+                                {{:: layer.name }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': groupOpen[layer.id], 'glyphicon-chevron-right': !groupOpen[layer.id]}"></i>
                             </div>
                         </uib-accordion-heading>
                         <div class="list-group">
-                            <div class="checkbox" ng-repeat="(key, value) in cMapLayers.Places">
-                                <label>
-                                    <input type="checkbox" value="" ng-model="cMapLayersVis[key].value" ng-change="value.toggleLayer()" /> {{::cMapLayersName[key].name}}
+                            <div class="checkbox" ng-repeat="sublayer in layer.sublayers">
+                                <label ng-if="!sublayer.html">
+                                    <input type="checkbox" value=""
+                                           ng-model="map.value.layersById[sublayer.id].active"
+                                           ng-change="toggleLayer(sublayer)"/> {{::sublayer.name}}
                                 </label>
-                            </div>
-                        </div>
-                    </uib-accordion-group>
-                    <uib-accordion-group is-open="transitOpen">
-                        <uib-accordion-heading>
-                            <div>
-                                Transit <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': transitOpen, 'glyphicon-chevron-right': !transitOpen}"></i>
-                            </div>
-                        </uib-accordion-heading>
-                        <div class="list-group">
-                            <div class="checkbox" ng-repeat="(key, value) in cMapLayers.Transit">
-                                <label>
-                                    <input type="checkbox" value="" ng-model="cMapLayersVis[key].value" ng-change="value.toggleLayer()" /> {{::cMapLayersName[key].name}}
-                                </label>
-                            </div>
-                        </div>
-                    </uib-accordion-group>
-                    <uib-accordion-group is-open="infoOpen">
-                        <uib-accordion-heading>
-                            <div>
-                                Information <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': infoOpen, 'glyphicon-chevron-right': !infoOpen}"></i>
-                            </div>
-                        </uib-accordion-heading>
-                        <div class="list-group">
-                            <div class="checkbox" ng-repeat="(key, value) in cMapLayers.Information">
-                                <label>
-                                    <input type="checkbox" value="" ng-model="cMapLayersVis[key].value" ng-change="value.toggleLayer()" /> {{::cMapLayersName[key].name}}
-                                </label>
-                            </div>
-                        </div>
-                    </uib-accordion-group>
-                    <uib-accordion-group is-open="parkOpen">
-                        <uib-accordion-heading>
-                            <div>
-                                Parking <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': parkOpen, 'glyphicon-chevron-right': !parkOpen}"></i>
-                            </div>
-                        </uib-accordion-heading>
-                        <div class="list-group">
-                            <div class="checkbox" ng-repeat="(key, value) in cMapLayers.Parking">
-                                <label>
-                                    <input type="checkbox" value="" ng-model="cMapLayersVis[key].value" ng-change="value.toggleLayer()" /> {{::cMapLayersName[key].name}}
-                                </label>
-                            </div>
-                        </div>
-                    </uib-accordion-group>
-                    <uib-accordion-group is-open="accessOpen">
-                        <uib-accordion-heading>
-                            <div>
-                                Accessibility <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': accessOpen, 'glyphicon-chevron-right': !accessOpen}"></i>
-                            </div>
-                        </uib-accordion-heading>
-                        <div class="list-group">
-                            <div class="checkbox" ng-repeat="(key, value) in cMapLayers.Accessibility">
-                                <label>
-                                    <input type="checkbox" value="" ng-model="cMapLayersVis[key].value" ng-change="value.toggleLayer()" /> {{::cMapLayersName[key].name}}
+                                <label ng-if"sublayer.html"
+                                       ng-bind-html="sublayer.html">
                                 </label>
                             </div>
                         </div>
                     </uib-accordion-group>
                 </uib-accordion>
 
-                <a style="margin: 10px;" ng-click="clearAllLayers()">Clear All Layers</a>
+                <a style="margin: 10px;" ng-click="map.value.clearLayers()">Clear All Layers</a>
             </div>
         </uib-tab>
         <uib-tab heading="Building Search">
@@ -127,12 +48,15 @@
                 <h2 ng-if="search.value==''">Buildings</h2>
                 <h2 ng-if="search.value!=''">Search Results</h2>
             </div>
-            <widget-list list="location in (searchableObj.value | buildingSearch: search.value | orderBy:'building_name')"
+            <widget-list class="building-toc" list="location in buildings.value | orderBy:'building_code' | filter:search.value"
             show-items="8">
-                <div class="widget-row fill hoverHighlight" ng-class="::{'hoverHighlight':button}" ng-click="buildingSelect(location.building_id, location.building_code, location.alternate_names); toggleSelected($event);">
+                <div class="widget-row fill hoverHighlight"
+                     ng-class="::{'hoverHighlight':button}"
+                     ng-click="map.value.buildings.selectBuilding(location.building_code)">
                     <div class="widget-row-item fill pad">
                         <div class="itemName">
-                            {{::location.building_code}} - {{::location.building_name}}
+                            <span class='building-code'>{{::location.building_code}}</span>
+                            <span class='building-name'>{{::location.building_name}}</span>
                         </div>
                     </div>
                 </div>
