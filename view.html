@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="campusMap.html">
     <campusmap id="map"
                style="border: 1px solid black; width: 100%; height: 600px;"
-               map="map"
+               map="campusMap"
                />
 </script>
 
@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body" id="mapLayersAccordion">
                 <uib-accordion close-others="true">
-                    <uib-accordion-group ng-repeat="layer in map.value.layers" is-open="groupOpen[layer.id]">
+                    <uib-accordion-group ng-repeat="layer in campusMap.value.layers" is-open="groupOpen[layer.id]">
                         <uib-accordion-heading>
                             <div>
                                 {{:: layer.name }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': groupOpen[layer.id], 'glyphicon-chevron-right': !groupOpen[layer.id]}"></i>
@@ -23,7 +23,7 @@
                             <div class="checkbox" ng-repeat="sublayer in layer.sublayers">
                                 <label ng-if="!sublayer.html">
                                     <input type="checkbox" value=""
-                                           ng-model="map.value.layersById[sublayer.id].active"
+                                           ng-model="campusMap.value.layersById[sublayer.id].active"
                                            ng-change="toggleLayer(sublayer)"/> {{::sublayer.name}}
                                 </label>
                                 <label ng-if"sublayer.html"
@@ -34,7 +34,7 @@
                     </uib-accordion-group>
                 </uib-accordion>
 
-                <a style="margin: 10px;" ng-click="map.value.clearLayers()">Clear All Layers</a>
+                <a style="margin: 10px;" ng-click="campusMap.value.clearLayers()">Clear All Layers</a>
             </div>
         </uib-tab>
         <uib-tab heading="Building Search">
@@ -52,7 +52,7 @@
             show-items="8">
                 <div class="widget-row fill hoverHighlight"
                      ng-class="::{'hoverHighlight':button}"
-                     ng-click="map.value.buildings.selectBuilding(location.building_code)">
+                     ng-click="campusMap.value.buildings.selectBuilding(location.building_code)">
                     <div class="widget-row-item fill pad">
                         <div class="itemName">
                             <span class='building-code'>{{::location.building_code}}</span>
@@ -63,4 +63,9 @@
             </widget-list>
         </uib-tab>
     </uib-tabset>
+</script>
+
+<script type="text/ng-template" id="campusMapPresent.html">
+    <h2>{{ presentTitle }}</h2>
+    <div id="campusMapPresent"></div>
 </script>
