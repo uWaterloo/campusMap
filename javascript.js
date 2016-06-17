@@ -359,7 +359,7 @@ exports.default = CampusMap;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/campusmap.js","/js")
 
-},{"./directions":3,"./layer/building":4,"./layer/data":5,"./layer/html":6,"./layer/parent":8,"./layer/parking":9,"_process":48,"buffer":13,"es6-promise":15,"leaflet":44,"minivents":46,"urijs":51,"whatwg-fetch":53}],2:[function(require,module,exports){
+},{"./directions":3,"./layer/building":4,"./layer/data":5,"./layer/html":6,"./layer/parent":8,"./layer/parking":9,"_process":50,"buffer":14,"es6-promise":16,"leaflet":45,"minivents":47,"urijs":53,"whatwg-fetch":55}],2:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -508,7 +508,7 @@ exports.default = config;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/config.js","/js")
 
-},{"./layers":10,"_process":48,"buffer":13,"leaflet":44}],3:[function(require,module,exports){
+},{"./layers":10,"_process":50,"buffer":14,"leaflet":45}],3:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -875,7 +875,7 @@ function generateDirectionsLink(lat, lon, display_name) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/directions.js","/js")
 
-},{"_process":48,"buffer":13,"leaflet":44,"leaflet-control-geocoder":29,"leaflet-routing-machine":32,"lrm-mapzen":45}],4:[function(require,module,exports){
+},{"_process":50,"buffer":14,"leaflet":45,"leaflet-control-geocoder":30,"leaflet-routing-machine":33,"lrm-mapzen":46}],4:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -893,6 +893,10 @@ var _data = require('./data');
 
 var _directions = require('../directions');
 
+var _projective = require('../lib/projective');
+
+var _projective2 = _interopRequireDefault(_projective);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -900,8 +904,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-//import Projective from '../lib/projective';
 
 var BuildingLayer = function (_UnclusteredDataLayer) {
     _inherits(BuildingLayer, _UnclusteredDataLayer);
@@ -1148,7 +1150,7 @@ var BuildingLayer = function (_UnclusteredDataLayer) {
             control.push([parseFloat(ref.control.x), parseFloat(ref.control.y)]);
             target.push([parseFloat(ref.target.x), parseFloat(ref.target.y)]);
         });
-        var projective = new Projective({
+        var projective = new _projective2.default({
             from: control,
             to: target
         });
@@ -1395,7 +1397,7 @@ exports.default = BuildingLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/building.js","/js/layer")
 
-},{"../directions":3,"./data":5,"_process":48,"buffer":13,"leaflet":44}],5:[function(require,module,exports){
+},{"../directions":3,"../lib/projective":11,"./data":5,"_process":50,"buffer":14,"leaflet":45}],5:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1600,7 +1602,7 @@ var UnclusteredDataLayer = exports.UnclusteredDataLayer = function (_NamedGeoJSO
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/data.js","/js/layer")
 
-},{"../directions":3,"./named":7,"_process":48,"buffer":13,"leaflet":44,"leaflet.markercluster":43}],6:[function(require,module,exports){
+},{"../directions":3,"./named":7,"_process":50,"buffer":14,"leaflet":45,"leaflet.markercluster":44}],6:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1657,7 +1659,7 @@ exports.default = HTMLLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/html.js","/js/layer")
 
-},{"./named":7,"_process":48,"buffer":13}],7:[function(require,module,exports){
+},{"./named":7,"_process":50,"buffer":14}],7:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1809,7 +1811,7 @@ var NamedGeoJSONLayer = exports.NamedGeoJSONLayer = function (_L$GeoJSON) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/named.js","/js/layer")
 
-},{"_process":48,"buffer":13,"leaflet":44,"minivents":46}],8:[function(require,module,exports){
+},{"_process":50,"buffer":14,"leaflet":45,"minivents":47}],8:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1858,7 +1860,7 @@ exports.default = ParentLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/parent.js","/js/layer")
 
-},{"./named":7,"_process":48,"buffer":13}],9:[function(require,module,exports){
+},{"./named":7,"_process":50,"buffer":14}],9:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1940,7 +1942,7 @@ exports.default = ParkingLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/parking.js","/js/layer")
 
-},{"../directions":3,"./data":5,"_process":48,"buffer":13,"leaflet":44}],10:[function(require,module,exports){
+},{"../directions":3,"./data":5,"_process":50,"buffer":14,"leaflet":45}],10:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -2249,7 +2251,121 @@ exports.default = layers;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layers.js","/js")
 
-},{"./directions":3,"_process":48,"buffer":13,"leaflet":44}],11:[function(require,module,exports){
+},{"./directions":3,"_process":50,"buffer":14,"leaflet":45}],11:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+'use strict';
+
+var _numeric = require('numeric');
+
+var _numeric2 = _interopRequireDefault(_numeric);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Projective = function Projective(kwargs) {
+	var self = {};
+
+	kwargs = kwargs || {};
+	self.from = kwargs.from || [];
+	self.to = kwargs.to || [];
+
+	var A = [];
+	var B = [];
+	var C = [];
+	var Ai = [];
+	var Bi = [];
+	var Ci = [];
+	var T = [];
+	var offsetA = [];
+	var offsetB = [];
+
+	var projectiveTransform = function projectiveTransform() {
+		offsetA = self.from[0] || [0, 0];
+		offsetB = self.to[0] || [0, 0];
+		var a = [[self.from[0][0] - offsetA[0], self.from[1][0] - offsetA[0], self.from[2][0] - offsetA[0]], [self.from[0][1] - offsetA[1], self.from[1][1] - offsetA[1], self.from[2][1] - offsetA[1]], [1, 1, 1]];
+		var b = [[self.to[0][0] - offsetB[0], self.to[1][0] - offsetB[0], self.to[2][0] - offsetB[0]], [self.to[0][1] - offsetB[1], self.to[1][1] - offsetB[1], self.to[2][1] - offsetB[1]], [1, 1, 1]];
+		var x = _numeric2.default.solve(a, [self.from[3][0] - offsetA[0], self.from[3][1] - offsetA[1], 1]);
+		var y = _numeric2.default.solve(b, [self.to[3][0] - offsetB[0], self.to[3][1] - offsetB[1], 1]);
+		A = [[a[0][0] * x[0], a[0][1] * x[1], a[0][2] * x[2]], [a[1][0] * x[0], a[1][1] * x[1], a[1][2] * x[2]], [a[2][0] * x[0], a[2][1] * x[1], a[2][2] * x[2]]];
+		B = [[b[0][0] * y[0], b[0][1] * y[1], b[0][2] * y[2]], [b[1][0] * y[0], b[1][1] * y[1], b[1][2] * y[2]], [b[2][0] * y[0], b[2][1] * y[1], b[2][2] * y[2]]];
+		Ai = _numeric2.default.inv(A);
+		Bi = _numeric2.default.inv(B);
+		C = _numeric2.default.dot(B, Ai);
+		Ci = _numeric2.default.dot(A, Bi);
+	};
+	var affineTransform = function affineTransform() {
+		A = new Array(2);
+		B = new Array(2);
+		offsetA = self.from.length > 2 ? self.from.pop() : new Array(2);
+		offsetB = self.to.length > 2 ? self.to.pop() : new Array(2);
+		for (var i = 0; i < self.from.length; i++) {
+			for (var d = 0; d < 2; d++) {
+				A[d] = A[d] || [];
+				B[d] = B[d] || [];
+				offsetA[d] = offsetA[d] || 0;
+				offsetB[d] = offsetB[d] || 0;
+				A[d][i] = self.from[i][d] - offsetA[d];
+				B[d][i] = self.to[i][d] - offsetB[d];
+			}
+		}
+
+		Ai = _numeric2.default.inv(A);
+		Bi = _numeric2.default.inv(B);
+		C = _numeric2.default.dot(B, Ai);
+		Ci = _numeric2.default.dot(A, Bi);
+	};
+
+	var init = function init() {
+		if (self.to.length != self.from.length) {
+			if (self.to.length > self.from.length) {
+				self.to.length.splice(self.from.length);
+			} else {
+				self.from.length.splice(self.to.length);
+			}
+		}
+		if (self.from.length < 4) {
+			affineTransform();
+		} else {
+			projectiveTransform();
+		}
+	};
+
+	self.inverse = function (point) {
+		var result;
+		if (self.from.length < 4) {
+			result = _numeric2.default.dot(Ci, [point[0] - offsetB[0], point[1] - offsetB[1]]);
+			result = [result[0] + offsetA[0], result[1] + offsetA[1]];
+		} else {
+			result = _numeric2.default.dot(Ci, [point[0] - offsetB[0], point[1] - offsetB[1], 1]);
+			result = [result[0] / result[2] + offsetA[0], result[1] / result[2] + offsetA[1]];
+		}
+		return result;
+	};
+
+	self.transform = function (point) {
+		var result;
+		if (self.from.length < 4) {
+			result = _numeric2.default.dot(C, [point[0] - offsetA[0], point[1] - offsetA[1]]);
+			result = [result[0] + offsetB[0], result[1] + offsetB[1]];
+		} else {
+			result = _numeric2.default.dot(C, [point[0] - offsetA[0], point[1] - offsetA[1], 1]);
+			result = [result[0] / result[2] + offsetB[0], result[1] / result[2] + offsetB[1]];
+		}
+		return result;
+	};
+
+	init();
+
+	return self;
+};
+
+//if (typeof exports !== "undefined") exports.Projective = Projective;
+// http://math.stackexchange.com/questions/296794/finding-the-transform-matrix-from-4-projected-points-with-javascript
+
+module.exports = Projective;
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/lib/projective.js","/js/lib")
+
+},{"_process":50,"buffer":14,"numeric":48}],12:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -2347,7 +2463,7 @@ app.controller('campusMapCtrl', ['$scope', '$timeout', function ($scope, $timeou
 		console.debug(scope.campusMap.value);
 		window.campusMap = scope.campusMap.value;
 		window.mapscope = scope;
-
+        
 		// Set the layers selector button
 		var menu_button = _leaflet2.default.control({ position: 'topright' });
 		menu_button.onAdd = function (map) {
@@ -2411,7 +2527,7 @@ app.controller('campusMapCtrl', ['$scope', '$timeout', function ($scope, $timeou
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/portal.js","/js")
 
-},{"./campusmap":1,"./config":2,"_process":48,"buffer":13,"leaflet":44}],12:[function(require,module,exports){
+},{"./campusmap":1,"./config":2,"_process":50,"buffer":14,"leaflet":45}],13:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict'
 
@@ -2525,7 +2641,7 @@ function fromByteArray (uint8) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/base64-js/lib/b64.js","/node_modules/base64-js/lib")
 
-},{"_process":48,"buffer":13}],13:[function(require,module,exports){
+},{"_process":50,"buffer":14}],14:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * The buffer module from node.js, for the browser.
@@ -4241,7 +4357,7 @@ function isnan (val) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/buffer/index.js","/node_modules/buffer")
 
-},{"_process":48,"base64-js":12,"buffer":13,"ieee754":16,"isarray":17}],14:[function(require,module,exports){
+},{"_process":50,"base64-js":13,"buffer":14,"ieee754":17,"isarray":18}],15:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 function corslite(url, callback, cors) {
     var sent = false;
@@ -4339,7 +4455,7 @@ if (typeof module !== 'undefined') module.exports = corslite;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/corslite/corslite.js","/node_modules/corslite")
 
-},{"_process":48,"buffer":13}],15:[function(require,module,exports){
+},{"_process":50,"buffer":14}],16:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
@@ -5303,7 +5419,7 @@ if (typeof module !== 'undefined') module.exports = corslite;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/es6-promise/dist/es6-promise.js","/node_modules/es6-promise/dist")
 
-},{"_process":48,"buffer":13}],16:[function(require,module,exports){
+},{"_process":50,"buffer":14}],17:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -5392,7 +5508,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/ieee754/index.js","/node_modules/ieee754")
 
-},{"_process":48,"buffer":13}],17:[function(require,module,exports){
+},{"_process":50,"buffer":14}],18:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var toString = {}.toString;
 
@@ -5402,7 +5518,7 @@ module.exports = Array.isArray || function (arr) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/isarray/index.js","/node_modules/isarray")
 
-},{"_process":48,"buffer":13}],18:[function(require,module,exports){
+},{"_process":50,"buffer":14}],19:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Nominatim = require('./geocoders/nominatim').class;
@@ -5637,7 +5753,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/control.js","/node_modules/leaflet-control-geocoder/src")
 
-},{"./geocoders/nominatim":26,"_process":48,"buffer":13,"leaflet":44}],19:[function(require,module,exports){
+},{"./geocoders/nominatim":27,"_process":50,"buffer":14,"leaflet":45}],20:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -5725,7 +5841,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/arcgis.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],20:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],21:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -5783,7 +5899,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/bing.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],21:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],22:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -5877,7 +5993,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/google.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],22:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],23:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 
@@ -6022,7 +6138,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/here.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],23:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],24:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6115,7 +6231,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/mapbox.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],24:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],25:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6205,7 +6321,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/mapquest.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],25:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],26:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6284,7 +6400,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/mapzen.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],26:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],27:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6383,7 +6499,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/nominatim.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],27:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],28:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6487,7 +6603,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/photon.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],28:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],29:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6556,7 +6672,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/what3words.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":30,"_process":48,"buffer":13,"leaflet":44}],29:[function(require,module,exports){
+},{"../util":31,"_process":50,"buffer":14,"leaflet":45}],30:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Control = require('./control'),
@@ -6601,7 +6717,7 @@ L.Util.extend(L.Control, {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/index.js","/node_modules/leaflet-control-geocoder/src")
 
-},{"./control":18,"./geocoders/arcgis":19,"./geocoders/bing":20,"./geocoders/google":21,"./geocoders/here":22,"./geocoders/mapbox":23,"./geocoders/mapquest":24,"./geocoders/mapzen":25,"./geocoders/nominatim":26,"./geocoders/photon":27,"./geocoders/what3words":28,"_process":48,"buffer":13,"leaflet":44}],30:[function(require,module,exports){
+},{"./control":19,"./geocoders/arcgis":20,"./geocoders/bing":21,"./geocoders/google":22,"./geocoders/here":23,"./geocoders/mapbox":24,"./geocoders/mapquest":25,"./geocoders/mapzen":26,"./geocoders/nominatim":27,"./geocoders/photon":28,"./geocoders/what3words":29,"_process":50,"buffer":14,"leaflet":45}],31:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	lastCallbackId = 0,
@@ -6688,7 +6804,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/util.js","/node_modules/leaflet-control-geocoder/src")
 
-},{"_process":48,"buffer":13,"leaflet":44}],31:[function(require,module,exports){
+},{"_process":50,"buffer":14,"leaflet":45}],32:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -6897,7 +7013,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Autocomplete.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":48,"buffer":13}],32:[function(require,module,exports){
+},{"_process":50,"buffer":14}],33:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7213,7 +7329,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Control.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.ErrorControl":33,"./L.Routing.Itinerary":36,"./L.Routing.Line":38,"./L.Routing.OSRMv1":40,"./L.Routing.Plan":41,"_process":48,"buffer":13,"leaflet":44}],33:[function(require,module,exports){
+},{"./L.Routing.ErrorControl":34,"./L.Routing.Itinerary":37,"./L.Routing.Line":39,"./L.Routing.OSRMv1":41,"./L.Routing.Plan":42,"_process":50,"buffer":14,"leaflet":45}],34:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7277,7 +7393,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.ErrorControl.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":48,"buffer":13}],34:[function(require,module,exports){
+},{"_process":50,"buffer":14}],35:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7426,7 +7542,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Formatter.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Localization":39,"_process":48,"buffer":13,"leaflet":44}],35:[function(require,module,exports){
+},{"./L.Routing.Localization":40,"_process":50,"buffer":14,"leaflet":45}],36:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7583,7 +7699,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.GeocoderElement.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Autocomplete":31,"_process":48,"buffer":13,"leaflet":44}],36:[function(require,module,exports){
+},{"./L.Routing.Autocomplete":32,"_process":50,"buffer":14,"leaflet":45}],37:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7821,7 +7937,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Itinerary.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Formatter":34,"./L.Routing.ItineraryBuilder":37,"_process":48,"buffer":13,"leaflet":44}],37:[function(require,module,exports){
+},{"./L.Routing.Formatter":35,"./L.Routing.ItineraryBuilder":38,"_process":50,"buffer":14,"leaflet":45}],38:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7873,7 +7989,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.ItineraryBuilder.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":48,"buffer":13,"leaflet":44}],38:[function(require,module,exports){
+},{"_process":50,"buffer":14,"leaflet":45}],39:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8020,7 +8136,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Line.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":48,"buffer":13,"leaflet":44}],39:[function(require,module,exports){
+},{"_process":50,"buffer":14,"leaflet":45}],40:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8519,7 +8635,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Localization.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":48,"buffer":13}],40:[function(require,module,exports){
+},{"_process":50,"buffer":14}],41:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8870,7 +8986,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.OSRMv1.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Waypoint":42,"_process":48,"buffer":13,"corslite":14,"leaflet":44,"polyline":47}],41:[function(require,module,exports){
+},{"./L.Routing.Waypoint":43,"_process":50,"buffer":14,"corslite":15,"leaflet":45,"polyline":49}],42:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -9223,7 +9339,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Plan.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.GeocoderElement":35,"./L.Routing.Waypoint":42,"_process":48,"buffer":13,"leaflet":44}],42:[function(require,module,exports){
+},{"./L.Routing.GeocoderElement":36,"./L.Routing.Waypoint":43,"_process":50,"buffer":14,"leaflet":45}],43:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -9251,7 +9367,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Waypoint.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":48,"buffer":13,"leaflet":44}],43:[function(require,module,exports){
+},{"_process":50,"buffer":14,"leaflet":45}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*
 
@@ -9266,7 +9382,7 @@ module.exports = {
 !function(t,e,i){L.MarkerClusterGroup=L.FeatureGroup.extend({options:{maxClusterRadius:80,iconCreateFunction:null,spiderfyOnMaxZoom:!0,showCoverageOnHover:!0,zoomToBoundsOnClick:!0,singleMarkerMode:!1,disableClusteringAtZoom:null,removeOutsideVisibleBounds:!0,animate:!0,animateAddingMarkers:!1,spiderfyDistanceMultiplier:1,spiderLegPolylineOptions:{weight:1.5,color:"#222",opacity:.5},chunkedLoading:!1,chunkInterval:200,chunkDelay:50,chunkProgress:null,polygonOptions:{}},initialize:function(t){L.Util.setOptions(this,t),this.options.iconCreateFunction||(this.options.iconCreateFunction=this._defaultIconCreateFunction),this._featureGroup=L.featureGroup(),this._featureGroup.on(L.FeatureGroup.EVENTS,this._propagateEvent,this),this._nonPointGroup=L.featureGroup(),this._nonPointGroup.on(L.FeatureGroup.EVENTS,this._propagateEvent,this),this._inZoomAnimation=0,this._needsClustering=[],this._needsRemoving=[],this._currentShownBounds=null,this._queue=[];var e=L.DomUtil.TRANSITION&&this.options.animate;L.extend(this,e?this._withAnimation:this._noAnimation),this._markerCluster=e?L.MarkerCluster:L.MarkerClusterNonAnimated},addLayer:function(t){if(t instanceof L.LayerGroup){var e=[];for(var i in t._layers)e.push(t._layers[i]);return this.addLayers(e)}if(!t.getLatLng)return this._nonPointGroup.addLayer(t),this;if(!this._map)return this._needsClustering.push(t),this;if(this.hasLayer(t))return this;this._unspiderfy&&this._unspiderfy(),this._addLayer(t,this._maxZoom),this._topClusterLevel._recalculateBounds();var n=t,s=this._map.getZoom();if(t.__parent)for(;n.__parent._zoom>=s;)n=n.__parent;return this._currentShownBounds.contains(n.getLatLng())&&(this.options.animateAddingMarkers?this._animationAddLayer(t,n):this._animationAddLayerNonAnimated(t,n)),this},removeLayer:function(t){if(t instanceof L.LayerGroup){var e=[];for(var i in t._layers)e.push(t._layers[i]);return this.removeLayers(e)}return t.getLatLng?this._map?t.__parent?(this._unspiderfy&&(this._unspiderfy(),this._unspiderfyLayer(t)),this._removeLayer(t,!0),this._topClusterLevel._recalculateBounds(),this._featureGroup.hasLayer(t)&&(this._featureGroup.removeLayer(t),t.clusterShow&&t.clusterShow()),this):this:(!this._arraySplice(this._needsClustering,t)&&this.hasLayer(t)&&this._needsRemoving.push(t),this):(this._nonPointGroup.removeLayer(t),this)},addLayers:function(t){var e,i,n,s,r=this._featureGroup,o=this._nonPointGroup,a=this.options.chunkedLoading,h=this.options.chunkInterval,u=this.options.chunkProgress;if(this._map){var _=0,l=(new Date).getTime(),d=L.bind(function(){for(var e=(new Date).getTime();_<t.length;_++){if(a&&0===_%200){var i=(new Date).getTime()-e;if(i>h)break}if(s=t[_],s.getLatLng){if(!this.hasLayer(s)&&(this._addLayer(s,this._maxZoom),s.__parent&&2===s.__parent.getChildCount())){var n=s.__parent.getAllChildMarkers(),c=n[0]===s?n[1]:n[0];r.removeLayer(c)}}else o.addLayer(s)}u&&u(_,t.length,(new Date).getTime()-l),_===t.length?(this._topClusterLevel._recalculateBounds(),this._featureGroup.eachLayer(function(t){t instanceof L.MarkerCluster&&t._iconNeedsUpdate&&t._updateIcon()}),this._topClusterLevel._recursivelyAddChildrenToMap(null,this._zoom,this._currentShownBounds)):setTimeout(d,this.options.chunkDelay)},this);d()}else{for(e=[],i=0,n=t.length;n>i;i++)s=t[i],s.getLatLng?this.hasLayer(s)||e.push(s):o.addLayer(s);this._needsClustering=this._needsClustering.concat(e)}return this},removeLayers:function(t){var e,i,n,s=this._featureGroup,r=this._nonPointGroup;if(!this._map){for(e=0,i=t.length;i>e;e++)n=t[e],this._arraySplice(this._needsClustering,n),r.removeLayer(n),this.hasLayer(n)&&this._needsRemoving.push(n);return this}if(this._unspiderfy)for(this._unspiderfy(),e=0,i=t.length;i>e;e++)n=t[e],this._unspiderfyLayer(n);for(e=0,i=t.length;i>e;e++)n=t[e],n.__parent?(this._removeLayer(n,!0,!0),s.hasLayer(n)&&(s.removeLayer(n),n.clusterShow&&n.clusterShow())):r.removeLayer(n);return this._topClusterLevel._recalculateBounds(),this._topClusterLevel._recursivelyAddChildrenToMap(null,this._zoom,this._currentShownBounds),s.eachLayer(function(t){t instanceof L.MarkerCluster&&t._updateIcon()}),this},clearLayers:function(){return this._map||(this._needsClustering=[],delete this._gridClusters,delete this._gridUnclustered),this._noanimationUnspiderfy&&this._noanimationUnspiderfy(),this._featureGroup.clearLayers(),this._nonPointGroup.clearLayers(),this.eachLayer(function(t){delete t.__parent}),this._map&&this._generateInitialClusters(),this},getBounds:function(){var t=new L.LatLngBounds;this._topClusterLevel&&t.extend(this._topClusterLevel._bounds);for(var e=this._needsClustering.length-1;e>=0;e--)t.extend(this._needsClustering[e].getLatLng());return t.extend(this._nonPointGroup.getBounds()),t},eachLayer:function(t,e){var i,n=this._needsClustering.slice();for(this._topClusterLevel&&this._topClusterLevel.getAllChildMarkers(n),i=n.length-1;i>=0;i--)t.call(e,n[i]);this._nonPointGroup.eachLayer(t,e)},getLayers:function(){var t=[];return this.eachLayer(function(e){t.push(e)}),t},getLayer:function(t){var e=null;return t=parseInt(t,10),this.eachLayer(function(i){L.stamp(i)===t&&(e=i)}),e},hasLayer:function(t){if(!t)return!1;var e,i=this._needsClustering;for(e=i.length-1;e>=0;e--)if(i[e]===t)return!0;for(i=this._needsRemoving,e=i.length-1;e>=0;e--)if(i[e]===t)return!1;return!(!t.__parent||t.__parent._group!==this)||this._nonPointGroup.hasLayer(t)},zoomToShowLayer:function(t,e){"function"!=typeof e&&(e=function(){});var i=function(){!t._icon&&!t.__parent._icon||this._inZoomAnimation||(this._map.off("moveend",i,this),this.off("animationend",i,this),t._icon?e():t.__parent._icon&&(this.once("spiderfied",e,this),t.__parent.spiderfy()))};if(t._icon&&this._map.getBounds().contains(t.getLatLng()))e();else if(t.__parent._zoom<this._map.getZoom())this._map.on("moveend",i,this),this._map.panTo(t.getLatLng());else{var n=function(){this._map.off("movestart",n,this),n=null};this._map.on("movestart",n,this),this._map.on("moveend",i,this),this.on("animationend",i,this),t.__parent.zoomToBounds(),n&&i.call(this)}},onAdd:function(t){this._map=t;var e,i,n;if(!isFinite(this._map.getMaxZoom()))throw"Map has no maxZoom specified";for(this._featureGroup.onAdd(t),this._nonPointGroup.onAdd(t),this._gridClusters||this._generateInitialClusters(),this._maxLat=t.options.crs.projection.MAX_LATITUDE,e=0,i=this._needsRemoving.length;i>e;e++)n=this._needsRemoving[e],this._removeLayer(n,!0);this._needsRemoving=[],this._zoom=this._map.getZoom(),this._currentShownBounds=this._getExpandedVisibleBounds(),this._map.on("zoomend",this._zoomEnd,this),this._map.on("moveend",this._moveEnd,this),this._spiderfierOnAdd&&this._spiderfierOnAdd(),this._bindEvents(),i=this._needsClustering,this._needsClustering=[],this.addLayers(i)},onRemove:function(t){t.off("zoomend",this._zoomEnd,this),t.off("moveend",this._moveEnd,this),this._unbindEvents(),this._map._mapPane.className=this._map._mapPane.className.replace(" leaflet-cluster-anim",""),this._spiderfierOnRemove&&this._spiderfierOnRemove(),delete this._maxLat,this._hideCoverage(),this._featureGroup.onRemove(t),this._nonPointGroup.onRemove(t),this._featureGroup.clearLayers(),this._map=null},getVisibleParent:function(t){for(var e=t;e&&!e._icon;)e=e.__parent;return e||null},_arraySplice:function(t,e){for(var i=t.length-1;i>=0;i--)if(t[i]===e)return t.splice(i,1),!0},_removeFromGridUnclustered:function(t,e){for(var i=this._map,n=this._gridUnclustered;e>=0&&n[e].removeObject(t,i.project(t.getLatLng(),e));e--);},_removeLayer:function(t,e,i){var n=this._gridClusters,s=this._gridUnclustered,r=this._featureGroup,o=this._map;e&&this._removeFromGridUnclustered(t,this._maxZoom);var a,h=t.__parent,u=h._markers;for(this._arraySplice(u,t);h&&(h._childCount--,h._boundsNeedUpdate=!0,!(h._zoom<0));)e&&h._childCount<=1?(a=h._markers[0]===t?h._markers[1]:h._markers[0],n[h._zoom].removeObject(h,o.project(h._cLatLng,h._zoom)),s[h._zoom].addObject(a,o.project(a.getLatLng(),h._zoom)),this._arraySplice(h.__parent._childClusters,h),h.__parent._markers.push(a),a.__parent=h.__parent,h._icon&&(r.removeLayer(h),i||r.addLayer(a))):i&&h._icon||h._updateIcon(),h=h.__parent;delete t.__parent},_isOrIsParent:function(t,e){for(;e;){if(t===e)return!0;e=e.parentNode}return!1},_propagateEvent:function(t){if(t.layer instanceof L.MarkerCluster){if(t.originalEvent&&this._isOrIsParent(t.layer._icon,t.originalEvent.relatedTarget))return;t.type="cluster"+t.type}this.fire(t.type,t)},_defaultIconCreateFunction:function(t){var e=t.getChildCount(),i=" marker-cluster-";return i+=10>e?"small":100>e?"medium":"large",new L.DivIcon({html:"<div><span>"+e+"</span></div>",className:"marker-cluster"+i,iconSize:new L.Point(40,40)})},_bindEvents:function(){var t=this._map,e=this.options.spiderfyOnMaxZoom,i=this.options.showCoverageOnHover,n=this.options.zoomToBoundsOnClick;(e||n)&&this.on("clusterclick",this._zoomOrSpiderfy,this),i&&(this.on("clustermouseover",this._showCoverage,this),this.on("clustermouseout",this._hideCoverage,this),t.on("zoomend",this._hideCoverage,this))},_zoomOrSpiderfy:function(t){for(var e=t.layer,i=e;1===i._childClusters.length;)i=i._childClusters[0];i._zoom===this._maxZoom&&i._childCount===e._childCount?this.options.spiderfyOnMaxZoom&&e.spiderfy():this.options.zoomToBoundsOnClick&&e.zoomToBounds(),t.originalEvent&&13===t.originalEvent.keyCode&&this._map._container.focus()},_showCoverage:function(t){var e=this._map;this._inZoomAnimation||(this._shownPolygon&&e.removeLayer(this._shownPolygon),t.layer.getChildCount()>2&&t.layer!==this._spiderfied&&(this._shownPolygon=new L.Polygon(t.layer.getConvexHull(),this.options.polygonOptions),e.addLayer(this._shownPolygon)))},_hideCoverage:function(){this._shownPolygon&&(this._map.removeLayer(this._shownPolygon),this._shownPolygon=null)},_unbindEvents:function(){var t=this.options.spiderfyOnMaxZoom,e=this.options.showCoverageOnHover,i=this.options.zoomToBoundsOnClick,n=this._map;(t||i)&&this.off("clusterclick",this._zoomOrSpiderfy,this),e&&(this.off("clustermouseover",this._showCoverage,this),this.off("clustermouseout",this._hideCoverage,this),n.off("zoomend",this._hideCoverage,this))},_zoomEnd:function(){this._map&&(this._mergeSplitClusters(),this._zoom=this._map._zoom,this._currentShownBounds=this._getExpandedVisibleBounds())},_moveEnd:function(){if(!this._inZoomAnimation){var t=this._getExpandedVisibleBounds();this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,this._zoom,t),this._topClusterLevel._recursivelyAddChildrenToMap(null,this._map._zoom,t),this._currentShownBounds=t}},_generateInitialClusters:function(){var t=this._map.getMaxZoom(),e=this.options.maxClusterRadius,i=e;"function"!=typeof e&&(i=function(){return e}),this.options.disableClusteringAtZoom&&(t=this.options.disableClusteringAtZoom-1),this._maxZoom=t,this._gridClusters={},this._gridUnclustered={};for(var n=t;n>=0;n--)this._gridClusters[n]=new L.DistanceGrid(i(n)),this._gridUnclustered[n]=new L.DistanceGrid(i(n));this._topClusterLevel=new this._markerCluster(this,-1)},_addLayer:function(t,e){var i,n,s=this._gridClusters,r=this._gridUnclustered;for(this.options.singleMarkerMode&&this._overrideMarkerIcon(t);e>=0;e--){i=this._map.project(t.getLatLng(),e);var o=s[e].getNearObject(i);if(o)return o._addChild(t),t.__parent=o,void 0;if(o=r[e].getNearObject(i)){var a=o.__parent;a&&this._removeLayer(o,!1);var h=new this._markerCluster(this,e,o,t);s[e].addObject(h,this._map.project(h._cLatLng,e)),o.__parent=h,t.__parent=h;var u=h;for(n=e-1;n>a._zoom;n--)u=new this._markerCluster(this,n,u),s[n].addObject(u,this._map.project(o.getLatLng(),n));return a._addChild(u),this._removeFromGridUnclustered(o,e),void 0}r[e].addObject(t,i)}this._topClusterLevel._addChild(t),t.__parent=this._topClusterLevel},_enqueue:function(t){this._queue.push(t),this._queueTimeout||(this._queueTimeout=setTimeout(L.bind(this._processQueue,this),300))},_processQueue:function(){for(var t=0;t<this._queue.length;t++)this._queue[t].call(this);this._queue.length=0,clearTimeout(this._queueTimeout),this._queueTimeout=null},_mergeSplitClusters:function(){this._processQueue(),this._zoom<this._map._zoom&&this._currentShownBounds.intersects(this._getExpandedVisibleBounds())?(this._animationStart(),this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,this._zoom,this._getExpandedVisibleBounds()),this._animationZoomIn(this._zoom,this._map._zoom)):this._zoom>this._map._zoom?(this._animationStart(),this._animationZoomOut(this._zoom,this._map._zoom)):this._moveEnd()},_getExpandedVisibleBounds:function(){return this.options.removeOutsideVisibleBounds?L.Browser.mobile?this._checkBoundsMaxLat(this._map.getBounds()):this._checkBoundsMaxLat(this._map.getBounds().pad(1)):this._mapBoundsInfinite},_checkBoundsMaxLat:function(t){var e=this._maxLat;return e!==i&&(t.getNorth()>=e&&(t._northEast.lat=1/0),t.getSouth()<=-e&&(t._southWest.lat=-1/0)),t},_animationAddLayerNonAnimated:function(t,e){if(e===t)this._featureGroup.addLayer(t);else if(2===e._childCount){e._addToMap();var i=e.getAllChildMarkers();this._featureGroup.removeLayer(i[0]),this._featureGroup.removeLayer(i[1])}else e._updateIcon()},_overrideMarkerIcon:function(t){var e=t.options.icon=this.options.iconCreateFunction({getChildCount:function(){return 1},getAllChildMarkers:function(){return[t]}});return e}}),L.MarkerClusterGroup.include({_mapBoundsInfinite:new L.LatLngBounds(new L.LatLng(-1/0,-1/0),new L.LatLng(1/0,1/0))}),L.MarkerClusterGroup.include({_noAnimation:{_animationStart:function(){},_animationZoomIn:function(t,e){this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,t),this._topClusterLevel._recursivelyAddChildrenToMap(null,e,this._getExpandedVisibleBounds()),this.fire("animationend")},_animationZoomOut:function(t,e){this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,t),this._topClusterLevel._recursivelyAddChildrenToMap(null,e,this._getExpandedVisibleBounds()),this.fire("animationend")},_animationAddLayer:function(t,e){this._animationAddLayerNonAnimated(t,e)}},_withAnimation:{_animationStart:function(){this._map._mapPane.className+=" leaflet-cluster-anim",this._inZoomAnimation++},_animationZoomIn:function(t,e){var i,n=this._getExpandedVisibleBounds(),s=this._featureGroup;this._topClusterLevel._recursively(n,t,0,function(r){var o,a=r._latlng,h=r._markers;for(n.contains(a)||(a=null),r._isSingleParent()&&t+1===e?(s.removeLayer(r),r._recursivelyAddChildrenToMap(null,e,n)):(r.clusterHide(),r._recursivelyAddChildrenToMap(a,e,n)),i=h.length-1;i>=0;i--)o=h[i],n.contains(o._latlng)||s.removeLayer(o)}),this._forceLayout(),this._topClusterLevel._recursivelyBecomeVisible(n,e),s.eachLayer(function(t){t instanceof L.MarkerCluster||!t._icon||t.clusterShow()}),this._topClusterLevel._recursively(n,t,e,function(t){t._recursivelyRestoreChildPositions(e)}),this._enqueue(function(){this._topClusterLevel._recursively(n,t,0,function(t){s.removeLayer(t),t.clusterShow()}),this._animationEnd()})},_animationZoomOut:function(t,e){this._animationZoomOutSingle(this._topClusterLevel,t-1,e),this._topClusterLevel._recursivelyAddChildrenToMap(null,e,this._getExpandedVisibleBounds()),this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,t,this._getExpandedVisibleBounds())},_animationAddLayer:function(t,e){var i=this,n=this._featureGroup;n.addLayer(t),e!==t&&(e._childCount>2?(e._updateIcon(),this._forceLayout(),this._animationStart(),t._setPos(this._map.latLngToLayerPoint(e.getLatLng())),t.clusterHide(),this._enqueue(function(){n.removeLayer(t),t.clusterShow(),i._animationEnd()})):(this._forceLayout(),i._animationStart(),i._animationZoomOutSingle(e,this._map.getMaxZoom(),this._map.getZoom())))}},_animationZoomOutSingle:function(t,e,i){var n=this._getExpandedVisibleBounds();t._recursivelyAnimateChildrenInAndAddSelfToMap(n,e+1,i);var s=this;this._forceLayout(),t._recursivelyBecomeVisible(n,i),this._enqueue(function(){if(1===t._childCount){var r=t._markers[0];r.setLatLng(r.getLatLng()),r.clusterShow&&r.clusterShow()}else t._recursively(n,i,0,function(t){t._recursivelyRemoveChildrenFromMap(n,e+1)});s._animationEnd()})},_animationEnd:function(){this._map&&(this._map._mapPane.className=this._map._mapPane.className.replace(" leaflet-cluster-anim","")),this._inZoomAnimation--,this.fire("animationend")},_forceLayout:function(){L.Util.falseFn(e.body.offsetWidth)}}),L.markerClusterGroup=function(t){return new L.MarkerClusterGroup(t)},L.MarkerCluster=L.Marker.extend({initialize:function(t,e,i,n){L.Marker.prototype.initialize.call(this,i?i._cLatLng||i.getLatLng():new L.LatLng(0,0),{icon:this}),this._group=t,this._zoom=e,this._markers=[],this._childClusters=[],this._childCount=0,this._iconNeedsUpdate=!0,this._boundsNeedUpdate=!0,this._bounds=new L.LatLngBounds,i&&this._addChild(i),n&&this._addChild(n)},getAllChildMarkers:function(t){t=t||[];for(var e=this._childClusters.length-1;e>=0;e--)this._childClusters[e].getAllChildMarkers(t);for(var i=this._markers.length-1;i>=0;i--)t.push(this._markers[i]);return t},getChildCount:function(){return this._childCount},zoomToBounds:function(){for(var t,e=this._childClusters.slice(),i=this._group._map,n=i.getBoundsZoom(this._bounds),s=this._zoom+1,r=i.getZoom();e.length>0&&n>s;){s++;var o=[];for(t=0;t<e.length;t++)o=o.concat(e[t]._childClusters);e=o}n>s?this._group._map.setView(this._latlng,s):r>=n?this._group._map.setView(this._latlng,r+1):this._group._map.fitBounds(this._bounds)},getBounds:function(){var t=new L.LatLngBounds;return t.extend(this._bounds),t},_updateIcon:function(){this._iconNeedsUpdate=!0,this._icon&&this.setIcon(this)},createIcon:function(){return this._iconNeedsUpdate&&(this._iconObj=this._group.options.iconCreateFunction(this),this._iconNeedsUpdate=!1),this._iconObj.createIcon()},createShadow:function(){return this._iconObj.createShadow()},_addChild:function(t,e){this._iconNeedsUpdate=!0,this._boundsNeedUpdate=!0,this._setClusterCenter(t),t instanceof L.MarkerCluster?(e||(this._childClusters.push(t),t.__parent=this),this._childCount+=t._childCount):(e||this._markers.push(t),this._childCount++),this.__parent&&this.__parent._addChild(t,!0)},_setClusterCenter:function(t){this._cLatLng||(this._cLatLng=t._cLatLng||t._latlng)},_resetBounds:function(){var t=this._bounds;t._southWest&&(t._southWest.lat=1/0,t._southWest.lng=1/0),t._northEast&&(t._northEast.lat=-1/0,t._northEast.lng=-1/0)},_recalculateBounds:function(){var t,e,i,n,s=this._markers,r=this._childClusters,o=0,a=0,h=this._childCount;if(0!==h){for(this._resetBounds(),t=0;t<s.length;t++)i=s[t]._latlng,this._bounds.extend(i),o+=i.lat,a+=i.lng;for(t=0;t<r.length;t++)e=r[t],e._boundsNeedUpdate&&e._recalculateBounds(),this._bounds.extend(e._bounds),i=e._wLatLng,n=e._childCount,o+=i.lat*n,a+=i.lng*n;this._latlng=this._wLatLng=new L.LatLng(o/h,a/h),this._boundsNeedUpdate=!1}},_addToMap:function(t){t&&(this._backupLatlng=this._latlng,this.setLatLng(t)),this._group._featureGroup.addLayer(this)},_recursivelyAnimateChildrenIn:function(t,e,i){this._recursively(t,0,i-1,function(t){var i,n,s=t._markers;for(i=s.length-1;i>=0;i--)n=s[i],n._icon&&(n._setPos(e),n.clusterHide())},function(t){var i,n,s=t._childClusters;for(i=s.length-1;i>=0;i--)n=s[i],n._icon&&(n._setPos(e),n.clusterHide())})},_recursivelyAnimateChildrenInAndAddSelfToMap:function(t,e,i){this._recursively(t,i,0,function(n){n._recursivelyAnimateChildrenIn(t,n._group._map.latLngToLayerPoint(n.getLatLng()).round(),e),n._isSingleParent()&&e-1===i?(n.clusterShow(),n._recursivelyRemoveChildrenFromMap(t,e)):n.clusterHide(),n._addToMap()})},_recursivelyBecomeVisible:function(t,e){this._recursively(t,0,e,null,function(t){t.clusterShow()})},_recursivelyAddChildrenToMap:function(t,e,i){this._recursively(i,-1,e,function(n){if(e!==n._zoom)for(var s=n._markers.length-1;s>=0;s--){var r=n._markers[s];i.contains(r._latlng)&&(t&&(r._backupLatlng=r.getLatLng(),r.setLatLng(t),r.clusterHide&&r.clusterHide()),n._group._featureGroup.addLayer(r))}},function(e){e._addToMap(t)})},_recursivelyRestoreChildPositions:function(t){for(var e=this._markers.length-1;e>=0;e--){var i=this._markers[e];i._backupLatlng&&(i.setLatLng(i._backupLatlng),delete i._backupLatlng)}if(t-1===this._zoom)for(var n=this._childClusters.length-1;n>=0;n--)this._childClusters[n]._restorePosition();else for(var s=this._childClusters.length-1;s>=0;s--)this._childClusters[s]._recursivelyRestoreChildPositions(t)},_restorePosition:function(){this._backupLatlng&&(this.setLatLng(this._backupLatlng),delete this._backupLatlng)},_recursivelyRemoveChildrenFromMap:function(t,e,i){var n,s;this._recursively(t,-1,e-1,function(t){for(s=t._markers.length-1;s>=0;s--)n=t._markers[s],i&&i.contains(n._latlng)||(t._group._featureGroup.removeLayer(n),n.clusterShow&&n.clusterShow())},function(t){for(s=t._childClusters.length-1;s>=0;s--)n=t._childClusters[s],i&&i.contains(n._latlng)||(t._group._featureGroup.removeLayer(n),n.clusterShow&&n.clusterShow())})},_recursively:function(t,e,i,n,s){var r,o,a=this._childClusters,h=this._zoom;if(e>h)for(r=a.length-1;r>=0;r--)o=a[r],t.intersects(o._bounds)&&o._recursively(t,e,i,n,s);else if(n&&n(this),s&&this._zoom===i&&s(this),i>h)for(r=a.length-1;r>=0;r--)o=a[r],t.intersects(o._bounds)&&o._recursively(t,e,i,n,s)},_isSingleParent:function(){return this._childClusters.length>0&&this._childClusters[0]._childCount===this._childCount}}),L.Marker.include({clusterHide:function(){return this.options.opacityWhenUnclustered=this.options.opacity||1,this.setOpacity(0)},clusterShow:function(){var t=this.setOpacity(this.options.opacity||this.options.opacityWhenUnclustered);return delete this.options.opacityWhenUnclustered,t}}),L.DistanceGrid=function(t){this._cellSize=t,this._sqCellSize=t*t,this._grid={},this._objectPoint={}},L.DistanceGrid.prototype={addObject:function(t,e){var i=this._getCoord(e.x),n=this._getCoord(e.y),s=this._grid,r=s[n]=s[n]||{},o=r[i]=r[i]||[],a=L.Util.stamp(t);this._objectPoint[a]=e,o.push(t)},updateObject:function(t,e){this.removeObject(t),this.addObject(t,e)},removeObject:function(t,e){var i,n,s=this._getCoord(e.x),r=this._getCoord(e.y),o=this._grid,a=o[r]=o[r]||{},h=a[s]=a[s]||[];for(delete this._objectPoint[L.Util.stamp(t)],i=0,n=h.length;n>i;i++)if(h[i]===t)return h.splice(i,1),1===n&&delete a[s],!0},eachObject:function(t,e){var i,n,s,r,o,a,h,u=this._grid;for(i in u){o=u[i];for(n in o)for(a=o[n],s=0,r=a.length;r>s;s++)h=t.call(e,a[s]),h&&(s--,r--)}},getNearObject:function(t){var e,i,n,s,r,o,a,h,u=this._getCoord(t.x),_=this._getCoord(t.y),l=this._objectPoint,d=this._sqCellSize,c=null;for(e=_-1;_+1>=e;e++)if(s=this._grid[e])for(i=u-1;u+1>=i;i++)if(r=s[i])for(n=0,o=r.length;o>n;n++)a=r[n],h=this._sqDist(l[L.Util.stamp(a)],t),d>h&&(d=h,c=a);return c},_getCoord:function(t){return Math.floor(t/this._cellSize)},_sqDist:function(t,e){var i=e.x-t.x,n=e.y-t.y;return i*i+n*n}},function(){L.QuickHull={getDistant:function(t,e){var i=e[1].lat-e[0].lat,n=e[0].lng-e[1].lng;return n*(t.lat-e[0].lat)+i*(t.lng-e[0].lng)},findMostDistantPointFromBaseLine:function(t,e){var i,n,s,r=0,o=null,a=[];for(i=e.length-1;i>=0;i--)n=e[i],s=this.getDistant(n,t),s>0&&(a.push(n),s>r&&(r=s,o=n));return{maxPoint:o,newPoints:a}},buildConvexHull:function(t,e){var i=[],n=this.findMostDistantPointFromBaseLine(t,e);return n.maxPoint?(i=i.concat(this.buildConvexHull([t[0],n.maxPoint],n.newPoints)),i=i.concat(this.buildConvexHull([n.maxPoint,t[1]],n.newPoints))):[t[0]]},getConvexHull:function(t){var e,i=!1,n=!1,s=!1,r=!1,o=null,a=null,h=null,u=null,_=null,l=null;for(e=t.length-1;e>=0;e--){var d=t[e];(i===!1||d.lat>i)&&(o=d,i=d.lat),(n===!1||d.lat<n)&&(a=d,n=d.lat),(s===!1||d.lng>s)&&(h=d,s=d.lng),(r===!1||d.lng<r)&&(u=d,r=d.lng)}n!==i?(l=a,_=o):(l=u,_=h);var c=[].concat(this.buildConvexHull([l,_],t),this.buildConvexHull([_,l],t));return c}}}(),L.MarkerCluster.include({getConvexHull:function(){var t,e,i=this.getAllChildMarkers(),n=[];for(e=i.length-1;e>=0;e--)t=i[e].getLatLng(),n.push(t);return L.QuickHull.getConvexHull(n)}}),L.MarkerCluster.include({_2PI:2*Math.PI,_circleFootSeparation:25,_circleStartAngle:Math.PI/6,_spiralFootSeparation:28,_spiralLengthStart:11,_spiralLengthFactor:5,_circleSpiralSwitchover:9,spiderfy:function(){if(this._group._spiderfied!==this&&!this._group._inZoomAnimation){var t,e=this.getAllChildMarkers(),i=this._group,n=i._map,s=n.latLngToLayerPoint(this._latlng);this._group._unspiderfy(),this._group._spiderfied=this,e.length>=this._circleSpiralSwitchover?t=this._generatePointsSpiral(e.length,s):(s.y+=10,t=this._generatePointsCircle(e.length,s)),this._animationSpiderfy(e,t)}},unspiderfy:function(t){this._group._inZoomAnimation||(this._animationUnspiderfy(t),this._group._spiderfied=null)},_generatePointsCircle:function(t,e){var i,n,s=this._group.options.spiderfyDistanceMultiplier*this._circleFootSeparation*(2+t),r=s/this._2PI,o=this._2PI/t,a=[];for(a.length=t,i=t-1;i>=0;i--)n=this._circleStartAngle+i*o,a[i]=new L.Point(e.x+r*Math.cos(n),e.y+r*Math.sin(n))._round();return a},_generatePointsSpiral:function(t,e){var i,n=this._group.options.spiderfyDistanceMultiplier,s=n*this._spiralLengthStart,r=n*this._spiralFootSeparation,o=n*this._spiralLengthFactor*this._2PI,a=0,h=[];for(h.length=t,i=t-1;i>=0;i--)a+=r/s+5e-4*i,h[i]=new L.Point(e.x+s*Math.cos(a),e.y+s*Math.sin(a))._round(),s+=o/a;return h},_noanimationUnspiderfy:function(){var t,e,i=this._group,n=i._map,s=i._featureGroup,r=this.getAllChildMarkers();for(this.setOpacity(1),e=r.length-1;e>=0;e--)t=r[e],s.removeLayer(t),t._preSpiderfyLatlng&&(t.setLatLng(t._preSpiderfyLatlng),delete t._preSpiderfyLatlng),t.setZIndexOffset&&t.setZIndexOffset(0),t._spiderLeg&&(n.removeLayer(t._spiderLeg),delete t._spiderLeg);i.fire("unspiderfied",{cluster:this,markers:r}),i._spiderfied=null}}),L.MarkerClusterNonAnimated=L.MarkerCluster.extend({_animationSpiderfy:function(t,e){var i,n,s,r,o=this._group,a=o._map,h=o._featureGroup,u=this._group.options.spiderLegPolylineOptions;for(i=0;i<t.length;i++)r=a.layerPointToLatLng(e[i]),n=t[i],s=new L.Polyline([this._latlng,r],u),a.addLayer(s),n._spiderLeg=s,n._preSpiderfyLatlng=n._latlng,n.setLatLng(r),n.setZIndexOffset&&n.setZIndexOffset(1e6),h.addLayer(n);this.setOpacity(.3),o.fire("spiderfied",{cluster:this,markers:t})},_animationUnspiderfy:function(){this._noanimationUnspiderfy()}}),L.MarkerCluster.include({_animationSpiderfy:function(t,e){var n,s,r,o,a,h,u=this,_=this._group,l=_._map,d=_._featureGroup,c=this._latlng,p=l.latLngToLayerPoint(c),f=L.Path.SVG,m=L.extend({},this._group.options.spiderLegPolylineOptions),g=m.opacity;for(g===i&&(g=L.MarkerClusterGroup.prototype.options.spiderLegPolylineOptions.opacity),f?(m.opacity=0,m.className=(m.className||"")+" leaflet-cluster-spider-leg"):m.opacity=g,n=0;n<t.length;n++)s=t[n],h=l.layerPointToLatLng(e[n]),r=new L.Polyline([c,h],m),l.addLayer(r),s._spiderLeg=r,f&&(o=r._path,a=o.getTotalLength()+.1,o.style.strokeDasharray=a,o.style.strokeDashoffset=a),s.setZIndexOffset&&s.setZIndexOffset(1e6),s.clusterHide&&s.clusterHide(),d.addLayer(s),s._setPos&&s._setPos(p);for(_._forceLayout(),_._animationStart(),n=t.length-1;n>=0;n--)h=l.layerPointToLatLng(e[n]),s=t[n],s._preSpiderfyLatlng=s._latlng,s.setLatLng(h),s.clusterShow&&s.clusterShow(),f&&(r=s._spiderLeg,o=r._path,o.style.strokeDashoffset=0,r.setStyle({opacity:g}));this.setOpacity(.3),setTimeout(function(){_._animationEnd(),_.fire("spiderfied",{cluster:u,markers:t})},200)},_animationUnspiderfy:function(t){var e,i,n,s,r,o,a=this,h=this._group,u=h._map,_=h._featureGroup,l=t?u._latLngToNewLayerPoint(this._latlng,t.zoom,t.center):u.latLngToLayerPoint(this._latlng),d=this.getAllChildMarkers(),c=L.Path.SVG;for(h._animationStart(),this.setOpacity(1),i=d.length-1;i>=0;i--)e=d[i],e._preSpiderfyLatlng&&(e.setLatLng(e._preSpiderfyLatlng),delete e._preSpiderfyLatlng,o=!0,e._setPos&&(e._setPos(l),o=!1),e.clusterHide&&(e.clusterHide(),o=!1),o&&_.removeLayer(e),c&&(n=e._spiderLeg,s=n._path,r=s.getTotalLength()+.1,s.style.strokeDashoffset=r,n.setStyle({opacity:0})));setTimeout(function(){var t=0;for(i=d.length-1;i>=0;i--)e=d[i],e._spiderLeg&&t++;for(i=d.length-1;i>=0;i--)e=d[i],e._spiderLeg&&(e.clusterShow&&e.clusterShow(),e.setZIndexOffset&&e.setZIndexOffset(0),t>1&&_.removeLayer(e),u.removeLayer(e._spiderLeg),delete e._spiderLeg);h._animationEnd(),h.fire("unspiderfied",{cluster:a,markers:d})},200)}}),L.MarkerClusterGroup.include({_spiderfied:null,_spiderfierOnAdd:function(){this._map.on("click",this._unspiderfyWrapper,this),this._map.options.zoomAnimation&&this._map.on("zoomstart",this._unspiderfyZoomStart,this),this._map.on("zoomend",this._noanimationUnspiderfy,this)},_spiderfierOnRemove:function(){this._map.off("click",this._unspiderfyWrapper,this),this._map.off("zoomstart",this._unspiderfyZoomStart,this),this._map.off("zoomanim",this._unspiderfyZoomAnim,this),this._map.off("zoomend",this._noanimationUnspiderfy,this),this._noanimationUnspiderfy()},_unspiderfyZoomStart:function(){this._map&&this._map.on("zoomanim",this._unspiderfyZoomAnim,this)},_unspiderfyZoomAnim:function(t){L.DomUtil.hasClass(this._map._mapPane,"leaflet-touching")||(this._map.off("zoomanim",this._unspiderfyZoomAnim,this),this._unspiderfy(t))},_unspiderfyWrapper:function(){this._unspiderfy()},_unspiderfy:function(t){this._spiderfied&&this._spiderfied.unspiderfy(t)},_noanimationUnspiderfy:function(){this._spiderfied&&this._spiderfied._noanimationUnspiderfy()},_unspiderfyLayer:function(t){t._spiderLeg&&(this._featureGroup.removeLayer(t),t.clusterShow&&t.clusterShow(),t.setZIndexOffset&&t.setZIndexOffset(0),this._map.removeLayer(t._spiderLeg),delete t._spiderLeg)}}),L.MarkerClusterGroup.include({refreshClusters:function(t){return t?t instanceof L.MarkerClusterGroup?t=t._topClusterLevel.getAllChildMarkers():t instanceof L.LayerGroup?t=t._layers:t instanceof L.MarkerCluster?t=t.getAllChildMarkers():t instanceof L.Marker&&(t=[t]):t=this._topClusterLevel.getAllChildMarkers(),this._flagParentsIconsNeedUpdate(t),this._refreshClustersIcons(),this.options.singleMarkerMode&&this._refreshSingleMarkerModeMarkers(t),this},_flagParentsIconsNeedUpdate:function(t){var e,i;for(e in t)for(i=t[e].__parent;i;)i._iconNeedsUpdate=!0,i=i.__parent},_refreshClustersIcons:function(){this._featureGroup.eachLayer(function(t){t instanceof L.MarkerCluster&&t._iconNeedsUpdate&&t._updateIcon()})},_refreshSingleMarkerModeMarkers:function(t){var e,i;for(e in t)i=t[e],this.hasLayer(i)&&i.setIcon(this._overrideMarkerIcon(i))}}),L.Marker.include({refreshIconOptions:function(t,e){var i=this.options.icon;return L.setOptions(i,t),this.setIcon(i),e&&this.__parent&&this.__parent._group.refreshClusters(this),this}})}(window,document);
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet.markercluster/dist/leaflet.markercluster.js","/node_modules/leaflet.markercluster/dist")
 
-},{"_process":48,"buffer":13}],44:[function(require,module,exports){
+},{"_process":50,"buffer":14}],45:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
@@ -25743,18 +25859,4743 @@ L.Map.include({
 }(window, document));
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet/dist/leaflet-src.js","/node_modules/leaflet/dist")
 
-},{"_process":48,"buffer":13}],45:[function(require,module,exports){
+},{"_process":50,"buffer":14}],46:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 !function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a="function"==typeof require&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}for(var i="function"==typeof require&&require,o=0;o<r.length;o++)s(r[o]);return s}({1:[function(require,module,exports){function corslite(url,callback,cors){function isSuccessful(status){return status>=200&&300>status||304===status}function loaded(){void 0===x.status||isSuccessful(x.status)?callback.call(x,null,x):callback.call(x,x,null)}var sent=!1;if("undefined"==typeof window.XMLHttpRequest)return callback(Error("Browser not supported"));if("undefined"==typeof cors){var m=url.match(/^\s*https?:\/\/[^\/]*/);cors=m&&m[0]!==location.protocol+"//"+location.domain+(location.port?":"+location.port:"")}var x=new window.XMLHttpRequest;if(cors&&!("withCredentials"in x)){x=new window.XDomainRequest;var original=callback;callback=function(){if(sent)original.apply(this,arguments);else{var that=this,args=arguments;setTimeout(function(){original.apply(that,args)},0)}}}return"onload"in x?x.onload=loaded:x.onreadystatechange=function(){4===x.readyState&&loaded()},x.onerror=function(evt){callback.call(this,evt||!0,null),callback=function(){}},x.onprogress=function(){},x.ontimeout=function(evt){callback.call(this,evt,null),callback=function(){}},x.onabort=function(evt){callback.call(this,evt,null),callback=function(){}},x.open("GET",url,!0),x.send(null),sent=!0,x}"undefined"!=typeof module&&(module.exports=corslite)},{}],2:[function(require,module,exports){function encode(coordinate,factor){coordinate=Math.round(coordinate*factor),coordinate<<=1,0>coordinate&&(coordinate=~coordinate);for(var output="";coordinate>=32;)output+=String.fromCharCode((32|31&coordinate)+63),coordinate>>=5;return output+=String.fromCharCode(coordinate+63)}var polyline={};polyline.decode=function(str,precision){for(var latitude_change,longitude_change,index=0,lat=0,lng=0,coordinates=[],shift=0,result=0,byte=null,factor=Math.pow(10,precision||5);index<str.length;){byte=null,shift=0,result=0;do byte=str.charCodeAt(index++)-63,result|=(31&byte)<<shift,shift+=5;while(byte>=32);latitude_change=1&result?~(result>>1):result>>1,shift=result=0;do byte=str.charCodeAt(index++)-63,result|=(31&byte)<<shift,shift+=5;while(byte>=32);longitude_change=1&result?~(result>>1):result>>1,lat+=latitude_change,lng+=longitude_change,coordinates.push([lat/factor,lng/factor])}return coordinates},polyline.encode=function(coordinates,precision){if(!coordinates.length)return"";for(var factor=Math.pow(10,precision||5),output=encode(coordinates[0][0],factor)+encode(coordinates[0][1],factor),i=1;i<coordinates.length;i++){var a=coordinates[i],b=coordinates[i-1];output+=encode(a[0]-b[0],factor),output+=encode(a[1]-b[1],factor)}return output},void 0!==typeof module&&(module.exports=polyline)},{}],3:[function(require,module,exports){(function(global){!function(){"use strict";var t="undefined"!=typeof window?window.L:"undefined"!=typeof global?global.L:null,e=require("corslite"),n=require("polyline");t.Routing=t.Routing||{},t.Routing.Mapzen=t.Class.extend({options:{timeout:3e4},initialize:function(e,n){t.Util.setOptions(this,n),this._accessToken=e,this._hints={locations:{}}},route:function(n,i,o,s){var a,r,l,u,p=!1,c=[],h={};for(h=this.options||{},a=this.buildRouteUrl(n,h),r=setTimeout(function(){p=!0,i.call(o||i,{status:-1,message:"Time out."})},this.options.timeout),u=0;u<n.length;u++)l=n[u],c.push({latLng:l.latLng,name:l.name||"",options:l.options||{}});return e(a,t.bind(function(t,e){var n;clearTimeout(r),p||(t?(console.log("Error : "+t.response),i.call(o||i,{status:t.status,message:t.response})):(n=JSON.parse(e.responseText),this._routeDone(n,c,h,i,o)))},this),!0),this},_routeDone:function(t,e,i,o,s){var a,r,l,u;if(s=s||o,0!==t.trip.status)return void o.call(s,{status:t.status,message:t.status_message});for(var p=[],a=[],c=0,u=0;u<t.trip.legs.length;u++){for(var h=n.decode(t.trip.legs[u].shape,6),g=0;g<h.length;g++)a.push(h[g]);for(var _=0;_<t.trip.legs[u].maneuvers.length;_++){var m=t.trip.legs[u].maneuvers[_];m.distance=t.trip.legs[u].maneuvers[_].length,m.index=c+t.trip.legs[u].maneuvers[_].begin_shape_index,p.push(m)}"multimodal"===i.costing&&(p=this._unifyTransitManeuver(p)),c+=t.trip.legs[u].maneuvers[t.trip.legs[u].maneuvers.length-1].begin_shape_index}l=this._toWaypoints(e,t.trip.locations);var v;"multimodal"==i.costing&&(v=this._getSubRoutes(t.trip.legs)),r=[{name:this._trimLocationKey(e[0].latLng)+" , "+this._trimLocationKey(e[1].latLng),unit:t.trip.units,costing:i.costing,coordinates:a,subRoutes:v,instructions:p,summary:t.trip.summary?this._convertSummary(t.trip.summary):[],inputWaypoints:e,waypoints:l,waypointIndices:this._clampIndices([0,t.trip.legs[0].maneuvers.length],a)}],t.hint_data&&this._saveHintData(t.hint_data,e),o.call(s,null,r)},_unifyTransitManeuver:function(t){for(var e,n=t,i=0;i<n.length;i++)if(30==n[i].type){e=n[i].travel_type;break}for(var o=0;o<n.length;o++)n[o].type>29&&(n[o].edited_travel_type=e);return n},_getSubRoutes:function(t){for(var e=[],i=0;i<t.length;i++){for(var o,s=n.decode(t[i].shape,6),a=[],r=0;r<t[i].maneuvers.length;r++){var l=t[i].maneuvers[r],u=l.travel_type;u===o&&31!==l.type||(l.begin_shape_index>0&&a.push(l.begin_shape_index),l.transit_info?e.push({travel_type:u,styles:this._getPolylineColor(l.transit_info.color)}):e.push({travel_type:u})),o=u}a.push(s.length);for(var p=0,c=0;c<a.length;c++){var h=[],g=0;c!==a.length-1&&(g=1);for(var _=p;_<a[c]+g;_++)h.push(s[_]);var m=h;p=a[c],e[c].coordinates=m}}return e},_getPolylineColor:function(t){var e=t>>16&255,n=t>>8&255,i=t>>0&255,o=.299*e+.587*n+.114*i,s=o>187,a=16777216|16777215&t,r=a.toString(16).substring(1,7),l=[s?{color:"#000",opacity:.4,weight:10}:{color:"#fff",opacity:.8,weight:10},{color:"#"+r.toUpperCase(),opacity:1,weight:6}];return l},_saveHintData:function(t,e){var n;this._hints={checksum:t.checksum,locations:{}};for(var i=t.locations.length-1;i>=0;i--)n=e[i].latLng,this._hints.locations[this._locationKey(n)]=t.locations[i]},_toWaypoints:function(e,n){var i,o=[];for(i=0;i<n.length;i++)o.push(t.Routing.waypoint(t.latLng([n[i].lat,n[i].lon]),"name",{}));return o},buildRouteUrl:function(t,e){for(var n,i="https://valhalla.mapzen.com",o=[],s=e.costing,a=e.costing_options,r=e.directions_options,l=e.date_time,u=0;u<t.length;u++){var p;n=this._locationKey(t[u].latLng).split(","),p=0===u||u===t.length-1?{lat:parseFloat(n[0]),lon:parseFloat(n[1]),type:"break"}:{lat:parseFloat(n[0]),lon:parseFloat(n[1]),type:"through"},o.push(p)}var c=JSON.stringify({locations:o,costing:s,costing_options:a,directions_options:r,date_time:l});return i+"/route?json="+c+"&api_key="+this._accessToken},_locationKey:function(t){return t.lat+","+t.lng},_trimLocationKey:function(t){var e=(t.lat,t.lng,Math.floor(1e3*t.lat)/1e3),n=Math.floor(1e3*t.lng)/1e3;return e+" , "+n},_convertSummary:function(t){return{totalDistance:t.length,totalTime:t.time}},_convertInstructions:function(t){var e,n,i,o,s=[];for(e=0;e<t.length;e++)n=t[e],i=this._drivingDirectionType(n[0]),o=n[0].split("-"),i&&s.push({type:i,distance:n[2],time:n[4],road:n[1],direction:n[6],exit:o.length>1?o[1]:void 0,index:n[3]});return s},_clampIndices:function(t,e){var n,i=e.length-1;for(n=0;n<t.length;n++)t[n]=Math.min(i,Math.max(t[n],0))}}),t.Routing.mapzen=function(e,n){return new t.Routing.Mapzen(e,n)},module.exports=t.Routing.Mapzen}()}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{corslite:1,polyline:2}],4:[function(require,module,exports){(function(global){!function(){"use strict";var t="undefined"!=typeof window?window.L:"undefined"!=typeof global?global.L:null;t.Routing=t.Routing||{},t.Routing.MapzenFormatter=t.Class.extend({options:{units:"metric",unitNames:{meters:"m",kilometers:"km",yards:"yd",miles:"mi",hours:"h",minutes:"mín",seconds:"s"},language:"en",roundingSensitivity:1,distanceTemplate:"{value} {unit}"},initialize:function(e){t.setOptions(this,e)},formatDistance:function(e){var n,r,i=this.options.unitNames;return"imperial"===this.options.units?(e=1e3*e,e/=1.609344,r=e>=1e3?{value:this._round(e)/1e3,unit:i.miles}:{value:this._round(e/1.76),unit:i.yards}):(n=e,r={value:n>=1?n:1e3*n,unit:n>=1?i.kilometers:i.meters}),t.Util.template(this.options.distanceTemplate,r)},_round:function(t){var e=Math.pow(10,(Math.floor(t/this.options.roundingSensitivity)+"").length-1),n=Math.floor(t/e),r=n>5?e:e/2;return Math.round(t/r)*r},formatTime:function(t){return t>86400?Math.round(t/3600)+" h":t>3600?Math.floor(t/3600)+" h "+Math.round(t%3600/60)+" min":t>300?Math.round(t/60)+" min":t>60?Math.floor(t/60)+" min"+(t%60!==0?" "+t%60+" s":""):t+" s"},formatInstruction:function(t,e){return t.instruction},getIconName:function(t,e){switch(t.type){case 0:return"kNone";case 1:return"kStart";case 2:return"kStartRight";case 3:return"kStartLeft";case 4:return"kDestination";case 5:return"kDestinationRight";case 6:return"kDestinationLeft";case 7:return"kBecomes";case 8:return"kContinue";case 9:return"kSlightRight";case 10:return"kRight";case 11:return"kSharpRight";case 12:return"kUturnRight";case 13:return"kUturnLeft";case 14:return"kSharpLeft";case 15:return"kLeft";case 16:return"kSlightLeft";case 17:return"kRampStraight";case 18:return"kRampRight";case 19:return"kRampLeft";case 20:return"kExitRight";case 21:return"kExitLeft";case 22:return"kStayStraight";case 23:return"kStayRight";case 24:return"kStayLeft";case 25:return"kMerge";case 26:return"kRoundaboutEnter";case 27:return"kRoundaboutExit";case 28:return"kFerryEnter";case 29:return"kFerryExit";case 30:case 31:case 32:case 33:case 34:case 35:case 36:return t.edited_travel_type?"kTransit"+this._getCapitalizedName(t.edited_travel_type):"kTransit"}},_getInstructionTemplate:function(t,e){return t.instruction+" "+t.length},_getCapitalizedName:function(t){return t.charAt(0).toUpperCase()+t.slice(1)}}),t.Routing.mapzenFormatter=function(){return new t.Routing.MapzenFormatter},module.exports=t.Routing}()}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{}],5:[function(require,module,exports){(function(global){!function(){"use strict";var t="undefined"!=typeof window?window.L:"undefined"!=typeof global?global.L:null;t.Routing=t.Routing||{},t.Routing.MapzenLine=t.LayerGroup.extend({includes:t.Mixin.Events,options:{styles:[{color:"black",opacity:.15,weight:9},{color:"white",opacity:.8,weight:6},{color:"red",opacity:1,weight:2}],missingRouteStyles:[{color:"black",opacity:.15,weight:7},{color:"white",opacity:.6,weight:4},{color:"gray",opacity:.8,weight:2,dashArray:"7,12"}],addWaypoints:!0,extendToWaypoints:!0,missingRouteTolerance:10},initialize:function(i,e){if(t.setOptions(this,e),t.LayerGroup.prototype.initialize.call(this,e),this._route=i,this.options.extendToWaypoints&&this._extendToWaypoints(),i.subRoutes)for(var n=0;n<i.subRoutes.length;n++)i.subRoutes[n].styles||(i.subRoutes[n].styles=this.options.styles),this._addSegment(i.subRoutes[n].coordinates,i.subRoutes[n].styles,this.options.addWaypoints);else this._addSegment(i.coordinates,this.options.styles,this.options.addWaypoints)},addTo:function(t){return t.addLayer(this),this},getBounds:function(){return t.latLngBounds(this._route.coordinates)},_findWaypointIndices:function(){var t,i=this._route.inputWaypoints,e=[];for(t=0;t<i.length;t++)e.push(this._findClosestRoutePoint(i[t].latLng));return e},_findClosestRoutePoint:function(t){var i,e,n,o=Number.MAX_VALUE;for(e=this._route.coordinates.length-1;e>=0;e--)n=t.distanceTo(this._route.coordinates[e]),o>n&&(i=e,o=n);return i},_extendToWaypoints:function(){var i,e,n,o=this._route.inputWaypoints,s=this._getWaypointIndices();for(i=0;i<o.length;i++)e=o[i].latLng,n=t.latLng(this._route.coordinates[s[i]]),e.distanceTo(n)>this.options.missingRouteTolerance&&this._addSegment([e,n],this.options.missingRouteStyles)},_addSegment:function(i,e,n){var o,s;for(o=0;o<e.length;o++)s=t.polyline(i,e[o]),this.addLayer(s),n&&s.on("mousedown",this._onLineTouched,this)},_findNearestWpBefore:function(t){for(var i=this._getWaypointIndices(),e=i.length-1;e>=0&&i[e]>t;)e--;return e},_onLineTouched:function(t){var i=this._findNearestWpBefore(this._findClosestRoutePoint(t.latlng));this.fire("linetouched",{afterIndex:i,latlng:t.latlng})},_getWaypointIndices:function(){return this._wpIndices||(this._wpIndices=this._route.waypointIndices||this._findWaypointIndices()),this._wpIndices}}),t.Routing.mapzenLine=function(i,e){return new t.Routing.MapzenLine(i,e)},module.exports=t.Routing}()}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{}]},{},[3,4,5]);
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/lrm-mapzen/dist/lrm-mapzen.min.js","/node_modules/lrm-mapzen/dist")
 
-},{"_process":48,"buffer":13,"corslite":14,"polyline":47}],46:[function(require,module,exports){
+},{"_process":50,"buffer":14,"corslite":15,"polyline":49}],47:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports=function(n){var t={},e=[];n=n||this,n.on=function(n,e,l){(t[n]=t[n]||[]).push([e,l])},n.off=function(n,l){n||(t={});for(var o=t[n]||e,i=o.length=l?o.length:0;i--;)l==o[i][0]&&o.splice(i,1)},n.emit=function(n){for(var l,o=t[n]||e,i=o.length>0?o.slice(0,o.length):o,c=0;l=i[c++];)l[0].apply(l[1],e.slice.call(arguments,1))}};
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/minivents/dist/minivents.commonjs.min.js","/node_modules/minivents/dist")
 
-},{"_process":48,"buffer":13}],47:[function(require,module,exports){
+},{"_process":50,"buffer":14}],48:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+"use strict";
+
+var numeric = (typeof exports === "undefined")?(function numeric() {}):(exports);
+if(typeof global !== "undefined") { global.numeric = numeric; }
+
+numeric.version = "1.2.6";
+
+// 1. Utility functions
+numeric.bench = function bench (f,interval) {
+    var t1,t2,n,i;
+    if(typeof interval === "undefined") { interval = 15; }
+    n = 0.5;
+    t1 = new Date();
+    while(1) {
+        n*=2;
+        for(i=n;i>3;i-=4) { f(); f(); f(); f(); }
+        while(i>0) { f(); i--; }
+        t2 = new Date();
+        if(t2-t1 > interval) break;
+    }
+    for(i=n;i>3;i-=4) { f(); f(); f(); f(); }
+    while(i>0) { f(); i--; }
+    t2 = new Date();
+    return 1000*(3*n-1)/(t2-t1);
+}
+
+numeric._myIndexOf = (function _myIndexOf(w) {
+    var n = this.length,k;
+    for(k=0;k<n;++k) if(this[k]===w) return k;
+    return -1;
+});
+numeric.myIndexOf = (Array.prototype.indexOf)?Array.prototype.indexOf:numeric._myIndexOf;
+
+numeric.Function = Function;
+numeric.precision = 4;
+numeric.largeArray = 50;
+
+numeric.prettyPrint = function prettyPrint(x) {
+    function fmtnum(x) {
+        if(x === 0) { return '0'; }
+        if(isNaN(x)) { return 'NaN'; }
+        if(x<0) { return '-'+fmtnum(-x); }
+        if(isFinite(x)) {
+            var scale = Math.floor(Math.log(x) / Math.log(10));
+            var normalized = x / Math.pow(10,scale);
+            var basic = normalized.toPrecision(numeric.precision);
+            if(parseFloat(basic) === 10) { scale++; normalized = 1; basic = normalized.toPrecision(numeric.precision); }
+            return parseFloat(basic).toString()+'e'+scale.toString();
+        }
+        return 'Infinity';
+    }
+    var ret = [];
+    function foo(x) {
+        var k;
+        if(typeof x === "undefined") { ret.push(Array(numeric.precision+8).join(' ')); return false; }
+        if(typeof x === "string") { ret.push('"'+x+'"'); return false; }
+        if(typeof x === "boolean") { ret.push(x.toString()); return false; }
+        if(typeof x === "number") {
+            var a = fmtnum(x);
+            var b = x.toPrecision(numeric.precision);
+            var c = parseFloat(x.toString()).toString();
+            var d = [a,b,c,parseFloat(b).toString(),parseFloat(c).toString()];
+            for(k=1;k<d.length;k++) { if(d[k].length < a.length) a = d[k]; }
+            ret.push(Array(numeric.precision+8-a.length).join(' ')+a);
+            return false;
+        }
+        if(x === null) { ret.push("null"); return false; }
+        if(typeof x === "function") { 
+            ret.push(x.toString());
+            var flag = false;
+            for(k in x) { if(x.hasOwnProperty(k)) { 
+                if(flag) ret.push(',\n');
+                else ret.push('\n{');
+                flag = true; 
+                ret.push(k); 
+                ret.push(': \n'); 
+                foo(x[k]); 
+            } }
+            if(flag) ret.push('}\n');
+            return true;
+        }
+        if(x instanceof Array) {
+            if(x.length > numeric.largeArray) { ret.push('...Large Array...'); return true; }
+            var flag = false;
+            ret.push('[');
+            for(k=0;k<x.length;k++) { if(k>0) { ret.push(','); if(flag) ret.push('\n '); } flag = foo(x[k]); }
+            ret.push(']');
+            return true;
+        }
+        ret.push('{');
+        var flag = false;
+        for(k in x) { if(x.hasOwnProperty(k)) { if(flag) ret.push(',\n'); flag = true; ret.push(k); ret.push(': \n'); foo(x[k]); } }
+        ret.push('}');
+        return true;
+    }
+    foo(x);
+    return ret.join('');
+}
+
+numeric.parseDate = function parseDate(d) {
+    function foo(d) {
+        if(typeof d === 'string') { return Date.parse(d.replace(/-/g,'/')); }
+        if(!(d instanceof Array)) { throw new Error("parseDate: parameter must be arrays of strings"); }
+        var ret = [],k;
+        for(k=0;k<d.length;k++) { ret[k] = foo(d[k]); }
+        return ret;
+    }
+    return foo(d);
+}
+
+numeric.parseFloat = function parseFloat_(d) {
+    function foo(d) {
+        if(typeof d === 'string') { return parseFloat(d); }
+        if(!(d instanceof Array)) { throw new Error("parseFloat: parameter must be arrays of strings"); }
+        var ret = [],k;
+        for(k=0;k<d.length;k++) { ret[k] = foo(d[k]); }
+        return ret;
+    }
+    return foo(d);
+}
+
+numeric.parseCSV = function parseCSV(t) {
+    var foo = t.split('\n');
+    var j,k;
+    var ret = [];
+    var pat = /(([^'",]*)|('[^']*')|("[^"]*")),/g;
+    var patnum = /^\s*(([+-]?[0-9]+(\.[0-9]*)?(e[+-]?[0-9]+)?)|([+-]?[0-9]*(\.[0-9]+)?(e[+-]?[0-9]+)?))\s*$/;
+    var stripper = function(n) { return n.substr(0,n.length-1); }
+    var count = 0;
+    for(k=0;k<foo.length;k++) {
+      var bar = (foo[k]+",").match(pat),baz;
+      if(bar.length>0) {
+          ret[count] = [];
+          for(j=0;j<bar.length;j++) {
+              baz = stripper(bar[j]);
+              if(patnum.test(baz)) { ret[count][j] = parseFloat(baz); }
+              else ret[count][j] = baz;
+          }
+          count++;
+      }
+    }
+    return ret;
+}
+
+numeric.toCSV = function toCSV(A) {
+    var s = numeric.dim(A);
+    var i,j,m,n,row,ret;
+    m = s[0];
+    n = s[1];
+    ret = [];
+    for(i=0;i<m;i++) {
+        row = [];
+        for(j=0;j<m;j++) { row[j] = A[i][j].toString(); }
+        ret[i] = row.join(', ');
+    }
+    return ret.join('\n')+'\n';
+}
+
+numeric.getURL = function getURL(url) {
+    var client = new XMLHttpRequest();
+    client.open("GET",url,false);
+    client.send();
+    return client;
+}
+
+numeric.imageURL = function imageURL(img) {
+    function base64(A) {
+        var n = A.length, i,x,y,z,p,q,r,s;
+        var key = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+        var ret = "";
+        for(i=0;i<n;i+=3) {
+            x = A[i];
+            y = A[i+1];
+            z = A[i+2];
+            p = x >> 2;
+            q = ((x & 3) << 4) + (y >> 4);
+            r = ((y & 15) << 2) + (z >> 6);
+            s = z & 63;
+            if(i+1>=n) { r = s = 64; }
+            else if(i+2>=n) { s = 64; }
+            ret += key.charAt(p) + key.charAt(q) + key.charAt(r) + key.charAt(s);
+            }
+        return ret;
+    }
+    function crc32Array (a,from,to) {
+        if(typeof from === "undefined") { from = 0; }
+        if(typeof to === "undefined") { to = a.length; }
+        var table = [0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3,
+                     0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E, 0x97D2D988, 0x09B64C2B, 0x7EB17CBD, 0xE7B82D07, 0x90BF1D91, 
+                     0x1DB71064, 0x6AB020F2, 0xF3B97148, 0x84BE41DE, 0x1ADAD47D, 0x6DDDE4EB, 0xF4D4B551, 0x83D385C7,
+                     0x136C9856, 0x646BA8C0, 0xFD62F97A, 0x8A65C9EC, 0x14015C4F, 0x63066CD9, 0xFA0F3D63, 0x8D080DF5, 
+                     0x3B6E20C8, 0x4C69105E, 0xD56041E4, 0xA2677172, 0x3C03E4D1, 0x4B04D447, 0xD20D85FD, 0xA50AB56B, 
+                     0x35B5A8FA, 0x42B2986C, 0xDBBBC9D6, 0xACBCF940, 0x32D86CE3, 0x45DF5C75, 0xDCD60DCF, 0xABD13D59, 
+                     0x26D930AC, 0x51DE003A, 0xC8D75180, 0xBFD06116, 0x21B4F4B5, 0x56B3C423, 0xCFBA9599, 0xB8BDA50F,
+                     0x2802B89E, 0x5F058808, 0xC60CD9B2, 0xB10BE924, 0x2F6F7C87, 0x58684C11, 0xC1611DAB, 0xB6662D3D,
+                     0x76DC4190, 0x01DB7106, 0x98D220BC, 0xEFD5102A, 0x71B18589, 0x06B6B51F, 0x9FBFE4A5, 0xE8B8D433,
+                     0x7807C9A2, 0x0F00F934, 0x9609A88E, 0xE10E9818, 0x7F6A0DBB, 0x086D3D2D, 0x91646C97, 0xE6635C01, 
+                     0x6B6B51F4, 0x1C6C6162, 0x856530D8, 0xF262004E, 0x6C0695ED, 0x1B01A57B, 0x8208F4C1, 0xF50FC457, 
+                     0x65B0D9C6, 0x12B7E950, 0x8BBEB8EA, 0xFCB9887C, 0x62DD1DDF, 0x15DA2D49, 0x8CD37CF3, 0xFBD44C65, 
+                     0x4DB26158, 0x3AB551CE, 0xA3BC0074, 0xD4BB30E2, 0x4ADFA541, 0x3DD895D7, 0xA4D1C46D, 0xD3D6F4FB, 
+                     0x4369E96A, 0x346ED9FC, 0xAD678846, 0xDA60B8D0, 0x44042D73, 0x33031DE5, 0xAA0A4C5F, 0xDD0D7CC9, 
+                     0x5005713C, 0x270241AA, 0xBE0B1010, 0xC90C2086, 0x5768B525, 0x206F85B3, 0xB966D409, 0xCE61E49F, 
+                     0x5EDEF90E, 0x29D9C998, 0xB0D09822, 0xC7D7A8B4, 0x59B33D17, 0x2EB40D81, 0xB7BD5C3B, 0xC0BA6CAD, 
+                     0xEDB88320, 0x9ABFB3B6, 0x03B6E20C, 0x74B1D29A, 0xEAD54739, 0x9DD277AF, 0x04DB2615, 0x73DC1683, 
+                     0xE3630B12, 0x94643B84, 0x0D6D6A3E, 0x7A6A5AA8, 0xE40ECF0B, 0x9309FF9D, 0x0A00AE27, 0x7D079EB1, 
+                     0xF00F9344, 0x8708A3D2, 0x1E01F268, 0x6906C2FE, 0xF762575D, 0x806567CB, 0x196C3671, 0x6E6B06E7, 
+                     0xFED41B76, 0x89D32BE0, 0x10DA7A5A, 0x67DD4ACC, 0xF9B9DF6F, 0x8EBEEFF9, 0x17B7BE43, 0x60B08ED5, 
+                     0xD6D6A3E8, 0xA1D1937E, 0x38D8C2C4, 0x4FDFF252, 0xD1BB67F1, 0xA6BC5767, 0x3FB506DD, 0x48B2364B, 
+                     0xD80D2BDA, 0xAF0A1B4C, 0x36034AF6, 0x41047A60, 0xDF60EFC3, 0xA867DF55, 0x316E8EEF, 0x4669BE79, 
+                     0xCB61B38C, 0xBC66831A, 0x256FD2A0, 0x5268E236, 0xCC0C7795, 0xBB0B4703, 0x220216B9, 0x5505262F, 
+                     0xC5BA3BBE, 0xB2BD0B28, 0x2BB45A92, 0x5CB36A04, 0xC2D7FFA7, 0xB5D0CF31, 0x2CD99E8B, 0x5BDEAE1D, 
+                     0x9B64C2B0, 0xEC63F226, 0x756AA39C, 0x026D930A, 0x9C0906A9, 0xEB0E363F, 0x72076785, 0x05005713, 
+                     0x95BF4A82, 0xE2B87A14, 0x7BB12BAE, 0x0CB61B38, 0x92D28E9B, 0xE5D5BE0D, 0x7CDCEFB7, 0x0BDBDF21, 
+                     0x86D3D2D4, 0xF1D4E242, 0x68DDB3F8, 0x1FDA836E, 0x81BE16CD, 0xF6B9265B, 0x6FB077E1, 0x18B74777, 
+                     0x88085AE6, 0xFF0F6A70, 0x66063BCA, 0x11010B5C, 0x8F659EFF, 0xF862AE69, 0x616BFFD3, 0x166CCF45, 
+                     0xA00AE278, 0xD70DD2EE, 0x4E048354, 0x3903B3C2, 0xA7672661, 0xD06016F7, 0x4969474D, 0x3E6E77DB, 
+                     0xAED16A4A, 0xD9D65ADC, 0x40DF0B66, 0x37D83BF0, 0xA9BCAE53, 0xDEBB9EC5, 0x47B2CF7F, 0x30B5FFE9, 
+                     0xBDBDF21C, 0xCABAC28A, 0x53B39330, 0x24B4A3A6, 0xBAD03605, 0xCDD70693, 0x54DE5729, 0x23D967BF, 
+                     0xB3667A2E, 0xC4614AB8, 0x5D681B02, 0x2A6F2B94, 0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D];
+     
+        var crc = -1, y = 0, n = a.length,i;
+
+        for (i = from; i < to; i++) {
+            y = (crc ^ a[i]) & 0xFF;
+            crc = (crc >>> 8) ^ table[y];
+        }
+     
+        return crc ^ (-1);
+    }
+
+    var h = img[0].length, w = img[0][0].length, s1, s2, next,k,length,a,b,i,j,adler32,crc32;
+    var stream = [
+                  137, 80, 78, 71, 13, 10, 26, 10,                           //  0: PNG signature
+                  0,0,0,13,                                                  //  8: IHDR Chunk length
+                  73, 72, 68, 82,                                            // 12: "IHDR" 
+                  (w >> 24) & 255, (w >> 16) & 255, (w >> 8) & 255, w&255,   // 16: Width
+                  (h >> 24) & 255, (h >> 16) & 255, (h >> 8) & 255, h&255,   // 20: Height
+                  8,                                                         // 24: bit depth
+                  2,                                                         // 25: RGB
+                  0,                                                         // 26: deflate
+                  0,                                                         // 27: no filter
+                  0,                                                         // 28: no interlace
+                  -1,-2,-3,-4,                                               // 29: CRC
+                  -5,-6,-7,-8,                                               // 33: IDAT Chunk length
+                  73, 68, 65, 84,                                            // 37: "IDAT"
+                  // RFC 1950 header starts here
+                  8,                                                         // 41: RFC1950 CMF
+                  29                                                         // 42: RFC1950 FLG
+                  ];
+    crc32 = crc32Array(stream,12,29);
+    stream[29] = (crc32>>24)&255;
+    stream[30] = (crc32>>16)&255;
+    stream[31] = (crc32>>8)&255;
+    stream[32] = (crc32)&255;
+    s1 = 1;
+    s2 = 0;
+    for(i=0;i<h;i++) {
+        if(i<h-1) { stream.push(0); }
+        else { stream.push(1); }
+        a = (3*w+1+(i===0))&255; b = ((3*w+1+(i===0))>>8)&255;
+        stream.push(a); stream.push(b);
+        stream.push((~a)&255); stream.push((~b)&255);
+        if(i===0) stream.push(0);
+        for(j=0;j<w;j++) {
+            for(k=0;k<3;k++) {
+                a = img[k][i][j];
+                if(a>255) a = 255;
+                else if(a<0) a=0;
+                else a = Math.round(a);
+                s1 = (s1 + a )%65521;
+                s2 = (s2 + s1)%65521;
+                stream.push(a);
+            }
+        }
+        stream.push(0);
+    }
+    adler32 = (s2<<16)+s1;
+    stream.push((adler32>>24)&255);
+    stream.push((adler32>>16)&255);
+    stream.push((adler32>>8)&255);
+    stream.push((adler32)&255);
+    length = stream.length - 41;
+    stream[33] = (length>>24)&255;
+    stream[34] = (length>>16)&255;
+    stream[35] = (length>>8)&255;
+    stream[36] = (length)&255;
+    crc32 = crc32Array(stream,37);
+    stream.push((crc32>>24)&255);
+    stream.push((crc32>>16)&255);
+    stream.push((crc32>>8)&255);
+    stream.push((crc32)&255);
+    stream.push(0);
+    stream.push(0);
+    stream.push(0);
+    stream.push(0);
+//    a = stream.length;
+    stream.push(73);  // I
+    stream.push(69);  // E
+    stream.push(78);  // N
+    stream.push(68);  // D
+    stream.push(174); // CRC1
+    stream.push(66);  // CRC2
+    stream.push(96);  // CRC3
+    stream.push(130); // CRC4
+    return 'data:image/png;base64,'+base64(stream);
+}
+
+// 2. Linear algebra with Arrays.
+numeric._dim = function _dim(x) {
+    var ret = [];
+    while(typeof x === "object") { ret.push(x.length); x = x[0]; }
+    return ret;
+}
+
+numeric.dim = function dim(x) {
+    var y,z;
+    if(typeof x === "object") {
+        y = x[0];
+        if(typeof y === "object") {
+            z = y[0];
+            if(typeof z === "object") {
+                return numeric._dim(x);
+            }
+            return [x.length,y.length];
+        }
+        return [x.length];
+    }
+    return [];
+}
+
+numeric.mapreduce = function mapreduce(body,init) {
+    return Function('x','accum','_s','_k',
+            'if(typeof accum === "undefined") accum = '+init+';\n'+
+            'if(typeof x === "number") { var xi = x; '+body+'; return accum; }\n'+
+            'if(typeof _s === "undefined") _s = numeric.dim(x);\n'+
+            'if(typeof _k === "undefined") _k = 0;\n'+
+            'var _n = _s[_k];\n'+
+            'var i,xi;\n'+
+            'if(_k < _s.length-1) {\n'+
+            '    for(i=_n-1;i>=0;i--) {\n'+
+            '        accum = arguments.callee(x[i],accum,_s,_k+1);\n'+
+            '    }'+
+            '    return accum;\n'+
+            '}\n'+
+            'for(i=_n-1;i>=1;i-=2) { \n'+
+            '    xi = x[i];\n'+
+            '    '+body+';\n'+
+            '    xi = x[i-1];\n'+
+            '    '+body+';\n'+
+            '}\n'+
+            'if(i === 0) {\n'+
+            '    xi = x[i];\n'+
+            '    '+body+'\n'+
+            '}\n'+
+            'return accum;'
+            );
+}
+numeric.mapreduce2 = function mapreduce2(body,setup) {
+    return Function('x',
+            'var n = x.length;\n'+
+            'var i,xi;\n'+setup+';\n'+
+            'for(i=n-1;i!==-1;--i) { \n'+
+            '    xi = x[i];\n'+
+            '    '+body+';\n'+
+            '}\n'+
+            'return accum;'
+            );
+}
+
+
+numeric.same = function same(x,y) {
+    var i,n;
+    if(!(x instanceof Array) || !(y instanceof Array)) { return false; }
+    n = x.length;
+    if(n !== y.length) { return false; }
+    for(i=0;i<n;i++) {
+        if(x[i] === y[i]) { continue; }
+        if(typeof x[i] === "object") { if(!same(x[i],y[i])) return false; }
+        else { return false; }
+    }
+    return true;
+}
+
+numeric.rep = function rep(s,v,k) {
+    if(typeof k === "undefined") { k=0; }
+    var n = s[k], ret = Array(n), i;
+    if(k === s.length-1) {
+        for(i=n-2;i>=0;i-=2) { ret[i+1] = v; ret[i] = v; }
+        if(i===-1) { ret[0] = v; }
+        return ret;
+    }
+    for(i=n-1;i>=0;i--) { ret[i] = numeric.rep(s,v,k+1); }
+    return ret;
+}
+
+
+numeric.dotMMsmall = function dotMMsmall(x,y) {
+    var i,j,k,p,q,r,ret,foo,bar,woo,i0,k0,p0,r0;
+    p = x.length; q = y.length; r = y[0].length;
+    ret = Array(p);
+    for(i=p-1;i>=0;i--) {
+        foo = Array(r);
+        bar = x[i];
+        for(k=r-1;k>=0;k--) {
+            woo = bar[q-1]*y[q-1][k];
+            for(j=q-2;j>=1;j-=2) {
+                i0 = j-1;
+                woo += bar[j]*y[j][k] + bar[i0]*y[i0][k];
+            }
+            if(j===0) { woo += bar[0]*y[0][k]; }
+            foo[k] = woo;
+        }
+        ret[i] = foo;
+    }
+    return ret;
+}
+numeric._getCol = function _getCol(A,j,x) {
+    var n = A.length, i;
+    for(i=n-1;i>0;--i) {
+        x[i] = A[i][j];
+        --i;
+        x[i] = A[i][j];
+    }
+    if(i===0) x[0] = A[0][j];
+}
+numeric.dotMMbig = function dotMMbig(x,y){
+    var gc = numeric._getCol, p = y.length, v = Array(p);
+    var m = x.length, n = y[0].length, A = new Array(m), xj;
+    var VV = numeric.dotVV;
+    var i,j,k,z;
+    --p;
+    --m;
+    for(i=m;i!==-1;--i) A[i] = Array(n);
+    --n;
+    for(i=n;i!==-1;--i) {
+        gc(y,i,v);
+        for(j=m;j!==-1;--j) {
+            z=0;
+            xj = x[j];
+            A[j][i] = VV(xj,v);
+        }
+    }
+    return A;
+}
+
+numeric.dotMV = function dotMV(x,y) {
+    var p = x.length, q = y.length,i;
+    var ret = Array(p), dotVV = numeric.dotVV;
+    for(i=p-1;i>=0;i--) { ret[i] = dotVV(x[i],y); }
+    return ret;
+}
+
+numeric.dotVM = function dotVM(x,y) {
+    var i,j,k,p,q,r,ret,foo,bar,woo,i0,k0,p0,r0,s1,s2,s3,baz,accum;
+    p = x.length; q = y[0].length;
+    ret = Array(q);
+    for(k=q-1;k>=0;k--) {
+        woo = x[p-1]*y[p-1][k];
+        for(j=p-2;j>=1;j-=2) {
+            i0 = j-1;
+            woo += x[j]*y[j][k] + x[i0]*y[i0][k];
+        }
+        if(j===0) { woo += x[0]*y[0][k]; }
+        ret[k] = woo;
+    }
+    return ret;
+}
+
+numeric.dotVV = function dotVV(x,y) {
+    var i,n=x.length,i1,ret = x[n-1]*y[n-1];
+    for(i=n-2;i>=1;i-=2) {
+        i1 = i-1;
+        ret += x[i]*y[i] + x[i1]*y[i1];
+    }
+    if(i===0) { ret += x[0]*y[0]; }
+    return ret;
+}
+
+numeric.dot = function dot(x,y) {
+    var d = numeric.dim;
+    switch(d(x).length*1000+d(y).length) {
+    case 2002:
+        if(y.length < 10) return numeric.dotMMsmall(x,y);
+        else return numeric.dotMMbig(x,y);
+    case 2001: return numeric.dotMV(x,y);
+    case 1002: return numeric.dotVM(x,y);
+    case 1001: return numeric.dotVV(x,y);
+    case 1000: return numeric.mulVS(x,y);
+    case 1: return numeric.mulSV(x,y);
+    case 0: return x*y;
+    default: throw new Error('numeric.dot only works on vectors and matrices');
+    }
+}
+
+numeric.diag = function diag(d) {
+    var i,i1,j,n = d.length, A = Array(n), Ai;
+    for(i=n-1;i>=0;i--) {
+        Ai = Array(n);
+        i1 = i+2;
+        for(j=n-1;j>=i1;j-=2) {
+            Ai[j] = 0;
+            Ai[j-1] = 0;
+        }
+        if(j>i) { Ai[j] = 0; }
+        Ai[i] = d[i];
+        for(j=i-1;j>=1;j-=2) {
+            Ai[j] = 0;
+            Ai[j-1] = 0;
+        }
+        if(j===0) { Ai[0] = 0; }
+        A[i] = Ai;
+    }
+    return A;
+}
+numeric.getDiag = function(A) {
+    var n = Math.min(A.length,A[0].length),i,ret = Array(n);
+    for(i=n-1;i>=1;--i) {
+        ret[i] = A[i][i];
+        --i;
+        ret[i] = A[i][i];
+    }
+    if(i===0) {
+        ret[0] = A[0][0];
+    }
+    return ret;
+}
+
+numeric.identity = function identity(n) { return numeric.diag(numeric.rep([n],1)); }
+numeric.pointwise = function pointwise(params,body,setup) {
+    if(typeof setup === "undefined") { setup = ""; }
+    var fun = [];
+    var k;
+    var avec = /\[i\]$/,p,thevec = '';
+    var haveret = false;
+    for(k=0;k<params.length;k++) {
+        if(avec.test(params[k])) {
+            p = params[k].substring(0,params[k].length-3);
+            thevec = p;
+        } else { p = params[k]; }
+        if(p==='ret') haveret = true;
+        fun.push(p);
+    }
+    fun[params.length] = '_s';
+    fun[params.length+1] = '_k';
+    fun[params.length+2] = (
+            'if(typeof _s === "undefined") _s = numeric.dim('+thevec+');\n'+
+            'if(typeof _k === "undefined") _k = 0;\n'+
+            'var _n = _s[_k];\n'+
+            'var i'+(haveret?'':', ret = Array(_n)')+';\n'+
+            'if(_k < _s.length-1) {\n'+
+            '    for(i=_n-1;i>=0;i--) ret[i] = arguments.callee('+params.join(',')+',_s,_k+1);\n'+
+            '    return ret;\n'+
+            '}\n'+
+            setup+'\n'+
+            'for(i=_n-1;i!==-1;--i) {\n'+
+            '    '+body+'\n'+
+            '}\n'+
+            'return ret;'
+            );
+    return Function.apply(null,fun);
+}
+numeric.pointwise2 = function pointwise2(params,body,setup) {
+    if(typeof setup === "undefined") { setup = ""; }
+    var fun = [];
+    var k;
+    var avec = /\[i\]$/,p,thevec = '';
+    var haveret = false;
+    for(k=0;k<params.length;k++) {
+        if(avec.test(params[k])) {
+            p = params[k].substring(0,params[k].length-3);
+            thevec = p;
+        } else { p = params[k]; }
+        if(p==='ret') haveret = true;
+        fun.push(p);
+    }
+    fun[params.length] = (
+            'var _n = '+thevec+'.length;\n'+
+            'var i'+(haveret?'':', ret = Array(_n)')+';\n'+
+            setup+'\n'+
+            'for(i=_n-1;i!==-1;--i) {\n'+
+            body+'\n'+
+            '}\n'+
+            'return ret;'
+            );
+    return Function.apply(null,fun);
+}
+numeric._biforeach = (function _biforeach(x,y,s,k,f) {
+    if(k === s.length-1) { f(x,y); return; }
+    var i,n=s[k];
+    for(i=n-1;i>=0;i--) { _biforeach(typeof x==="object"?x[i]:x,typeof y==="object"?y[i]:y,s,k+1,f); }
+});
+numeric._biforeach2 = (function _biforeach2(x,y,s,k,f) {
+    if(k === s.length-1) { return f(x,y); }
+    var i,n=s[k],ret = Array(n);
+    for(i=n-1;i>=0;--i) { ret[i] = _biforeach2(typeof x==="object"?x[i]:x,typeof y==="object"?y[i]:y,s,k+1,f); }
+    return ret;
+});
+numeric._foreach = (function _foreach(x,s,k,f) {
+    if(k === s.length-1) { f(x); return; }
+    var i,n=s[k];
+    for(i=n-1;i>=0;i--) { _foreach(x[i],s,k+1,f); }
+});
+numeric._foreach2 = (function _foreach2(x,s,k,f) {
+    if(k === s.length-1) { return f(x); }
+    var i,n=s[k], ret = Array(n);
+    for(i=n-1;i>=0;i--) { ret[i] = _foreach2(x[i],s,k+1,f); }
+    return ret;
+});
+
+/*numeric.anyV = numeric.mapreduce('if(xi) return true;','false');
+numeric.allV = numeric.mapreduce('if(!xi) return false;','true');
+numeric.any = function(x) { if(typeof x.length === "undefined") return x; return numeric.anyV(x); }
+numeric.all = function(x) { if(typeof x.length === "undefined") return x; return numeric.allV(x); }*/
+
+numeric.ops2 = {
+        add: '+',
+        sub: '-',
+        mul: '*',
+        div: '/',
+        mod: '%',
+        and: '&&',
+        or:  '||',
+        eq:  '===',
+        neq: '!==',
+        lt:  '<',
+        gt:  '>',
+        leq: '<=',
+        geq: '>=',
+        band: '&',
+        bor: '|',
+        bxor: '^',
+        lshift: '<<',
+        rshift: '>>',
+        rrshift: '>>>'
+};
+numeric.opseq = {
+        addeq: '+=',
+        subeq: '-=',
+        muleq: '*=',
+        diveq: '/=',
+        modeq: '%=',
+        lshifteq: '<<=',
+        rshifteq: '>>=',
+        rrshifteq: '>>>=',
+        bandeq: '&=',
+        boreq: '|=',
+        bxoreq: '^='
+};
+numeric.mathfuns = ['abs','acos','asin','atan','ceil','cos',
+                    'exp','floor','log','round','sin','sqrt','tan',
+                    'isNaN','isFinite'];
+numeric.mathfuns2 = ['atan2','pow','max','min'];
+numeric.ops1 = {
+        neg: '-',
+        not: '!',
+        bnot: '~',
+        clone: ''
+};
+numeric.mapreducers = {
+        any: ['if(xi) return true;','var accum = false;'],
+        all: ['if(!xi) return false;','var accum = true;'],
+        sum: ['accum += xi;','var accum = 0;'],
+        prod: ['accum *= xi;','var accum = 1;'],
+        norm2Squared: ['accum += xi*xi;','var accum = 0;'],
+        norminf: ['accum = max(accum,abs(xi));','var accum = 0, max = Math.max, abs = Math.abs;'],
+        norm1: ['accum += abs(xi)','var accum = 0, abs = Math.abs;'],
+        sup: ['accum = max(accum,xi);','var accum = -Infinity, max = Math.max;'],
+        inf: ['accum = min(accum,xi);','var accum = Infinity, min = Math.min;']
+};
+
+(function () {
+    var i,o;
+    for(i=0;i<numeric.mathfuns2.length;++i) {
+        o = numeric.mathfuns2[i];
+        numeric.ops2[o] = o;
+    }
+    for(i in numeric.ops2) {
+        if(numeric.ops2.hasOwnProperty(i)) {
+            o = numeric.ops2[i];
+            var code, codeeq, setup = '';
+            if(numeric.myIndexOf.call(numeric.mathfuns2,i)!==-1) {
+                setup = 'var '+o+' = Math.'+o+';\n';
+                code = function(r,x,y) { return r+' = '+o+'('+x+','+y+')'; };
+                codeeq = function(x,y) { return x+' = '+o+'('+x+','+y+')'; };
+            } else {
+                code = function(r,x,y) { return r+' = '+x+' '+o+' '+y; };
+                if(numeric.opseq.hasOwnProperty(i+'eq')) {
+                    codeeq = function(x,y) { return x+' '+o+'= '+y; };
+                } else {
+                    codeeq = function(x,y) { return x+' = '+x+' '+o+' '+y; };                    
+                }
+            }
+            numeric[i+'VV'] = numeric.pointwise2(['x[i]','y[i]'],code('ret[i]','x[i]','y[i]'),setup);
+            numeric[i+'SV'] = numeric.pointwise2(['x','y[i]'],code('ret[i]','x','y[i]'),setup);
+            numeric[i+'VS'] = numeric.pointwise2(['x[i]','y'],code('ret[i]','x[i]','y'),setup);
+            numeric[i] = Function(
+                    'var n = arguments.length, i, x = arguments[0], y;\n'+
+                    'var VV = numeric.'+i+'VV, VS = numeric.'+i+'VS, SV = numeric.'+i+'SV;\n'+
+                    'var dim = numeric.dim;\n'+
+                    'for(i=1;i!==n;++i) { \n'+
+                    '  y = arguments[i];\n'+
+                    '  if(typeof x === "object") {\n'+
+                    '      if(typeof y === "object") x = numeric._biforeach2(x,y,dim(x),0,VV);\n'+
+                    '      else x = numeric._biforeach2(x,y,dim(x),0,VS);\n'+
+                    '  } else if(typeof y === "object") x = numeric._biforeach2(x,y,dim(y),0,SV);\n'+
+                    '  else '+codeeq('x','y')+'\n'+
+                    '}\nreturn x;\n');
+            numeric[o] = numeric[i];
+            numeric[i+'eqV'] = numeric.pointwise2(['ret[i]','x[i]'], codeeq('ret[i]','x[i]'),setup);
+            numeric[i+'eqS'] = numeric.pointwise2(['ret[i]','x'], codeeq('ret[i]','x'),setup);
+            numeric[i+'eq'] = Function(
+                    'var n = arguments.length, i, x = arguments[0], y;\n'+
+                    'var V = numeric.'+i+'eqV, S = numeric.'+i+'eqS\n'+
+                    'var s = numeric.dim(x);\n'+
+                    'for(i=1;i!==n;++i) { \n'+
+                    '  y = arguments[i];\n'+
+                    '  if(typeof y === "object") numeric._biforeach(x,y,s,0,V);\n'+
+                    '  else numeric._biforeach(x,y,s,0,S);\n'+
+                    '}\nreturn x;\n');
+        }
+    }
+    for(i=0;i<numeric.mathfuns2.length;++i) {
+        o = numeric.mathfuns2[i];
+        delete numeric.ops2[o];
+    }
+    for(i=0;i<numeric.mathfuns.length;++i) {
+        o = numeric.mathfuns[i];
+        numeric.ops1[o] = o;
+    }
+    for(i in numeric.ops1) {
+        if(numeric.ops1.hasOwnProperty(i)) {
+            setup = '';
+            o = numeric.ops1[i];
+            if(numeric.myIndexOf.call(numeric.mathfuns,i)!==-1) {
+                if(Math.hasOwnProperty(o)) setup = 'var '+o+' = Math.'+o+';\n';
+            }
+            numeric[i+'eqV'] = numeric.pointwise2(['ret[i]'],'ret[i] = '+o+'(ret[i]);',setup);
+            numeric[i+'eq'] = Function('x',
+                    'if(typeof x !== "object") return '+o+'x\n'+
+                    'var i;\n'+
+                    'var V = numeric.'+i+'eqV;\n'+
+                    'var s = numeric.dim(x);\n'+
+                    'numeric._foreach(x,s,0,V);\n'+
+                    'return x;\n');
+            numeric[i+'V'] = numeric.pointwise2(['x[i]'],'ret[i] = '+o+'(x[i]);',setup);
+            numeric[i] = Function('x',
+                    'if(typeof x !== "object") return '+o+'(x)\n'+
+                    'var i;\n'+
+                    'var V = numeric.'+i+'V;\n'+
+                    'var s = numeric.dim(x);\n'+
+                    'return numeric._foreach2(x,s,0,V);\n');
+        }
+    }
+    for(i=0;i<numeric.mathfuns.length;++i) {
+        o = numeric.mathfuns[i];
+        delete numeric.ops1[o];
+    }
+    for(i in numeric.mapreducers) {
+        if(numeric.mapreducers.hasOwnProperty(i)) {
+            o = numeric.mapreducers[i];
+            numeric[i+'V'] = numeric.mapreduce2(o[0],o[1]);
+            numeric[i] = Function('x','s','k',
+                    o[1]+
+                    'if(typeof x !== "object") {'+
+                    '    xi = x;\n'+
+                    o[0]+';\n'+
+                    '    return accum;\n'+
+                    '}'+
+                    'if(typeof s === "undefined") s = numeric.dim(x);\n'+
+                    'if(typeof k === "undefined") k = 0;\n'+
+                    'if(k === s.length-1) return numeric.'+i+'V(x);\n'+
+                    'var xi;\n'+
+                    'var n = x.length, i;\n'+
+                    'for(i=n-1;i!==-1;--i) {\n'+
+                    '   xi = arguments.callee(x[i]);\n'+
+                    o[0]+';\n'+
+                    '}\n'+
+                    'return accum;\n');
+        }
+    }
+}());
+
+numeric.truncVV = numeric.pointwise(['x[i]','y[i]'],'ret[i] = round(x[i]/y[i])*y[i];','var round = Math.round;');
+numeric.truncVS = numeric.pointwise(['x[i]','y'],'ret[i] = round(x[i]/y)*y;','var round = Math.round;');
+numeric.truncSV = numeric.pointwise(['x','y[i]'],'ret[i] = round(x/y[i])*y[i];','var round = Math.round;');
+numeric.trunc = function trunc(x,y) {
+    if(typeof x === "object") {
+        if(typeof y === "object") return numeric.truncVV(x,y);
+        return numeric.truncVS(x,y);
+    }
+    if (typeof y === "object") return numeric.truncSV(x,y);
+    return Math.round(x/y)*y;
+}
+
+numeric.inv = function inv(x) {
+    var s = numeric.dim(x), abs = Math.abs, m = s[0], n = s[1];
+    var A = numeric.clone(x), Ai, Aj;
+    var I = numeric.identity(m), Ii, Ij;
+    var i,j,k,x;
+    for(j=0;j<n;++j) {
+        var i0 = -1;
+        var v0 = -1;
+        for(i=j;i!==m;++i) { k = abs(A[i][j]); if(k>v0) { i0 = i; v0 = k; } }
+        Aj = A[i0]; A[i0] = A[j]; A[j] = Aj;
+        Ij = I[i0]; I[i0] = I[j]; I[j] = Ij;
+        x = Aj[j];
+        for(k=j;k!==n;++k)    Aj[k] /= x; 
+        for(k=n-1;k!==-1;--k) Ij[k] /= x;
+        for(i=m-1;i!==-1;--i) {
+            if(i!==j) {
+                Ai = A[i];
+                Ii = I[i];
+                x = Ai[j];
+                for(k=j+1;k!==n;++k)  Ai[k] -= Aj[k]*x;
+                for(k=n-1;k>0;--k) { Ii[k] -= Ij[k]*x; --k; Ii[k] -= Ij[k]*x; }
+                if(k===0) Ii[0] -= Ij[0]*x;
+            }
+        }
+    }
+    return I;
+}
+
+numeric.det = function det(x) {
+    var s = numeric.dim(x);
+    if(s.length !== 2 || s[0] !== s[1]) { throw new Error('numeric: det() only works on square matrices'); }
+    var n = s[0], ret = 1,i,j,k,A = numeric.clone(x),Aj,Ai,alpha,temp,k1,k2,k3;
+    for(j=0;j<n-1;j++) {
+        k=j;
+        for(i=j+1;i<n;i++) { if(Math.abs(A[i][j]) > Math.abs(A[k][j])) { k = i; } }
+        if(k !== j) {
+            temp = A[k]; A[k] = A[j]; A[j] = temp;
+            ret *= -1;
+        }
+        Aj = A[j];
+        for(i=j+1;i<n;i++) {
+            Ai = A[i];
+            alpha = Ai[j]/Aj[j];
+            for(k=j+1;k<n-1;k+=2) {
+                k1 = k+1;
+                Ai[k] -= Aj[k]*alpha;
+                Ai[k1] -= Aj[k1]*alpha;
+            }
+            if(k!==n) { Ai[k] -= Aj[k]*alpha; }
+        }
+        if(Aj[j] === 0) { return 0; }
+        ret *= Aj[j];
+    }
+    return ret*A[j][j];
+}
+
+numeric.transpose = function transpose(x) {
+    var i,j,m = x.length,n = x[0].length, ret=Array(n),A0,A1,Bj;
+    for(j=0;j<n;j++) ret[j] = Array(m);
+    for(i=m-1;i>=1;i-=2) {
+        A1 = x[i];
+        A0 = x[i-1];
+        for(j=n-1;j>=1;--j) {
+            Bj = ret[j]; Bj[i] = A1[j]; Bj[i-1] = A0[j];
+            --j;
+            Bj = ret[j]; Bj[i] = A1[j]; Bj[i-1] = A0[j];
+        }
+        if(j===0) {
+            Bj = ret[0]; Bj[i] = A1[0]; Bj[i-1] = A0[0];
+        }
+    }
+    if(i===0) {
+        A0 = x[0];
+        for(j=n-1;j>=1;--j) {
+            ret[j][0] = A0[j];
+            --j;
+            ret[j][0] = A0[j];
+        }
+        if(j===0) { ret[0][0] = A0[0]; }
+    }
+    return ret;
+}
+numeric.negtranspose = function negtranspose(x) {
+    var i,j,m = x.length,n = x[0].length, ret=Array(n),A0,A1,Bj;
+    for(j=0;j<n;j++) ret[j] = Array(m);
+    for(i=m-1;i>=1;i-=2) {
+        A1 = x[i];
+        A0 = x[i-1];
+        for(j=n-1;j>=1;--j) {
+            Bj = ret[j]; Bj[i] = -A1[j]; Bj[i-1] = -A0[j];
+            --j;
+            Bj = ret[j]; Bj[i] = -A1[j]; Bj[i-1] = -A0[j];
+        }
+        if(j===0) {
+            Bj = ret[0]; Bj[i] = -A1[0]; Bj[i-1] = -A0[0];
+        }
+    }
+    if(i===0) {
+        A0 = x[0];
+        for(j=n-1;j>=1;--j) {
+            ret[j][0] = -A0[j];
+            --j;
+            ret[j][0] = -A0[j];
+        }
+        if(j===0) { ret[0][0] = -A0[0]; }
+    }
+    return ret;
+}
+
+numeric._random = function _random(s,k) {
+    var i,n=s[k],ret=Array(n), rnd;
+    if(k === s.length-1) {
+        rnd = Math.random;
+        for(i=n-1;i>=1;i-=2) {
+            ret[i] = rnd();
+            ret[i-1] = rnd();
+        }
+        if(i===0) { ret[0] = rnd(); }
+        return ret;
+    }
+    for(i=n-1;i>=0;i--) ret[i] = _random(s,k+1);
+    return ret;
+}
+numeric.random = function random(s) { return numeric._random(s,0); }
+
+numeric.norm2 = function norm2(x) { return Math.sqrt(numeric.norm2Squared(x)); }
+
+numeric.linspace = function linspace(a,b,n) {
+    if(typeof n === "undefined") n = Math.max(Math.round(b-a)+1,1);
+    if(n<2) { return n===1?[a]:[]; }
+    var i,ret = Array(n);
+    n--;
+    for(i=n;i>=0;i--) { ret[i] = (i*b+(n-i)*a)/n; }
+    return ret;
+}
+
+numeric.getBlock = function getBlock(x,from,to) {
+    var s = numeric.dim(x);
+    function foo(x,k) {
+        var i,a = from[k], n = to[k]-a, ret = Array(n);
+        if(k === s.length-1) {
+            for(i=n;i>=0;i--) { ret[i] = x[i+a]; }
+            return ret;
+        }
+        for(i=n;i>=0;i--) { ret[i] = foo(x[i+a],k+1); }
+        return ret;
+    }
+    return foo(x,0);
+}
+
+numeric.setBlock = function setBlock(x,from,to,B) {
+    var s = numeric.dim(x);
+    function foo(x,y,k) {
+        var i,a = from[k], n = to[k]-a;
+        if(k === s.length-1) { for(i=n;i>=0;i--) { x[i+a] = y[i]; } }
+        for(i=n;i>=0;i--) { foo(x[i+a],y[i],k+1); }
+    }
+    foo(x,B,0);
+    return x;
+}
+
+numeric.getRange = function getRange(A,I,J) {
+    var m = I.length, n = J.length;
+    var i,j;
+    var B = Array(m), Bi, AI;
+    for(i=m-1;i!==-1;--i) {
+        B[i] = Array(n);
+        Bi = B[i];
+        AI = A[I[i]];
+        for(j=n-1;j!==-1;--j) Bi[j] = AI[J[j]];
+    }
+    return B;
+}
+
+numeric.blockMatrix = function blockMatrix(X) {
+    var s = numeric.dim(X);
+    if(s.length<4) return numeric.blockMatrix([X]);
+    var m=s[0],n=s[1],M,N,i,j,Xij;
+    M = 0; N = 0;
+    for(i=0;i<m;++i) M+=X[i][0].length;
+    for(j=0;j<n;++j) N+=X[0][j][0].length;
+    var Z = Array(M);
+    for(i=0;i<M;++i) Z[i] = Array(N);
+    var I=0,J,ZI,k,l,Xijk;
+    for(i=0;i<m;++i) {
+        J=N;
+        for(j=n-1;j!==-1;--j) {
+            Xij = X[i][j];
+            J -= Xij[0].length;
+            for(k=Xij.length-1;k!==-1;--k) {
+                Xijk = Xij[k];
+                ZI = Z[I+k];
+                for(l = Xijk.length-1;l!==-1;--l) ZI[J+l] = Xijk[l];
+            }
+        }
+        I += X[i][0].length;
+    }
+    return Z;
+}
+
+numeric.tensor = function tensor(x,y) {
+    if(typeof x === "number" || typeof y === "number") return numeric.mul(x,y);
+    var s1 = numeric.dim(x), s2 = numeric.dim(y);
+    if(s1.length !== 1 || s2.length !== 1) {
+        throw new Error('numeric: tensor product is only defined for vectors');
+    }
+    var m = s1[0], n = s2[0], A = Array(m), Ai, i,j,xi;
+    for(i=m-1;i>=0;i--) {
+        Ai = Array(n);
+        xi = x[i];
+        for(j=n-1;j>=3;--j) {
+            Ai[j] = xi * y[j];
+            --j;
+            Ai[j] = xi * y[j];
+            --j;
+            Ai[j] = xi * y[j];
+            --j;
+            Ai[j] = xi * y[j];
+        }
+        while(j>=0) { Ai[j] = xi * y[j]; --j; }
+        A[i] = Ai;
+    }
+    return A;
+}
+
+// 3. The Tensor type T
+numeric.T = function T(x,y) { this.x = x; this.y = y; }
+numeric.t = function t(x,y) { return new numeric.T(x,y); }
+
+numeric.Tbinop = function Tbinop(rr,rc,cr,cc,setup) {
+    var io = numeric.indexOf;
+    if(typeof setup !== "string") {
+        var k;
+        setup = '';
+        for(k in numeric) {
+            if(numeric.hasOwnProperty(k) && (rr.indexOf(k)>=0 || rc.indexOf(k)>=0 || cr.indexOf(k)>=0 || cc.indexOf(k)>=0) && k.length>1) {
+                setup += 'var '+k+' = numeric.'+k+';\n';
+            }
+        }
+    }
+    return Function(['y'],
+            'var x = this;\n'+
+            'if(!(y instanceof numeric.T)) { y = new numeric.T(y); }\n'+
+            setup+'\n'+
+            'if(x.y) {'+
+            '  if(y.y) {'+
+            '    return new numeric.T('+cc+');\n'+
+            '  }\n'+
+            '  return new numeric.T('+cr+');\n'+
+            '}\n'+
+            'if(y.y) {\n'+
+            '  return new numeric.T('+rc+');\n'+
+            '}\n'+
+            'return new numeric.T('+rr+');\n'
+    );
+}
+
+numeric.T.prototype.add = numeric.Tbinop(
+        'add(x.x,y.x)',
+        'add(x.x,y.x),y.y',
+        'add(x.x,y.x),x.y',
+        'add(x.x,y.x),add(x.y,y.y)');
+numeric.T.prototype.sub = numeric.Tbinop(
+        'sub(x.x,y.x)',
+        'sub(x.x,y.x),neg(y.y)',
+        'sub(x.x,y.x),x.y',
+        'sub(x.x,y.x),sub(x.y,y.y)');
+numeric.T.prototype.mul = numeric.Tbinop(
+        'mul(x.x,y.x)',
+        'mul(x.x,y.x),mul(x.x,y.y)',
+        'mul(x.x,y.x),mul(x.y,y.x)',
+        'sub(mul(x.x,y.x),mul(x.y,y.y)),add(mul(x.x,y.y),mul(x.y,y.x))');
+
+numeric.T.prototype.reciprocal = function reciprocal() {
+    var mul = numeric.mul, div = numeric.div;
+    if(this.y) {
+        var d = numeric.add(mul(this.x,this.x),mul(this.y,this.y));
+        return new numeric.T(div(this.x,d),div(numeric.neg(this.y),d));
+    }
+    return new T(div(1,this.x));
+}
+numeric.T.prototype.div = function div(y) {
+    if(!(y instanceof numeric.T)) y = new numeric.T(y);
+    if(y.y) { return this.mul(y.reciprocal()); }
+    var div = numeric.div;
+    if(this.y) { return new numeric.T(div(this.x,y.x),div(this.y,y.x)); }
+    return new numeric.T(div(this.x,y.x));
+}
+numeric.T.prototype.dot = numeric.Tbinop(
+        'dot(x.x,y.x)',
+        'dot(x.x,y.x),dot(x.x,y.y)',
+        'dot(x.x,y.x),dot(x.y,y.x)',
+        'sub(dot(x.x,y.x),dot(x.y,y.y)),add(dot(x.x,y.y),dot(x.y,y.x))'
+        );
+numeric.T.prototype.transpose = function transpose() {
+    var t = numeric.transpose, x = this.x, y = this.y;
+    if(y) { return new numeric.T(t(x),t(y)); }
+    return new numeric.T(t(x));
+}
+numeric.T.prototype.transjugate = function transjugate() {
+    var t = numeric.transpose, x = this.x, y = this.y;
+    if(y) { return new numeric.T(t(x),numeric.negtranspose(y)); }
+    return new numeric.T(t(x));
+}
+numeric.Tunop = function Tunop(r,c,s) {
+    if(typeof s !== "string") { s = ''; }
+    return Function(
+            'var x = this;\n'+
+            s+'\n'+
+            'if(x.y) {'+
+            '  '+c+';\n'+
+            '}\n'+
+            r+';\n'
+    );
+}
+
+numeric.T.prototype.exp = numeric.Tunop(
+        'return new numeric.T(ex)',
+        'return new numeric.T(mul(cos(x.y),ex),mul(sin(x.y),ex))',
+        'var ex = numeric.exp(x.x), cos = numeric.cos, sin = numeric.sin, mul = numeric.mul;');
+numeric.T.prototype.conj = numeric.Tunop(
+        'return new numeric.T(x.x);',
+        'return new numeric.T(x.x,numeric.neg(x.y));');
+numeric.T.prototype.neg = numeric.Tunop(
+        'return new numeric.T(neg(x.x));',
+        'return new numeric.T(neg(x.x),neg(x.y));',
+        'var neg = numeric.neg;');
+numeric.T.prototype.sin = numeric.Tunop(
+        'return new numeric.T(numeric.sin(x.x))',
+        'return x.exp().sub(x.neg().exp()).div(new numeric.T(0,2));');
+numeric.T.prototype.cos = numeric.Tunop(
+        'return new numeric.T(numeric.cos(x.x))',
+        'return x.exp().add(x.neg().exp()).div(2);');
+numeric.T.prototype.abs = numeric.Tunop(
+        'return new numeric.T(numeric.abs(x.x));',
+        'return new numeric.T(numeric.sqrt(numeric.add(mul(x.x,x.x),mul(x.y,x.y))));',
+        'var mul = numeric.mul;');
+numeric.T.prototype.log = numeric.Tunop(
+        'return new numeric.T(numeric.log(x.x));',
+        'var theta = new numeric.T(numeric.atan2(x.y,x.x)), r = x.abs();\n'+
+        'return new numeric.T(numeric.log(r.x),theta.x);');
+numeric.T.prototype.norm2 = numeric.Tunop(
+        'return numeric.norm2(x.x);',
+        'var f = numeric.norm2Squared;\n'+
+        'return Math.sqrt(f(x.x)+f(x.y));');
+numeric.T.prototype.inv = function inv() {
+    var A = this;
+    if(typeof A.y === "undefined") { return new numeric.T(numeric.inv(A.x)); }
+    var n = A.x.length, i, j, k;
+    var Rx = numeric.identity(n),Ry = numeric.rep([n,n],0);
+    var Ax = numeric.clone(A.x), Ay = numeric.clone(A.y);
+    var Aix, Aiy, Ajx, Ajy, Rix, Riy, Rjx, Rjy;
+    var i,j,k,d,d1,ax,ay,bx,by,temp;
+    for(i=0;i<n;i++) {
+        ax = Ax[i][i]; ay = Ay[i][i];
+        d = ax*ax+ay*ay;
+        k = i;
+        for(j=i+1;j<n;j++) {
+            ax = Ax[j][i]; ay = Ay[j][i];
+            d1 = ax*ax+ay*ay;
+            if(d1 > d) { k=j; d = d1; }
+        }
+        if(k!==i) {
+            temp = Ax[i]; Ax[i] = Ax[k]; Ax[k] = temp;
+            temp = Ay[i]; Ay[i] = Ay[k]; Ay[k] = temp;
+            temp = Rx[i]; Rx[i] = Rx[k]; Rx[k] = temp;
+            temp = Ry[i]; Ry[i] = Ry[k]; Ry[k] = temp;
+        }
+        Aix = Ax[i]; Aiy = Ay[i];
+        Rix = Rx[i]; Riy = Ry[i];
+        ax = Aix[i]; ay = Aiy[i];
+        for(j=i+1;j<n;j++) {
+            bx = Aix[j]; by = Aiy[j];
+            Aix[j] = (bx*ax+by*ay)/d;
+            Aiy[j] = (by*ax-bx*ay)/d;
+        }
+        for(j=0;j<n;j++) {
+            bx = Rix[j]; by = Riy[j];
+            Rix[j] = (bx*ax+by*ay)/d;
+            Riy[j] = (by*ax-bx*ay)/d;
+        }
+        for(j=i+1;j<n;j++) {
+            Ajx = Ax[j]; Ajy = Ay[j];
+            Rjx = Rx[j]; Rjy = Ry[j];
+            ax = Ajx[i]; ay = Ajy[i];
+            for(k=i+1;k<n;k++) {
+                bx = Aix[k]; by = Aiy[k];
+                Ajx[k] -= bx*ax-by*ay;
+                Ajy[k] -= by*ax+bx*ay;
+            }
+            for(k=0;k<n;k++) {
+                bx = Rix[k]; by = Riy[k];
+                Rjx[k] -= bx*ax-by*ay;
+                Rjy[k] -= by*ax+bx*ay;
+            }
+        }
+    }
+    for(i=n-1;i>0;i--) {
+        Rix = Rx[i]; Riy = Ry[i];
+        for(j=i-1;j>=0;j--) {
+            Rjx = Rx[j]; Rjy = Ry[j];
+            ax = Ax[j][i]; ay = Ay[j][i];
+            for(k=n-1;k>=0;k--) {
+                bx = Rix[k]; by = Riy[k];
+                Rjx[k] -= ax*bx - ay*by;
+                Rjy[k] -= ax*by + ay*bx;
+            }
+        }
+    }
+    return new numeric.T(Rx,Ry);
+}
+numeric.T.prototype.get = function get(i) {
+    var x = this.x, y = this.y, k = 0, ik, n = i.length;
+    if(y) {
+        while(k<n) {
+            ik = i[k];
+            x = x[ik];
+            y = y[ik];
+            k++;
+        }
+        return new numeric.T(x,y);
+    }
+    while(k<n) {
+        ik = i[k];
+        x = x[ik];
+        k++;
+    }
+    return new numeric.T(x);
+}
+numeric.T.prototype.set = function set(i,v) {
+    var x = this.x, y = this.y, k = 0, ik, n = i.length, vx = v.x, vy = v.y;
+    if(n===0) {
+        if(vy) { this.y = vy; }
+        else if(y) { this.y = undefined; }
+        this.x = x;
+        return this;
+    }
+    if(vy) {
+        if(y) { /* ok */ }
+        else {
+            y = numeric.rep(numeric.dim(x),0);
+            this.y = y;
+        }
+        while(k<n-1) {
+            ik = i[k];
+            x = x[ik];
+            y = y[ik];
+            k++;
+        }
+        ik = i[k];
+        x[ik] = vx;
+        y[ik] = vy;
+        return this;
+    }
+    if(y) {
+        while(k<n-1) {
+            ik = i[k];
+            x = x[ik];
+            y = y[ik];
+            k++;
+        }
+        ik = i[k];
+        x[ik] = vx;
+        if(vx instanceof Array) y[ik] = numeric.rep(numeric.dim(vx),0);
+        else y[ik] = 0;
+        return this;
+    }
+    while(k<n-1) {
+        ik = i[k];
+        x = x[ik];
+        k++;
+    }
+    ik = i[k];
+    x[ik] = vx;
+    return this;
+}
+numeric.T.prototype.getRows = function getRows(i0,i1) {
+    var n = i1-i0+1, j;
+    var rx = Array(n), ry, x = this.x, y = this.y;
+    for(j=i0;j<=i1;j++) { rx[j-i0] = x[j]; }
+    if(y) {
+        ry = Array(n);
+        for(j=i0;j<=i1;j++) { ry[j-i0] = y[j]; }
+        return new numeric.T(rx,ry);
+    }
+    return new numeric.T(rx);
+}
+numeric.T.prototype.setRows = function setRows(i0,i1,A) {
+    var j;
+    var rx = this.x, ry = this.y, x = A.x, y = A.y;
+    for(j=i0;j<=i1;j++) { rx[j] = x[j-i0]; }
+    if(y) {
+        if(!ry) { ry = numeric.rep(numeric.dim(rx),0); this.y = ry; }
+        for(j=i0;j<=i1;j++) { ry[j] = y[j-i0]; }
+    } else if(ry) {
+        for(j=i0;j<=i1;j++) { ry[j] = numeric.rep([x[j-i0].length],0); }
+    }
+    return this;
+}
+numeric.T.prototype.getRow = function getRow(k) {
+    var x = this.x, y = this.y;
+    if(y) { return new numeric.T(x[k],y[k]); }
+    return new numeric.T(x[k]);
+}
+numeric.T.prototype.setRow = function setRow(i,v) {
+    var rx = this.x, ry = this.y, x = v.x, y = v.y;
+    rx[i] = x;
+    if(y) {
+        if(!ry) { ry = numeric.rep(numeric.dim(rx),0); this.y = ry; }
+        ry[i] = y;
+    } else if(ry) {
+        ry = numeric.rep([x.length],0);
+    }
+    return this;
+}
+
+numeric.T.prototype.getBlock = function getBlock(from,to) {
+    var x = this.x, y = this.y, b = numeric.getBlock;
+    if(y) { return new numeric.T(b(x,from,to),b(y,from,to)); }
+    return new numeric.T(b(x,from,to));
+}
+numeric.T.prototype.setBlock = function setBlock(from,to,A) {
+    if(!(A instanceof numeric.T)) A = new numeric.T(A);
+    var x = this.x, y = this.y, b = numeric.setBlock, Ax = A.x, Ay = A.y;
+    if(Ay) {
+        if(!y) { this.y = numeric.rep(numeric.dim(this),0); y = this.y; }
+        b(x,from,to,Ax);
+        b(y,from,to,Ay);
+        return this;
+    }
+    b(x,from,to,Ax);
+    if(y) b(y,from,to,numeric.rep(numeric.dim(Ax),0));
+}
+numeric.T.rep = function rep(s,v) {
+    var T = numeric.T;
+    if(!(v instanceof T)) v = new T(v);
+    var x = v.x, y = v.y, r = numeric.rep;
+    if(y) return new T(r(s,x),r(s,y));
+    return new T(r(s,x));
+}
+numeric.T.diag = function diag(d) {
+    if(!(d instanceof numeric.T)) d = new numeric.T(d);
+    var x = d.x, y = d.y, diag = numeric.diag;
+    if(y) return new numeric.T(diag(x),diag(y));
+    return new numeric.T(diag(x));
+}
+numeric.T.eig = function eig() {
+    if(this.y) { throw new Error('eig: not implemented for complex matrices.'); }
+    return numeric.eig(this.x);
+}
+numeric.T.identity = function identity(n) { return new numeric.T(numeric.identity(n)); }
+numeric.T.prototype.getDiag = function getDiag() {
+    var n = numeric;
+    var x = this.x, y = this.y;
+    if(y) { return new n.T(n.getDiag(x),n.getDiag(y)); }
+    return new n.T(n.getDiag(x));
+}
+
+// 4. Eigenvalues of real matrices
+
+numeric.house = function house(x) {
+    var v = numeric.clone(x);
+    var s = x[0] >= 0 ? 1 : -1;
+    var alpha = s*numeric.norm2(x);
+    v[0] += alpha;
+    var foo = numeric.norm2(v);
+    if(foo === 0) { /* this should not happen */ throw new Error('eig: internal error'); }
+    return numeric.div(v,foo);
+}
+
+numeric.toUpperHessenberg = function toUpperHessenberg(me) {
+    var s = numeric.dim(me);
+    if(s.length !== 2 || s[0] !== s[1]) { throw new Error('numeric: toUpperHessenberg() only works on square matrices'); }
+    var m = s[0], i,j,k,x,v,A = numeric.clone(me),B,C,Ai,Ci,Q = numeric.identity(m),Qi;
+    for(j=0;j<m-2;j++) {
+        x = Array(m-j-1);
+        for(i=j+1;i<m;i++) { x[i-j-1] = A[i][j]; }
+        if(numeric.norm2(x)>0) {
+            v = numeric.house(x);
+            B = numeric.getBlock(A,[j+1,j],[m-1,m-1]);
+            C = numeric.tensor(v,numeric.dot(v,B));
+            for(i=j+1;i<m;i++) { Ai = A[i]; Ci = C[i-j-1]; for(k=j;k<m;k++) Ai[k] -= 2*Ci[k-j]; }
+            B = numeric.getBlock(A,[0,j+1],[m-1,m-1]);
+            C = numeric.tensor(numeric.dot(B,v),v);
+            for(i=0;i<m;i++) { Ai = A[i]; Ci = C[i]; for(k=j+1;k<m;k++) Ai[k] -= 2*Ci[k-j-1]; }
+            B = Array(m-j-1);
+            for(i=j+1;i<m;i++) B[i-j-1] = Q[i];
+            C = numeric.tensor(v,numeric.dot(v,B));
+            for(i=j+1;i<m;i++) { Qi = Q[i]; Ci = C[i-j-1]; for(k=0;k<m;k++) Qi[k] -= 2*Ci[k]; }
+        }
+    }
+    return {H:A, Q:Q};
+}
+
+numeric.epsilon = 2.220446049250313e-16;
+
+numeric.QRFrancis = function(H,maxiter) {
+    if(typeof maxiter === "undefined") { maxiter = 10000; }
+    H = numeric.clone(H);
+    var H0 = numeric.clone(H);
+    var s = numeric.dim(H),m=s[0],x,v,a,b,c,d,det,tr, Hloc, Q = numeric.identity(m), Qi, Hi, B, C, Ci,i,j,k,iter;
+    if(m<3) { return {Q:Q, B:[ [0,m-1] ]}; }
+    var epsilon = numeric.epsilon;
+    for(iter=0;iter<maxiter;iter++) {
+        for(j=0;j<m-1;j++) {
+            if(Math.abs(H[j+1][j]) < epsilon*(Math.abs(H[j][j])+Math.abs(H[j+1][j+1]))) {
+                var QH1 = numeric.QRFrancis(numeric.getBlock(H,[0,0],[j,j]),maxiter);
+                var QH2 = numeric.QRFrancis(numeric.getBlock(H,[j+1,j+1],[m-1,m-1]),maxiter);
+                B = Array(j+1);
+                for(i=0;i<=j;i++) { B[i] = Q[i]; }
+                C = numeric.dot(QH1.Q,B);
+                for(i=0;i<=j;i++) { Q[i] = C[i]; }
+                B = Array(m-j-1);
+                for(i=j+1;i<m;i++) { B[i-j-1] = Q[i]; }
+                C = numeric.dot(QH2.Q,B);
+                for(i=j+1;i<m;i++) { Q[i] = C[i-j-1]; }
+                return {Q:Q,B:QH1.B.concat(numeric.add(QH2.B,j+1))};
+            }
+        }
+        a = H[m-2][m-2]; b = H[m-2][m-1];
+        c = H[m-1][m-2]; d = H[m-1][m-1];
+        tr = a+d;
+        det = (a*d-b*c);
+        Hloc = numeric.getBlock(H, [0,0], [2,2]);
+        if(tr*tr>=4*det) {
+            var s1,s2;
+            s1 = 0.5*(tr+Math.sqrt(tr*tr-4*det));
+            s2 = 0.5*(tr-Math.sqrt(tr*tr-4*det));
+            Hloc = numeric.add(numeric.sub(numeric.dot(Hloc,Hloc),
+                                           numeric.mul(Hloc,s1+s2)),
+                               numeric.diag(numeric.rep([3],s1*s2)));
+        } else {
+            Hloc = numeric.add(numeric.sub(numeric.dot(Hloc,Hloc),
+                                           numeric.mul(Hloc,tr)),
+                               numeric.diag(numeric.rep([3],det)));
+        }
+        x = [Hloc[0][0],Hloc[1][0],Hloc[2][0]];
+        v = numeric.house(x);
+        B = [H[0],H[1],H[2]];
+        C = numeric.tensor(v,numeric.dot(v,B));
+        for(i=0;i<3;i++) { Hi = H[i]; Ci = C[i]; for(k=0;k<m;k++) Hi[k] -= 2*Ci[k]; }
+        B = numeric.getBlock(H, [0,0],[m-1,2]);
+        C = numeric.tensor(numeric.dot(B,v),v);
+        for(i=0;i<m;i++) { Hi = H[i]; Ci = C[i]; for(k=0;k<3;k++) Hi[k] -= 2*Ci[k]; }
+        B = [Q[0],Q[1],Q[2]];
+        C = numeric.tensor(v,numeric.dot(v,B));
+        for(i=0;i<3;i++) { Qi = Q[i]; Ci = C[i]; for(k=0;k<m;k++) Qi[k] -= 2*Ci[k]; }
+        var J;
+        for(j=0;j<m-2;j++) {
+            for(k=j;k<=j+1;k++) {
+                if(Math.abs(H[k+1][k]) < epsilon*(Math.abs(H[k][k])+Math.abs(H[k+1][k+1]))) {
+                    var QH1 = numeric.QRFrancis(numeric.getBlock(H,[0,0],[k,k]),maxiter);
+                    var QH2 = numeric.QRFrancis(numeric.getBlock(H,[k+1,k+1],[m-1,m-1]),maxiter);
+                    B = Array(k+1);
+                    for(i=0;i<=k;i++) { B[i] = Q[i]; }
+                    C = numeric.dot(QH1.Q,B);
+                    for(i=0;i<=k;i++) { Q[i] = C[i]; }
+                    B = Array(m-k-1);
+                    for(i=k+1;i<m;i++) { B[i-k-1] = Q[i]; }
+                    C = numeric.dot(QH2.Q,B);
+                    for(i=k+1;i<m;i++) { Q[i] = C[i-k-1]; }
+                    return {Q:Q,B:QH1.B.concat(numeric.add(QH2.B,k+1))};
+                }
+            }
+            J = Math.min(m-1,j+3);
+            x = Array(J-j);
+            for(i=j+1;i<=J;i++) { x[i-j-1] = H[i][j]; }
+            v = numeric.house(x);
+            B = numeric.getBlock(H, [j+1,j],[J,m-1]);
+            C = numeric.tensor(v,numeric.dot(v,B));
+            for(i=j+1;i<=J;i++) { Hi = H[i]; Ci = C[i-j-1]; for(k=j;k<m;k++) Hi[k] -= 2*Ci[k-j]; }
+            B = numeric.getBlock(H, [0,j+1],[m-1,J]);
+            C = numeric.tensor(numeric.dot(B,v),v);
+            for(i=0;i<m;i++) { Hi = H[i]; Ci = C[i]; for(k=j+1;k<=J;k++) Hi[k] -= 2*Ci[k-j-1]; }
+            B = Array(J-j);
+            for(i=j+1;i<=J;i++) B[i-j-1] = Q[i];
+            C = numeric.tensor(v,numeric.dot(v,B));
+            for(i=j+1;i<=J;i++) { Qi = Q[i]; Ci = C[i-j-1]; for(k=0;k<m;k++) Qi[k] -= 2*Ci[k]; }
+        }
+    }
+    throw new Error('numeric: eigenvalue iteration does not converge -- increase maxiter?');
+}
+
+numeric.eig = function eig(A,maxiter) {
+    var QH = numeric.toUpperHessenberg(A);
+    var QB = numeric.QRFrancis(QH.H,maxiter);
+    var T = numeric.T;
+    var n = A.length,i,k,flag = false,B = QB.B,H = numeric.dot(QB.Q,numeric.dot(QH.H,numeric.transpose(QB.Q)));
+    var Q = new T(numeric.dot(QB.Q,QH.Q)),Q0;
+    var m = B.length,j;
+    var a,b,c,d,p1,p2,disc,x,y,p,q,n1,n2;
+    var sqrt = Math.sqrt;
+    for(k=0;k<m;k++) {
+        i = B[k][0];
+        if(i === B[k][1]) {
+            // nothing
+        } else {
+            j = i+1;
+            a = H[i][i];
+            b = H[i][j];
+            c = H[j][i];
+            d = H[j][j];
+            if(b === 0 && c === 0) continue;
+            p1 = -a-d;
+            p2 = a*d-b*c;
+            disc = p1*p1-4*p2;
+            if(disc>=0) {
+                if(p1<0) x = -0.5*(p1-sqrt(disc));
+                else     x = -0.5*(p1+sqrt(disc));
+                n1 = (a-x)*(a-x)+b*b;
+                n2 = c*c+(d-x)*(d-x);
+                if(n1>n2) {
+                    n1 = sqrt(n1);
+                    p = (a-x)/n1;
+                    q = b/n1;
+                } else {
+                    n2 = sqrt(n2);
+                    p = c/n2;
+                    q = (d-x)/n2;
+                }
+                Q0 = new T([[q,-p],[p,q]]);
+                Q.setRows(i,j,Q0.dot(Q.getRows(i,j)));
+            } else {
+                x = -0.5*p1;
+                y = 0.5*sqrt(-disc);
+                n1 = (a-x)*(a-x)+b*b;
+                n2 = c*c+(d-x)*(d-x);
+                if(n1>n2) {
+                    n1 = sqrt(n1+y*y);
+                    p = (a-x)/n1;
+                    q = b/n1;
+                    x = 0;
+                    y /= n1;
+                } else {
+                    n2 = sqrt(n2+y*y);
+                    p = c/n2;
+                    q = (d-x)/n2;
+                    x = y/n2;
+                    y = 0;
+                }
+                Q0 = new T([[q,-p],[p,q]],[[x,y],[y,-x]]);
+                Q.setRows(i,j,Q0.dot(Q.getRows(i,j)));
+            }
+        }
+    }
+    var R = Q.dot(A).dot(Q.transjugate()), n = A.length, E = numeric.T.identity(n);
+    for(j=0;j<n;j++) {
+        if(j>0) {
+            for(k=j-1;k>=0;k--) {
+                var Rk = R.get([k,k]), Rj = R.get([j,j]);
+                if(numeric.neq(Rk.x,Rj.x) || numeric.neq(Rk.y,Rj.y)) {
+                    x = R.getRow(k).getBlock([k],[j-1]);
+                    y = E.getRow(j).getBlock([k],[j-1]);
+                    E.set([j,k],(R.get([k,j]).neg().sub(x.dot(y))).div(Rk.sub(Rj)));
+                } else {
+                    E.setRow(j,E.getRow(k));
+                    continue;
+                }
+            }
+        }
+    }
+    for(j=0;j<n;j++) {
+        x = E.getRow(j);
+        E.setRow(j,x.div(x.norm2()));
+    }
+    E = E.transpose();
+    E = Q.transjugate().dot(E);
+    return { lambda:R.getDiag(), E:E };
+};
+
+// 5. Compressed Column Storage matrices
+numeric.ccsSparse = function ccsSparse(A) {
+    var m = A.length,n,foo, i,j, counts = [];
+    for(i=m-1;i!==-1;--i) {
+        foo = A[i];
+        for(j in foo) {
+            j = parseInt(j);
+            while(j>=counts.length) counts[counts.length] = 0;
+            if(foo[j]!==0) counts[j]++;
+        }
+    }
+    var n = counts.length;
+    var Ai = Array(n+1);
+    Ai[0] = 0;
+    for(i=0;i<n;++i) Ai[i+1] = Ai[i] + counts[i];
+    var Aj = Array(Ai[n]), Av = Array(Ai[n]);
+    for(i=m-1;i!==-1;--i) {
+        foo = A[i];
+        for(j in foo) {
+            if(foo[j]!==0) {
+                counts[j]--;
+                Aj[Ai[j]+counts[j]] = i;
+                Av[Ai[j]+counts[j]] = foo[j];
+            }
+        }
+    }
+    return [Ai,Aj,Av];
+}
+numeric.ccsFull = function ccsFull(A) {
+    var Ai = A[0], Aj = A[1], Av = A[2], s = numeric.ccsDim(A), m = s[0], n = s[1], i,j,j0,j1,k;
+    var B = numeric.rep([m,n],0);
+    for(i=0;i<n;i++) {
+        j0 = Ai[i];
+        j1 = Ai[i+1];
+        for(j=j0;j<j1;++j) { B[Aj[j]][i] = Av[j]; }
+    }
+    return B;
+}
+numeric.ccsTSolve = function ccsTSolve(A,b,x,bj,xj) {
+    var Ai = A[0], Aj = A[1], Av = A[2],m = Ai.length-1, max = Math.max,n=0;
+    if(typeof bj === "undefined") x = numeric.rep([m],0);
+    if(typeof bj === "undefined") bj = numeric.linspace(0,x.length-1);
+    if(typeof xj === "undefined") xj = [];
+    function dfs(j) {
+        var k;
+        if(x[j] !== 0) return;
+        x[j] = 1;
+        for(k=Ai[j];k<Ai[j+1];++k) dfs(Aj[k]);
+        xj[n] = j;
+        ++n;
+    }
+    var i,j,j0,j1,k,l,l0,l1,a;
+    for(i=bj.length-1;i!==-1;--i) { dfs(bj[i]); }
+    xj.length = n;
+    for(i=xj.length-1;i!==-1;--i) { x[xj[i]] = 0; }
+    for(i=bj.length-1;i!==-1;--i) { j = bj[i]; x[j] = b[j]; }
+    for(i=xj.length-1;i!==-1;--i) {
+        j = xj[i];
+        j0 = Ai[j];
+        j1 = max(Ai[j+1],j0);
+        for(k=j0;k!==j1;++k) { if(Aj[k] === j) { x[j] /= Av[k]; break; } }
+        a = x[j];
+        for(k=j0;k!==j1;++k) {
+            l = Aj[k];
+            if(l !== j) x[l] -= a*Av[k];
+        }
+    }
+    return x;
+}
+numeric.ccsDFS = function ccsDFS(n) {
+    this.k = Array(n);
+    this.k1 = Array(n);
+    this.j = Array(n);
+}
+numeric.ccsDFS.prototype.dfs = function dfs(J,Ai,Aj,x,xj,Pinv) {
+    var m = 0,foo,n=xj.length;
+    var k = this.k, k1 = this.k1, j = this.j,km,k11;
+    if(x[J]!==0) return;
+    x[J] = 1;
+    j[0] = J;
+    k[0] = km = Ai[J];
+    k1[0] = k11 = Ai[J+1];
+    while(1) {
+        if(km >= k11) {
+            xj[n] = j[m];
+            if(m===0) return;
+            ++n;
+            --m;
+            km = k[m];
+            k11 = k1[m];
+        } else {
+            foo = Pinv[Aj[km]];
+            if(x[foo] === 0) {
+                x[foo] = 1;
+                k[m] = km;
+                ++m;
+                j[m] = foo;
+                km = Ai[foo];
+                k1[m] = k11 = Ai[foo+1];
+            } else ++km;
+        }
+    }
+}
+numeric.ccsLPSolve = function ccsLPSolve(A,B,x,xj,I,Pinv,dfs) {
+    var Ai = A[0], Aj = A[1], Av = A[2],m = Ai.length-1, n=0;
+    var Bi = B[0], Bj = B[1], Bv = B[2];
+    
+    var i,i0,i1,j,J,j0,j1,k,l,l0,l1,a;
+    i0 = Bi[I];
+    i1 = Bi[I+1];
+    xj.length = 0;
+    for(i=i0;i<i1;++i) { dfs.dfs(Pinv[Bj[i]],Ai,Aj,x,xj,Pinv); }
+    for(i=xj.length-1;i!==-1;--i) { x[xj[i]] = 0; }
+    for(i=i0;i!==i1;++i) { j = Pinv[Bj[i]]; x[j] = Bv[i]; }
+    for(i=xj.length-1;i!==-1;--i) {
+        j = xj[i];
+        j0 = Ai[j];
+        j1 = Ai[j+1];
+        for(k=j0;k<j1;++k) { if(Pinv[Aj[k]] === j) { x[j] /= Av[k]; break; } }
+        a = x[j];
+        for(k=j0;k<j1;++k) {
+            l = Pinv[Aj[k]];
+            if(l !== j) x[l] -= a*Av[k];
+        }
+    }
+    return x;
+}
+numeric.ccsLUP1 = function ccsLUP1(A,threshold) {
+    var m = A[0].length-1;
+    var L = [numeric.rep([m+1],0),[],[]], U = [numeric.rep([m+1], 0),[],[]];
+    var Li = L[0], Lj = L[1], Lv = L[2], Ui = U[0], Uj = U[1], Uv = U[2];
+    var x = numeric.rep([m],0), xj = numeric.rep([m],0);
+    var i,j,k,j0,j1,a,e,c,d,K;
+    var sol = numeric.ccsLPSolve, max = Math.max, abs = Math.abs;
+    var P = numeric.linspace(0,m-1),Pinv = numeric.linspace(0,m-1);
+    var dfs = new numeric.ccsDFS(m);
+    if(typeof threshold === "undefined") { threshold = 1; }
+    for(i=0;i<m;++i) {
+        sol(L,A,x,xj,i,Pinv,dfs);
+        a = -1;
+        e = -1;
+        for(j=xj.length-1;j!==-1;--j) {
+            k = xj[j];
+            if(k <= i) continue;
+            c = abs(x[k]);
+            if(c > a) { e = k; a = c; }
+        }
+        if(abs(x[i])<threshold*a) {
+            j = P[i];
+            a = P[e];
+            P[i] = a; Pinv[a] = i;
+            P[e] = j; Pinv[j] = e;
+            a = x[i]; x[i] = x[e]; x[e] = a;
+        }
+        a = Li[i];
+        e = Ui[i];
+        d = x[i];
+        Lj[a] = P[i];
+        Lv[a] = 1;
+        ++a;
+        for(j=xj.length-1;j!==-1;--j) {
+            k = xj[j];
+            c = x[k];
+            xj[j] = 0;
+            x[k] = 0;
+            if(k<=i) { Uj[e] = k; Uv[e] = c;   ++e; }
+            else     { Lj[a] = P[k]; Lv[a] = c/d; ++a; }
+        }
+        Li[i+1] = a;
+        Ui[i+1] = e;
+    }
+    for(j=Lj.length-1;j!==-1;--j) { Lj[j] = Pinv[Lj[j]]; }
+    return {L:L, U:U, P:P, Pinv:Pinv};
+}
+numeric.ccsDFS0 = function ccsDFS0(n) {
+    this.k = Array(n);
+    this.k1 = Array(n);
+    this.j = Array(n);
+}
+numeric.ccsDFS0.prototype.dfs = function dfs(J,Ai,Aj,x,xj,Pinv,P) {
+    var m = 0,foo,n=xj.length;
+    var k = this.k, k1 = this.k1, j = this.j,km,k11;
+    if(x[J]!==0) return;
+    x[J] = 1;
+    j[0] = J;
+    k[0] = km = Ai[Pinv[J]];
+    k1[0] = k11 = Ai[Pinv[J]+1];
+    while(1) {
+        if(isNaN(km)) throw new Error("Ow!");
+        if(km >= k11) {
+            xj[n] = Pinv[j[m]];
+            if(m===0) return;
+            ++n;
+            --m;
+            km = k[m];
+            k11 = k1[m];
+        } else {
+            foo = Aj[km];
+            if(x[foo] === 0) {
+                x[foo] = 1;
+                k[m] = km;
+                ++m;
+                j[m] = foo;
+                foo = Pinv[foo];
+                km = Ai[foo];
+                k1[m] = k11 = Ai[foo+1];
+            } else ++km;
+        }
+    }
+}
+numeric.ccsLPSolve0 = function ccsLPSolve0(A,B,y,xj,I,Pinv,P,dfs) {
+    var Ai = A[0], Aj = A[1], Av = A[2],m = Ai.length-1, n=0;
+    var Bi = B[0], Bj = B[1], Bv = B[2];
+    
+    var i,i0,i1,j,J,j0,j1,k,l,l0,l1,a;
+    i0 = Bi[I];
+    i1 = Bi[I+1];
+    xj.length = 0;
+    for(i=i0;i<i1;++i) { dfs.dfs(Bj[i],Ai,Aj,y,xj,Pinv,P); }
+    for(i=xj.length-1;i!==-1;--i) { j = xj[i]; y[P[j]] = 0; }
+    for(i=i0;i!==i1;++i) { j = Bj[i]; y[j] = Bv[i]; }
+    for(i=xj.length-1;i!==-1;--i) {
+        j = xj[i];
+        l = P[j];
+        j0 = Ai[j];
+        j1 = Ai[j+1];
+        for(k=j0;k<j1;++k) { if(Aj[k] === l) { y[l] /= Av[k]; break; } }
+        a = y[l];
+        for(k=j0;k<j1;++k) y[Aj[k]] -= a*Av[k];
+        y[l] = a;
+    }
+}
+numeric.ccsLUP0 = function ccsLUP0(A,threshold) {
+    var m = A[0].length-1;
+    var L = [numeric.rep([m+1],0),[],[]], U = [numeric.rep([m+1], 0),[],[]];
+    var Li = L[0], Lj = L[1], Lv = L[2], Ui = U[0], Uj = U[1], Uv = U[2];
+    var y = numeric.rep([m],0), xj = numeric.rep([m],0);
+    var i,j,k,j0,j1,a,e,c,d,K;
+    var sol = numeric.ccsLPSolve0, max = Math.max, abs = Math.abs;
+    var P = numeric.linspace(0,m-1),Pinv = numeric.linspace(0,m-1);
+    var dfs = new numeric.ccsDFS0(m);
+    if(typeof threshold === "undefined") { threshold = 1; }
+    for(i=0;i<m;++i) {
+        sol(L,A,y,xj,i,Pinv,P,dfs);
+        a = -1;
+        e = -1;
+        for(j=xj.length-1;j!==-1;--j) {
+            k = xj[j];
+            if(k <= i) continue;
+            c = abs(y[P[k]]);
+            if(c > a) { e = k; a = c; }
+        }
+        if(abs(y[P[i]])<threshold*a) {
+            j = P[i];
+            a = P[e];
+            P[i] = a; Pinv[a] = i;
+            P[e] = j; Pinv[j] = e;
+        }
+        a = Li[i];
+        e = Ui[i];
+        d = y[P[i]];
+        Lj[a] = P[i];
+        Lv[a] = 1;
+        ++a;
+        for(j=xj.length-1;j!==-1;--j) {
+            k = xj[j];
+            c = y[P[k]];
+            xj[j] = 0;
+            y[P[k]] = 0;
+            if(k<=i) { Uj[e] = k; Uv[e] = c;   ++e; }
+            else     { Lj[a] = P[k]; Lv[a] = c/d; ++a; }
+        }
+        Li[i+1] = a;
+        Ui[i+1] = e;
+    }
+    for(j=Lj.length-1;j!==-1;--j) { Lj[j] = Pinv[Lj[j]]; }
+    return {L:L, U:U, P:P, Pinv:Pinv};
+}
+numeric.ccsLUP = numeric.ccsLUP0;
+
+numeric.ccsDim = function ccsDim(A) { return [numeric.sup(A[1])+1,A[0].length-1]; }
+numeric.ccsGetBlock = function ccsGetBlock(A,i,j) {
+    var s = numeric.ccsDim(A),m=s[0],n=s[1];
+    if(typeof i === "undefined") { i = numeric.linspace(0,m-1); }
+    else if(typeof i === "number") { i = [i]; }
+    if(typeof j === "undefined") { j = numeric.linspace(0,n-1); }
+    else if(typeof j === "number") { j = [j]; }
+    var p,p0,p1,P = i.length,q,Q = j.length,r,jq,ip;
+    var Bi = numeric.rep([n],0), Bj=[], Bv=[], B = [Bi,Bj,Bv];
+    var Ai = A[0], Aj = A[1], Av = A[2];
+    var x = numeric.rep([m],0),count=0,flags = numeric.rep([m],0);
+    for(q=0;q<Q;++q) {
+        jq = j[q];
+        var q0 = Ai[jq];
+        var q1 = Ai[jq+1];
+        for(p=q0;p<q1;++p) {
+            r = Aj[p];
+            flags[r] = 1;
+            x[r] = Av[p];
+        }
+        for(p=0;p<P;++p) {
+            ip = i[p];
+            if(flags[ip]) {
+                Bj[count] = p;
+                Bv[count] = x[i[p]];
+                ++count;
+            }
+        }
+        for(p=q0;p<q1;++p) {
+            r = Aj[p];
+            flags[r] = 0;
+        }
+        Bi[q+1] = count;
+    }
+    return B;
+}
+
+numeric.ccsDot = function ccsDot(A,B) {
+    var Ai = A[0], Aj = A[1], Av = A[2];
+    var Bi = B[0], Bj = B[1], Bv = B[2];
+    var sA = numeric.ccsDim(A), sB = numeric.ccsDim(B);
+    var m = sA[0], n = sA[1], o = sB[1];
+    var x = numeric.rep([m],0), flags = numeric.rep([m],0), xj = Array(m);
+    var Ci = numeric.rep([o],0), Cj = [], Cv = [], C = [Ci,Cj,Cv];
+    var i,j,k,j0,j1,i0,i1,l,p,a,b;
+    for(k=0;k!==o;++k) {
+        j0 = Bi[k];
+        j1 = Bi[k+1];
+        p = 0;
+        for(j=j0;j<j1;++j) {
+            a = Bj[j];
+            b = Bv[j];
+            i0 = Ai[a];
+            i1 = Ai[a+1];
+            for(i=i0;i<i1;++i) {
+                l = Aj[i];
+                if(flags[l]===0) {
+                    xj[p] = l;
+                    flags[l] = 1;
+                    p = p+1;
+                }
+                x[l] = x[l] + Av[i]*b;
+            }
+        }
+        j0 = Ci[k];
+        j1 = j0+p;
+        Ci[k+1] = j1;
+        for(j=p-1;j!==-1;--j) {
+            b = j0+j;
+            i = xj[j];
+            Cj[b] = i;
+            Cv[b] = x[i];
+            flags[i] = 0;
+            x[i] = 0;
+        }
+        Ci[k+1] = Ci[k]+p;
+    }
+    return C;
+}
+
+numeric.ccsLUPSolve = function ccsLUPSolve(LUP,B) {
+    var L = LUP.L, U = LUP.U, P = LUP.P;
+    var Bi = B[0];
+    var flag = false;
+    if(typeof Bi !== "object") { B = [[0,B.length],numeric.linspace(0,B.length-1),B]; Bi = B[0]; flag = true; }
+    var Bj = B[1], Bv = B[2];
+    var n = L[0].length-1, m = Bi.length-1;
+    var x = numeric.rep([n],0), xj = Array(n);
+    var b = numeric.rep([n],0), bj = Array(n);
+    var Xi = numeric.rep([m+1],0), Xj = [], Xv = [];
+    var sol = numeric.ccsTSolve;
+    var i,j,j0,j1,k,J,N=0;
+    for(i=0;i<m;++i) {
+        k = 0;
+        j0 = Bi[i];
+        j1 = Bi[i+1];
+        for(j=j0;j<j1;++j) { 
+            J = LUP.Pinv[Bj[j]];
+            bj[k] = J;
+            b[J] = Bv[j];
+            ++k;
+        }
+        bj.length = k;
+        sol(L,b,x,bj,xj);
+        for(j=bj.length-1;j!==-1;--j) b[bj[j]] = 0;
+        sol(U,x,b,xj,bj);
+        if(flag) return b;
+        for(j=xj.length-1;j!==-1;--j) x[xj[j]] = 0;
+        for(j=bj.length-1;j!==-1;--j) {
+            J = bj[j];
+            Xj[N] = J;
+            Xv[N] = b[J];
+            b[J] = 0;
+            ++N;
+        }
+        Xi[i+1] = N;
+    }
+    return [Xi,Xj,Xv];
+}
+
+numeric.ccsbinop = function ccsbinop(body,setup) {
+    if(typeof setup === "undefined") setup='';
+    return Function('X','Y',
+            'var Xi = X[0], Xj = X[1], Xv = X[2];\n'+
+            'var Yi = Y[0], Yj = Y[1], Yv = Y[2];\n'+
+            'var n = Xi.length-1,m = Math.max(numeric.sup(Xj),numeric.sup(Yj))+1;\n'+
+            'var Zi = numeric.rep([n+1],0), Zj = [], Zv = [];\n'+
+            'var x = numeric.rep([m],0),y = numeric.rep([m],0);\n'+
+            'var xk,yk,zk;\n'+
+            'var i,j,j0,j1,k,p=0;\n'+
+            setup+
+            'for(i=0;i<n;++i) {\n'+
+            '  j0 = Xi[i]; j1 = Xi[i+1];\n'+
+            '  for(j=j0;j!==j1;++j) {\n'+
+            '    k = Xj[j];\n'+
+            '    x[k] = 1;\n'+
+            '    Zj[p] = k;\n'+
+            '    ++p;\n'+
+            '  }\n'+
+            '  j0 = Yi[i]; j1 = Yi[i+1];\n'+
+            '  for(j=j0;j!==j1;++j) {\n'+
+            '    k = Yj[j];\n'+
+            '    y[k] = Yv[j];\n'+
+            '    if(x[k] === 0) {\n'+
+            '      Zj[p] = k;\n'+
+            '      ++p;\n'+
+            '    }\n'+
+            '  }\n'+
+            '  Zi[i+1] = p;\n'+
+            '  j0 = Xi[i]; j1 = Xi[i+1];\n'+
+            '  for(j=j0;j!==j1;++j) x[Xj[j]] = Xv[j];\n'+
+            '  j0 = Zi[i]; j1 = Zi[i+1];\n'+
+            '  for(j=j0;j!==j1;++j) {\n'+
+            '    k = Zj[j];\n'+
+            '    xk = x[k];\n'+
+            '    yk = y[k];\n'+
+            body+'\n'+
+            '    Zv[j] = zk;\n'+
+            '  }\n'+
+            '  j0 = Xi[i]; j1 = Xi[i+1];\n'+
+            '  for(j=j0;j!==j1;++j) x[Xj[j]] = 0;\n'+
+            '  j0 = Yi[i]; j1 = Yi[i+1];\n'+
+            '  for(j=j0;j!==j1;++j) y[Yj[j]] = 0;\n'+
+            '}\n'+
+            'return [Zi,Zj,Zv];'
+            );
+};
+
+(function() {
+    var k,A,B,C;
+    for(k in numeric.ops2) {
+        if(isFinite(eval('1'+numeric.ops2[k]+'0'))) A = '[Y[0],Y[1],numeric.'+k+'(X,Y[2])]';
+        else A = 'NaN';
+        if(isFinite(eval('0'+numeric.ops2[k]+'1'))) B = '[X[0],X[1],numeric.'+k+'(X[2],Y)]';
+        else B = 'NaN';
+        if(isFinite(eval('1'+numeric.ops2[k]+'0')) && isFinite(eval('0'+numeric.ops2[k]+'1'))) C = 'numeric.ccs'+k+'MM(X,Y)';
+        else C = 'NaN';
+        numeric['ccs'+k+'MM'] = numeric.ccsbinop('zk = xk '+numeric.ops2[k]+'yk;');
+        numeric['ccs'+k] = Function('X','Y',
+                'if(typeof X === "number") return '+A+';\n'+
+                'if(typeof Y === "number") return '+B+';\n'+
+                'return '+C+';\n'
+                );
+    }
+}());
+
+numeric.ccsScatter = function ccsScatter(A) {
+    var Ai = A[0], Aj = A[1], Av = A[2];
+    var n = numeric.sup(Aj)+1,m=Ai.length;
+    var Ri = numeric.rep([n],0),Rj=Array(m), Rv = Array(m);
+    var counts = numeric.rep([n],0),i;
+    for(i=0;i<m;++i) counts[Aj[i]]++;
+    for(i=0;i<n;++i) Ri[i+1] = Ri[i] + counts[i];
+    var ptr = Ri.slice(0),k,Aii;
+    for(i=0;i<m;++i) {
+        Aii = Aj[i];
+        k = ptr[Aii];
+        Rj[k] = Ai[i];
+        Rv[k] = Av[i];
+        ptr[Aii]=ptr[Aii]+1;
+    }
+    return [Ri,Rj,Rv];
+}
+
+numeric.ccsGather = function ccsGather(A) {
+    var Ai = A[0], Aj = A[1], Av = A[2];
+    var n = Ai.length-1,m = Aj.length;
+    var Ri = Array(m), Rj = Array(m), Rv = Array(m);
+    var i,j,j0,j1,p;
+    p=0;
+    for(i=0;i<n;++i) {
+        j0 = Ai[i];
+        j1 = Ai[i+1];
+        for(j=j0;j!==j1;++j) {
+            Rj[p] = i;
+            Ri[p] = Aj[j];
+            Rv[p] = Av[j];
+            ++p;
+        }
+    }
+    return [Ri,Rj,Rv];
+}
+
+// The following sparse linear algebra routines are deprecated.
+
+numeric.sdim = function dim(A,ret,k) {
+    if(typeof ret === "undefined") { ret = []; }
+    if(typeof A !== "object") return ret;
+    if(typeof k === "undefined") { k=0; }
+    if(!(k in ret)) { ret[k] = 0; }
+    if(A.length > ret[k]) ret[k] = A.length;
+    var i;
+    for(i in A) {
+        if(A.hasOwnProperty(i)) dim(A[i],ret,k+1);
+    }
+    return ret;
+};
+
+numeric.sclone = function clone(A,k,n) {
+    if(typeof k === "undefined") { k=0; }
+    if(typeof n === "undefined") { n = numeric.sdim(A).length; }
+    var i,ret = Array(A.length);
+    if(k === n-1) {
+        for(i in A) { if(A.hasOwnProperty(i)) ret[i] = A[i]; }
+        return ret;
+    }
+    for(i in A) {
+        if(A.hasOwnProperty(i)) ret[i] = clone(A[i],k+1,n);
+    }
+    return ret;
+}
+
+numeric.sdiag = function diag(d) {
+    var n = d.length,i,ret = Array(n),i1,i2,i3;
+    for(i=n-1;i>=1;i-=2) {
+        i1 = i-1;
+        ret[i] = []; ret[i][i] = d[i];
+        ret[i1] = []; ret[i1][i1] = d[i1];
+    }
+    if(i===0) { ret[0] = []; ret[0][0] = d[i]; }
+    return ret;
+}
+
+numeric.sidentity = function identity(n) { return numeric.sdiag(numeric.rep([n],1)); }
+
+numeric.stranspose = function transpose(A) {
+    var ret = [], n = A.length, i,j,Ai;
+    for(i in A) {
+        if(!(A.hasOwnProperty(i))) continue;
+        Ai = A[i];
+        for(j in Ai) {
+            if(!(Ai.hasOwnProperty(j))) continue;
+            if(typeof ret[j] !== "object") { ret[j] = []; }
+            ret[j][i] = Ai[j];
+        }
+    }
+    return ret;
+}
+
+numeric.sLUP = function LUP(A,tol) {
+    throw new Error("The function numeric.sLUP had a bug in it and has been removed. Please use the new numeric.ccsLUP function instead.");
+};
+
+numeric.sdotMM = function dotMM(A,B) {
+    var p = A.length, q = B.length, BT = numeric.stranspose(B), r = BT.length, Ai, BTk;
+    var i,j,k,accum;
+    var ret = Array(p),reti;
+    for(i=p-1;i>=0;i--) {
+        reti = [];
+        Ai = A[i];
+        for(k=r-1;k>=0;k--) {
+            accum = 0;
+            BTk = BT[k];
+            for(j in Ai) {
+                if(!(Ai.hasOwnProperty(j))) continue;
+                if(j in BTk) { accum += Ai[j]*BTk[j]; }
+            }
+            if(accum) reti[k] = accum;
+        }
+        ret[i] = reti;
+    }
+    return ret;
+}
+
+numeric.sdotMV = function dotMV(A,x) {
+    var p = A.length, Ai, i,j;
+    var ret = Array(p), accum;
+    for(i=p-1;i>=0;i--) {
+        Ai = A[i];
+        accum = 0;
+        for(j in Ai) {
+            if(!(Ai.hasOwnProperty(j))) continue;
+            if(x[j]) accum += Ai[j]*x[j];
+        }
+        if(accum) ret[i] = accum;
+    }
+    return ret;
+}
+
+numeric.sdotVM = function dotMV(x,A) {
+    var i,j,Ai,alpha;
+    var ret = [], accum;
+    for(i in x) {
+        if(!x.hasOwnProperty(i)) continue;
+        Ai = A[i];
+        alpha = x[i];
+        for(j in Ai) {
+            if(!Ai.hasOwnProperty(j)) continue;
+            if(!ret[j]) { ret[j] = 0; }
+            ret[j] += alpha*Ai[j];
+        }
+    }
+    return ret;
+}
+
+numeric.sdotVV = function dotVV(x,y) {
+    var i,ret=0;
+    for(i in x) { if(x[i] && y[i]) ret+= x[i]*y[i]; }
+    return ret;
+}
+
+numeric.sdot = function dot(A,B) {
+    var m = numeric.sdim(A).length, n = numeric.sdim(B).length;
+    var k = m*1000+n;
+    switch(k) {
+    case 0: return A*B;
+    case 1001: return numeric.sdotVV(A,B);
+    case 2001: return numeric.sdotMV(A,B);
+    case 1002: return numeric.sdotVM(A,B);
+    case 2002: return numeric.sdotMM(A,B);
+    default: throw new Error('numeric.sdot not implemented for tensors of order '+m+' and '+n);
+    }
+}
+
+numeric.sscatter = function scatter(V) {
+    var n = V[0].length, Vij, i, j, m = V.length, A = [], Aj;
+    for(i=n-1;i>=0;--i) {
+        if(!V[m-1][i]) continue;
+        Aj = A;
+        for(j=0;j<m-2;j++) {
+            Vij = V[j][i];
+            if(!Aj[Vij]) Aj[Vij] = [];
+            Aj = Aj[Vij];
+        }
+        Aj[V[j][i]] = V[j+1][i];
+    }
+    return A;
+}
+
+numeric.sgather = function gather(A,ret,k) {
+    if(typeof ret === "undefined") ret = [];
+    if(typeof k === "undefined") k = [];
+    var n,i,Ai;
+    n = k.length;
+    for(i in A) {
+        if(A.hasOwnProperty(i)) {
+            k[n] = parseInt(i);
+            Ai = A[i];
+            if(typeof Ai === "number") {
+                if(Ai) {
+                    if(ret.length === 0) {
+                        for(i=n+1;i>=0;--i) ret[i] = [];
+                    }
+                    for(i=n;i>=0;--i) ret[i].push(k[i]);
+                    ret[n+1].push(Ai);
+                }
+            } else gather(Ai,ret,k);
+        }
+    }
+    if(k.length>n) k.pop();
+    return ret;
+}
+
+// 6. Coordinate matrices
+numeric.cLU = function LU(A) {
+    var I = A[0], J = A[1], V = A[2];
+    var p = I.length, m=0, i,j,k,a,b,c;
+    for(i=0;i<p;i++) if(I[i]>m) m=I[i];
+    m++;
+    var L = Array(m), U = Array(m), left = numeric.rep([m],Infinity), right = numeric.rep([m],-Infinity);
+    var Ui, Uj,alpha;
+    for(k=0;k<p;k++) {
+        i = I[k];
+        j = J[k];
+        if(j<left[i]) left[i] = j;
+        if(j>right[i]) right[i] = j;
+    }
+    for(i=0;i<m-1;i++) { if(right[i] > right[i+1]) right[i+1] = right[i]; }
+    for(i=m-1;i>=1;i--) { if(left[i]<left[i-1]) left[i-1] = left[i]; }
+    var countL = 0, countU = 0;
+    for(i=0;i<m;i++) {
+        U[i] = numeric.rep([right[i]-left[i]+1],0);
+        L[i] = numeric.rep([i-left[i]],0);
+        countL += i-left[i]+1;
+        countU += right[i]-i+1;
+    }
+    for(k=0;k<p;k++) { i = I[k]; U[i][J[k]-left[i]] = V[k]; }
+    for(i=0;i<m-1;i++) {
+        a = i-left[i];
+        Ui = U[i];
+        for(j=i+1;left[j]<=i && j<m;j++) {
+            b = i-left[j];
+            c = right[i]-i;
+            Uj = U[j];
+            alpha = Uj[b]/Ui[a];
+            if(alpha) {
+                for(k=1;k<=c;k++) { Uj[k+b] -= alpha*Ui[k+a]; }
+                L[j][i-left[j]] = alpha;
+            }
+        }
+    }
+    var Ui = [], Uj = [], Uv = [], Li = [], Lj = [], Lv = [];
+    var p,q,foo;
+    p=0; q=0;
+    for(i=0;i<m;i++) {
+        a = left[i];
+        b = right[i];
+        foo = U[i];
+        for(j=i;j<=b;j++) {
+            if(foo[j-a]) {
+                Ui[p] = i;
+                Uj[p] = j;
+                Uv[p] = foo[j-a];
+                p++;
+            }
+        }
+        foo = L[i];
+        for(j=a;j<i;j++) {
+            if(foo[j-a]) {
+                Li[q] = i;
+                Lj[q] = j;
+                Lv[q] = foo[j-a];
+                q++;
+            }
+        }
+        Li[q] = i;
+        Lj[q] = i;
+        Lv[q] = 1;
+        q++;
+    }
+    return {U:[Ui,Uj,Uv], L:[Li,Lj,Lv]};
+};
+
+numeric.cLUsolve = function LUsolve(lu,b) {
+    var L = lu.L, U = lu.U, ret = numeric.clone(b);
+    var Li = L[0], Lj = L[1], Lv = L[2];
+    var Ui = U[0], Uj = U[1], Uv = U[2];
+    var p = Ui.length, q = Li.length;
+    var m = ret.length,i,j,k;
+    k = 0;
+    for(i=0;i<m;i++) {
+        while(Lj[k] < i) {
+            ret[i] -= Lv[k]*ret[Lj[k]];
+            k++;
+        }
+        k++;
+    }
+    k = p-1;
+    for(i=m-1;i>=0;i--) {
+        while(Uj[k] > i) {
+            ret[i] -= Uv[k]*ret[Uj[k]];
+            k--;
+        }
+        ret[i] /= Uv[k];
+        k--;
+    }
+    return ret;
+};
+
+numeric.cgrid = function grid(n,shape) {
+    if(typeof n === "number") n = [n,n];
+    var ret = numeric.rep(n,-1);
+    var i,j,count;
+    if(typeof shape !== "function") {
+        switch(shape) {
+        case 'L':
+            shape = function(i,j) { return (i>=n[0]/2 || j<n[1]/2); }
+            break;
+        default:
+            shape = function(i,j) { return true; };
+            break;
+        }
+    }
+    count=0;
+    for(i=1;i<n[0]-1;i++) for(j=1;j<n[1]-1;j++) 
+        if(shape(i,j)) {
+            ret[i][j] = count;
+            count++;
+        }
+    return ret;
+}
+
+numeric.cdelsq = function delsq(g) {
+    var dir = [[-1,0],[0,-1],[0,1],[1,0]];
+    var s = numeric.dim(g), m = s[0], n = s[1], i,j,k,p,q;
+    var Li = [], Lj = [], Lv = [];
+    for(i=1;i<m-1;i++) for(j=1;j<n-1;j++) {
+        if(g[i][j]<0) continue;
+        for(k=0;k<4;k++) {
+            p = i+dir[k][0];
+            q = j+dir[k][1];
+            if(g[p][q]<0) continue;
+            Li.push(g[i][j]);
+            Lj.push(g[p][q]);
+            Lv.push(-1);
+        }
+        Li.push(g[i][j]);
+        Lj.push(g[i][j]);
+        Lv.push(4);
+    }
+    return [Li,Lj,Lv];
+}
+
+numeric.cdotMV = function dotMV(A,x) {
+    var ret, Ai = A[0], Aj = A[1], Av = A[2],k,p=Ai.length,N;
+    N=0;
+    for(k=0;k<p;k++) { if(Ai[k]>N) N = Ai[k]; }
+    N++;
+    ret = numeric.rep([N],0);
+    for(k=0;k<p;k++) { ret[Ai[k]]+=Av[k]*x[Aj[k]]; }
+    return ret;
+}
+
+// 7. Splines
+
+numeric.Spline = function Spline(x,yl,yr,kl,kr) { this.x = x; this.yl = yl; this.yr = yr; this.kl = kl; this.kr = kr; }
+numeric.Spline.prototype._at = function _at(x1,p) {
+    var x = this.x;
+    var yl = this.yl;
+    var yr = this.yr;
+    var kl = this.kl;
+    var kr = this.kr;
+    var x1,a,b,t;
+    var add = numeric.add, sub = numeric.sub, mul = numeric.mul;
+    a = sub(mul(kl[p],x[p+1]-x[p]),sub(yr[p+1],yl[p]));
+    b = add(mul(kr[p+1],x[p]-x[p+1]),sub(yr[p+1],yl[p]));
+    t = (x1-x[p])/(x[p+1]-x[p]);
+    var s = t*(1-t);
+    return add(add(add(mul(1-t,yl[p]),mul(t,yr[p+1])),mul(a,s*(1-t))),mul(b,s*t));
+}
+numeric.Spline.prototype.at = function at(x0) {
+    if(typeof x0 === "number") {
+        var x = this.x;
+        var n = x.length;
+        var p,q,mid,floor = Math.floor,a,b,t;
+        p = 0;
+        q = n-1;
+        while(q-p>1) {
+            mid = floor((p+q)/2);
+            if(x[mid] <= x0) p = mid;
+            else q = mid;
+        }
+        return this._at(x0,p);
+    }
+    var n = x0.length, i, ret = Array(n);
+    for(i=n-1;i!==-1;--i) ret[i] = this.at(x0[i]);
+    return ret;
+}
+numeric.Spline.prototype.diff = function diff() {
+    var x = this.x;
+    var yl = this.yl;
+    var yr = this.yr;
+    var kl = this.kl;
+    var kr = this.kr;
+    var n = yl.length;
+    var i,dx,dy;
+    var zl = kl, zr = kr, pl = Array(n), pr = Array(n);
+    var add = numeric.add, mul = numeric.mul, div = numeric.div, sub = numeric.sub;
+    for(i=n-1;i!==-1;--i) {
+        dx = x[i+1]-x[i];
+        dy = sub(yr[i+1],yl[i]);
+        pl[i] = div(add(mul(dy, 6),mul(kl[i],-4*dx),mul(kr[i+1],-2*dx)),dx*dx);
+        pr[i+1] = div(add(mul(dy,-6),mul(kl[i], 2*dx),mul(kr[i+1], 4*dx)),dx*dx);
+    }
+    return new numeric.Spline(x,zl,zr,pl,pr);
+}
+numeric.Spline.prototype.roots = function roots() {
+    function sqr(x) { return x*x; }
+    function heval(y0,y1,k0,k1,x) {
+        var A = k0*2-(y1-y0);
+        var B = -k1*2+(y1-y0);
+        var t = (x+1)*0.5;
+        var s = t*(1-t);
+        return (1-t)*y0+t*y1+A*s*(1-t)+B*s*t;
+    }
+    var ret = [];
+    var x = this.x, yl = this.yl, yr = this.yr, kl = this.kl, kr = this.kr;
+    if(typeof yl[0] === "number") {
+        yl = [yl];
+        yr = [yr];
+        kl = [kl];
+        kr = [kr];
+    }
+    var m = yl.length,n=x.length-1,i,j,k,y,s,t;
+    var ai,bi,ci,di, ret = Array(m),ri,k0,k1,y0,y1,A,B,D,dx,cx,stops,z0,z1,zm,t0,t1,tm;
+    var sqrt = Math.sqrt;
+    for(i=0;i!==m;++i) {
+        ai = yl[i];
+        bi = yr[i];
+        ci = kl[i];
+        di = kr[i];
+        ri = [];
+        for(j=0;j!==n;j++) {
+            if(j>0 && bi[j]*ai[j]<0) ri.push(x[j]);
+            dx = (x[j+1]-x[j]);
+            cx = x[j];
+            y0 = ai[j];
+            y1 = bi[j+1];
+            k0 = ci[j]/dx;
+            k1 = di[j+1]/dx;
+            D = sqr(k0-k1+3*(y0-y1)) + 12*k1*y0;
+            A = k1+3*y0+2*k0-3*y1;
+            B = 3*(k1+k0+2*(y0-y1));
+            if(D<=0) {
+                z0 = A/B;
+                if(z0>x[j] && z0<x[j+1]) stops = [x[j],z0,x[j+1]];
+                else stops = [x[j],x[j+1]];
+            } else {
+                z0 = (A-sqrt(D))/B;
+                z1 = (A+sqrt(D))/B;
+                stops = [x[j]];
+                if(z0>x[j] && z0<x[j+1]) stops.push(z0);
+                if(z1>x[j] && z1<x[j+1]) stops.push(z1);
+                stops.push(x[j+1]);
+            }
+            t0 = stops[0];
+            z0 = this._at(t0,j);
+            for(k=0;k<stops.length-1;k++) {
+                t1 = stops[k+1];
+                z1 = this._at(t1,j);
+                if(z0 === 0) {
+                    ri.push(t0); 
+                    t0 = t1;
+                    z0 = z1;
+                    continue;
+                }
+                if(z1 === 0 || z0*z1>0) {
+                    t0 = t1;
+                    z0 = z1;
+                    continue;
+                }
+                var side = 0;
+                while(1) {
+                    tm = (z0*t1-z1*t0)/(z0-z1);
+                    if(tm <= t0 || tm >= t1) { break; }
+                    zm = this._at(tm,j);
+                    if(zm*z1>0) {
+                        t1 = tm;
+                        z1 = zm;
+                        if(side === -1) z0*=0.5;
+                        side = -1;
+                    } else if(zm*z0>0) {
+                        t0 = tm;
+                        z0 = zm;
+                        if(side === 1) z1*=0.5;
+                        side = 1;
+                    } else break;
+                }
+                ri.push(tm);
+                t0 = stops[k+1];
+                z0 = this._at(t0, j);
+            }
+            if(z1 === 0) ri.push(t1);
+        }
+        ret[i] = ri;
+    }
+    if(typeof this.yl[0] === "number") return ret[0];
+    return ret;
+}
+numeric.spline = function spline(x,y,k1,kn) {
+    var n = x.length, b = [], dx = [], dy = [];
+    var i;
+    var sub = numeric.sub,mul = numeric.mul,add = numeric.add;
+    for(i=n-2;i>=0;i--) { dx[i] = x[i+1]-x[i]; dy[i] = sub(y[i+1],y[i]); }
+    if(typeof k1 === "string" || typeof kn === "string") { 
+        k1 = kn = "periodic";
+    }
+    // Build sparse tridiagonal system
+    var T = [[],[],[]];
+    switch(typeof k1) {
+    case "undefined":
+        b[0] = mul(3/(dx[0]*dx[0]),dy[0]);
+        T[0].push(0,0);
+        T[1].push(0,1);
+        T[2].push(2/dx[0],1/dx[0]);
+        break;
+    case "string":
+        b[0] = add(mul(3/(dx[n-2]*dx[n-2]),dy[n-2]),mul(3/(dx[0]*dx[0]),dy[0]));
+        T[0].push(0,0,0);
+        T[1].push(n-2,0,1);
+        T[2].push(1/dx[n-2],2/dx[n-2]+2/dx[0],1/dx[0]);
+        break;
+    default:
+        b[0] = k1;
+        T[0].push(0);
+        T[1].push(0);
+        T[2].push(1);
+        break;
+    }
+    for(i=1;i<n-1;i++) {
+        b[i] = add(mul(3/(dx[i-1]*dx[i-1]),dy[i-1]),mul(3/(dx[i]*dx[i]),dy[i]));
+        T[0].push(i,i,i);
+        T[1].push(i-1,i,i+1);
+        T[2].push(1/dx[i-1],2/dx[i-1]+2/dx[i],1/dx[i]);
+    }
+    switch(typeof kn) {
+    case "undefined":
+        b[n-1] = mul(3/(dx[n-2]*dx[n-2]),dy[n-2]);
+        T[0].push(n-1,n-1);
+        T[1].push(n-2,n-1);
+        T[2].push(1/dx[n-2],2/dx[n-2]);
+        break;
+    case "string":
+        T[1][T[1].length-1] = 0;
+        break;
+    default:
+        b[n-1] = kn;
+        T[0].push(n-1);
+        T[1].push(n-1);
+        T[2].push(1);
+        break;
+    }
+    if(typeof b[0] !== "number") b = numeric.transpose(b);
+    else b = [b];
+    var k = Array(b.length);
+    if(typeof k1 === "string") {
+        for(i=k.length-1;i!==-1;--i) {
+            k[i] = numeric.ccsLUPSolve(numeric.ccsLUP(numeric.ccsScatter(T)),b[i]);
+            k[i][n-1] = k[i][0];
+        }
+    } else {
+        for(i=k.length-1;i!==-1;--i) {
+            k[i] = numeric.cLUsolve(numeric.cLU(T),b[i]);
+        }
+    }
+    if(typeof y[0] === "number") k = k[0];
+    else k = numeric.transpose(k);
+    return new numeric.Spline(x,y,y,k,k);
+}
+
+// 8. FFT
+numeric.fftpow2 = function fftpow2(x,y) {
+    var n = x.length;
+    if(n === 1) return;
+    var cos = Math.cos, sin = Math.sin, i,j;
+    var xe = Array(n/2), ye = Array(n/2), xo = Array(n/2), yo = Array(n/2);
+    j = n/2;
+    for(i=n-1;i!==-1;--i) {
+        --j;
+        xo[j] = x[i];
+        yo[j] = y[i];
+        --i;
+        xe[j] = x[i];
+        ye[j] = y[i];
+    }
+    fftpow2(xe,ye);
+    fftpow2(xo,yo);
+    j = n/2;
+    var t,k = (-6.2831853071795864769252867665590057683943387987502116419/n),ci,si;
+    for(i=n-1;i!==-1;--i) {
+        --j;
+        if(j === -1) j = n/2-1;
+        t = k*i;
+        ci = cos(t);
+        si = sin(t);
+        x[i] = xe[j] + ci*xo[j] - si*yo[j];
+        y[i] = ye[j] + ci*yo[j] + si*xo[j];
+    }
+}
+numeric._ifftpow2 = function _ifftpow2(x,y) {
+    var n = x.length;
+    if(n === 1) return;
+    var cos = Math.cos, sin = Math.sin, i,j;
+    var xe = Array(n/2), ye = Array(n/2), xo = Array(n/2), yo = Array(n/2);
+    j = n/2;
+    for(i=n-1;i!==-1;--i) {
+        --j;
+        xo[j] = x[i];
+        yo[j] = y[i];
+        --i;
+        xe[j] = x[i];
+        ye[j] = y[i];
+    }
+    _ifftpow2(xe,ye);
+    _ifftpow2(xo,yo);
+    j = n/2;
+    var t,k = (6.2831853071795864769252867665590057683943387987502116419/n),ci,si;
+    for(i=n-1;i!==-1;--i) {
+        --j;
+        if(j === -1) j = n/2-1;
+        t = k*i;
+        ci = cos(t);
+        si = sin(t);
+        x[i] = xe[j] + ci*xo[j] - si*yo[j];
+        y[i] = ye[j] + ci*yo[j] + si*xo[j];
+    }
+}
+numeric.ifftpow2 = function ifftpow2(x,y) {
+    numeric._ifftpow2(x,y);
+    numeric.diveq(x,x.length);
+    numeric.diveq(y,y.length);
+}
+numeric.convpow2 = function convpow2(ax,ay,bx,by) {
+    numeric.fftpow2(ax,ay);
+    numeric.fftpow2(bx,by);
+    var i,n = ax.length,axi,bxi,ayi,byi;
+    for(i=n-1;i!==-1;--i) {
+        axi = ax[i]; ayi = ay[i]; bxi = bx[i]; byi = by[i];
+        ax[i] = axi*bxi-ayi*byi;
+        ay[i] = axi*byi+ayi*bxi;
+    }
+    numeric.ifftpow2(ax,ay);
+}
+numeric.T.prototype.fft = function fft() {
+    var x = this.x, y = this.y;
+    var n = x.length, log = Math.log, log2 = log(2),
+        p = Math.ceil(log(2*n-1)/log2), m = Math.pow(2,p);
+    var cx = numeric.rep([m],0), cy = numeric.rep([m],0), cos = Math.cos, sin = Math.sin;
+    var k, c = (-3.141592653589793238462643383279502884197169399375105820/n),t;
+    var a = numeric.rep([m],0), b = numeric.rep([m],0),nhalf = Math.floor(n/2);
+    for(k=0;k<n;k++) a[k] = x[k];
+    if(typeof y !== "undefined") for(k=0;k<n;k++) b[k] = y[k];
+    cx[0] = 1;
+    for(k=1;k<=m/2;k++) {
+        t = c*k*k;
+        cx[k] = cos(t);
+        cy[k] = sin(t);
+        cx[m-k] = cos(t);
+        cy[m-k] = sin(t)
+    }
+    var X = new numeric.T(a,b), Y = new numeric.T(cx,cy);
+    X = X.mul(Y);
+    numeric.convpow2(X.x,X.y,numeric.clone(Y.x),numeric.neg(Y.y));
+    X = X.mul(Y);
+    X.x.length = n;
+    X.y.length = n;
+    return X;
+}
+numeric.T.prototype.ifft = function ifft() {
+    var x = this.x, y = this.y;
+    var n = x.length, log = Math.log, log2 = log(2),
+        p = Math.ceil(log(2*n-1)/log2), m = Math.pow(2,p);
+    var cx = numeric.rep([m],0), cy = numeric.rep([m],0), cos = Math.cos, sin = Math.sin;
+    var k, c = (3.141592653589793238462643383279502884197169399375105820/n),t;
+    var a = numeric.rep([m],0), b = numeric.rep([m],0),nhalf = Math.floor(n/2);
+    for(k=0;k<n;k++) a[k] = x[k];
+    if(typeof y !== "undefined") for(k=0;k<n;k++) b[k] = y[k];
+    cx[0] = 1;
+    for(k=1;k<=m/2;k++) {
+        t = c*k*k;
+        cx[k] = cos(t);
+        cy[k] = sin(t);
+        cx[m-k] = cos(t);
+        cy[m-k] = sin(t)
+    }
+    var X = new numeric.T(a,b), Y = new numeric.T(cx,cy);
+    X = X.mul(Y);
+    numeric.convpow2(X.x,X.y,numeric.clone(Y.x),numeric.neg(Y.y));
+    X = X.mul(Y);
+    X.x.length = n;
+    X.y.length = n;
+    return X.div(n);
+}
+
+//9. Unconstrained optimization
+numeric.gradient = function gradient(f,x) {
+    var n = x.length;
+    var f0 = f(x);
+    if(isNaN(f0)) throw new Error('gradient: f(x) is a NaN!');
+    var max = Math.max;
+    var i,x0 = numeric.clone(x),f1,f2, J = Array(n);
+    var div = numeric.div, sub = numeric.sub,errest,roundoff,max = Math.max,eps = 1e-3,abs = Math.abs, min = Math.min;
+    var t0,t1,t2,it=0,d1,d2,N;
+    for(i=0;i<n;i++) {
+        var h = max(1e-6*f0,1e-8);
+        while(1) {
+            ++it;
+            if(it>20) { throw new Error("Numerical gradient fails"); }
+            x0[i] = x[i]+h;
+            f1 = f(x0);
+            x0[i] = x[i]-h;
+            f2 = f(x0);
+            x0[i] = x[i];
+            if(isNaN(f1) || isNaN(f2)) { h/=16; continue; }
+            J[i] = (f1-f2)/(2*h);
+            t0 = x[i]-h;
+            t1 = x[i];
+            t2 = x[i]+h;
+            d1 = (f1-f0)/h;
+            d2 = (f0-f2)/h;
+            N = max(abs(J[i]),abs(f0),abs(f1),abs(f2),abs(t0),abs(t1),abs(t2),1e-8);
+            errest = min(max(abs(d1-J[i]),abs(d2-J[i]),abs(d1-d2))/N,h/N);
+            if(errest>eps) { h/=16; }
+            else break;
+            }
+    }
+    return J;
+}
+
+numeric.uncmin = function uncmin(f,x0,tol,gradient,maxit,callback,options) {
+    var grad = numeric.gradient;
+    if(typeof options === "undefined") { options = {}; }
+    if(typeof tol === "undefined") { tol = 1e-8; }
+    if(typeof gradient === "undefined") { gradient = function(x) { return grad(f,x); }; }
+    if(typeof maxit === "undefined") maxit = 1000;
+    x0 = numeric.clone(x0);
+    var n = x0.length;
+    var f0 = f(x0),f1,df0;
+    if(isNaN(f0)) throw new Error('uncmin: f(x0) is a NaN!');
+    var max = Math.max, norm2 = numeric.norm2;
+    tol = max(tol,numeric.epsilon);
+    var step,g0,g1,H1 = options.Hinv || numeric.identity(n);
+    var dot = numeric.dot, inv = numeric.inv, sub = numeric.sub, add = numeric.add, ten = numeric.tensor, div = numeric.div, mul = numeric.mul;
+    var all = numeric.all, isfinite = numeric.isFinite, neg = numeric.neg;
+    var it=0,i,s,x1,y,Hy,Hs,ys,i0,t,nstep,t1,t2;
+    var msg = "";
+    g0 = gradient(x0);
+    while(it<maxit) {
+        if(typeof callback === "function") { if(callback(it,x0,f0,g0,H1)) { msg = "Callback returned true"; break; } }
+        if(!all(isfinite(g0))) { msg = "Gradient has Infinity or NaN"; break; }
+        step = neg(dot(H1,g0));
+        if(!all(isfinite(step))) { msg = "Search direction has Infinity or NaN"; break; }
+        nstep = norm2(step);
+        if(nstep < tol) { msg="Newton step smaller than tol"; break; }
+        t = 1;
+        df0 = dot(g0,step);
+        // line search
+        x1 = x0;
+        while(it < maxit) {
+            if(t*nstep < tol) { break; }
+            s = mul(step,t);
+            x1 = add(x0,s);
+            f1 = f(x1);
+            if(f1-f0 >= 0.1*t*df0 || isNaN(f1)) {
+                t *= 0.5;
+                ++it;
+                continue;
+            }
+            break;
+        }
+        if(t*nstep < tol) { msg = "Line search step size smaller than tol"; break; }
+        if(it === maxit) { msg = "maxit reached during line search"; break; }
+        g1 = gradient(x1);
+        y = sub(g1,g0);
+        ys = dot(y,s);
+        Hy = dot(H1,y);
+        H1 = sub(add(H1,
+                mul(
+                        (ys+dot(y,Hy))/(ys*ys),
+                        ten(s,s)    )),
+                div(add(ten(Hy,s),ten(s,Hy)),ys));
+        x0 = x1;
+        f0 = f1;
+        g0 = g1;
+        ++it;
+    }
+    return {solution: x0, f: f0, gradient: g0, invHessian: H1, iterations:it, message: msg};
+}
+
+// 10. Ode solver (Dormand-Prince)
+numeric.Dopri = function Dopri(x,y,f,ymid,iterations,msg,events) {
+    this.x = x;
+    this.y = y;
+    this.f = f;
+    this.ymid = ymid;
+    this.iterations = iterations;
+    this.events = events;
+    this.message = msg;
+}
+numeric.Dopri.prototype._at = function _at(xi,j) {
+    function sqr(x) { return x*x; }
+    var sol = this;
+    var xs = sol.x;
+    var ys = sol.y;
+    var k1 = sol.f;
+    var ymid = sol.ymid;
+    var n = xs.length;
+    var x0,x1,xh,y0,y1,yh,xi;
+    var floor = Math.floor,h;
+    var c = 0.5;
+    var add = numeric.add, mul = numeric.mul,sub = numeric.sub, p,q,w;
+    x0 = xs[j];
+    x1 = xs[j+1];
+    y0 = ys[j];
+    y1 = ys[j+1];
+    h  = x1-x0;
+    xh = x0+c*h;
+    yh = ymid[j];
+    p = sub(k1[j  ],mul(y0,1/(x0-xh)+2/(x0-x1)));
+    q = sub(k1[j+1],mul(y1,1/(x1-xh)+2/(x1-x0)));
+    w = [sqr(xi - x1) * (xi - xh) / sqr(x0 - x1) / (x0 - xh),
+         sqr(xi - x0) * sqr(xi - x1) / sqr(x0 - xh) / sqr(x1 - xh),
+         sqr(xi - x0) * (xi - xh) / sqr(x1 - x0) / (x1 - xh),
+         (xi - x0) * sqr(xi - x1) * (xi - xh) / sqr(x0-x1) / (x0 - xh),
+         (xi - x1) * sqr(xi - x0) * (xi - xh) / sqr(x0-x1) / (x1 - xh)];
+    return add(add(add(add(mul(y0,w[0]),
+                           mul(yh,w[1])),
+                           mul(y1,w[2])),
+                           mul( p,w[3])),
+                           mul( q,w[4]));
+}
+numeric.Dopri.prototype.at = function at(x) {
+    var i,j,k,floor = Math.floor;
+    if(typeof x !== "number") {
+        var n = x.length, ret = Array(n);
+        for(i=n-1;i!==-1;--i) {
+            ret[i] = this.at(x[i]);
+        }
+        return ret;
+    }
+    var x0 = this.x;
+    i = 0; j = x0.length-1;
+    while(j-i>1) {
+        k = floor(0.5*(i+j));
+        if(x0[k] <= x) i = k;
+        else j = k;
+    }
+    return this._at(x,i);
+}
+
+numeric.dopri = function dopri(x0,x1,y0,f,tol,maxit,event) {
+    if(typeof tol === "undefined") { tol = 1e-6; }
+    if(typeof maxit === "undefined") { maxit = 1000; }
+    var xs = [x0], ys = [y0], k1 = [f(x0,y0)], k2,k3,k4,k5,k6,k7, ymid = [];
+    var A2 = 1/5;
+    var A3 = [3/40,9/40];
+    var A4 = [44/45,-56/15,32/9];
+    var A5 = [19372/6561,-25360/2187,64448/6561,-212/729];
+    var A6 = [9017/3168,-355/33,46732/5247,49/176,-5103/18656];
+    var b = [35/384,0,500/1113,125/192,-2187/6784,11/84];
+    var bm = [0.5*6025192743/30085553152,
+              0,
+              0.5*51252292925/65400821598,
+              0.5*-2691868925/45128329728,
+              0.5*187940372067/1594534317056,
+              0.5*-1776094331/19743644256,
+              0.5*11237099/235043384];
+    var c = [1/5,3/10,4/5,8/9,1,1];
+    var e = [-71/57600,0,71/16695,-71/1920,17253/339200,-22/525,1/40];
+    var i = 0,er,j;
+    var h = (x1-x0)/10;
+    var it = 0;
+    var add = numeric.add, mul = numeric.mul, y1,erinf;
+    var max = Math.max, min = Math.min, abs = Math.abs, norminf = numeric.norminf,pow = Math.pow;
+    var any = numeric.any, lt = numeric.lt, and = numeric.and, sub = numeric.sub;
+    var e0, e1, ev;
+    var ret = new numeric.Dopri(xs,ys,k1,ymid,-1,"");
+    if(typeof event === "function") e0 = event(x0,y0);
+    while(x0<x1 && it<maxit) {
+        ++it;
+        if(x0+h>x1) h = x1-x0;
+        k2 = f(x0+c[0]*h,                add(y0,mul(   A2*h,k1[i])));
+        k3 = f(x0+c[1]*h,            add(add(y0,mul(A3[0]*h,k1[i])),mul(A3[1]*h,k2)));
+        k4 = f(x0+c[2]*h,        add(add(add(y0,mul(A4[0]*h,k1[i])),mul(A4[1]*h,k2)),mul(A4[2]*h,k3)));
+        k5 = f(x0+c[3]*h,    add(add(add(add(y0,mul(A5[0]*h,k1[i])),mul(A5[1]*h,k2)),mul(A5[2]*h,k3)),mul(A5[3]*h,k4)));
+        k6 = f(x0+c[4]*h,add(add(add(add(add(y0,mul(A6[0]*h,k1[i])),mul(A6[1]*h,k2)),mul(A6[2]*h,k3)),mul(A6[3]*h,k4)),mul(A6[4]*h,k5)));
+        y1 = add(add(add(add(add(y0,mul(k1[i],h*b[0])),mul(k3,h*b[2])),mul(k4,h*b[3])),mul(k5,h*b[4])),mul(k6,h*b[5]));
+        k7 = f(x0+h,y1);
+        er = add(add(add(add(add(mul(k1[i],h*e[0]),mul(k3,h*e[2])),mul(k4,h*e[3])),mul(k5,h*e[4])),mul(k6,h*e[5])),mul(k7,h*e[6]));
+        if(typeof er === "number") erinf = abs(er);
+        else erinf = norminf(er);
+        if(erinf > tol) { // reject
+            h = 0.2*h*pow(tol/erinf,0.25);
+            if(x0+h === x0) {
+                ret.msg = "Step size became too small";
+                break;
+            }
+            continue;
+        }
+        ymid[i] = add(add(add(add(add(add(y0,
+                mul(k1[i],h*bm[0])),
+                mul(k3   ,h*bm[2])),
+                mul(k4   ,h*bm[3])),
+                mul(k5   ,h*bm[4])),
+                mul(k6   ,h*bm[5])),
+                mul(k7   ,h*bm[6]));
+        ++i;
+        xs[i] = x0+h;
+        ys[i] = y1;
+        k1[i] = k7;
+        if(typeof event === "function") {
+            var yi,xl = x0,xr = x0+0.5*h,xi;
+            e1 = event(xr,ymid[i-1]);
+            ev = and(lt(e0,0),lt(0,e1));
+            if(!any(ev)) { xl = xr; xr = x0+h; e0 = e1; e1 = event(xr,y1); ev = and(lt(e0,0),lt(0,e1)); }
+            if(any(ev)) {
+                var xc, yc, en,ei;
+                var side=0, sl = 1.0, sr = 1.0;
+                while(1) {
+                    if(typeof e0 === "number") xi = (sr*e1*xl-sl*e0*xr)/(sr*e1-sl*e0);
+                    else {
+                        xi = xr;
+                        for(j=e0.length-1;j!==-1;--j) {
+                            if(e0[j]<0 && e1[j]>0) xi = min(xi,(sr*e1[j]*xl-sl*e0[j]*xr)/(sr*e1[j]-sl*e0[j]));
+                        }
+                    }
+                    if(xi <= xl || xi >= xr) break;
+                    yi = ret._at(xi, i-1);
+                    ei = event(xi,yi);
+                    en = and(lt(e0,0),lt(0,ei));
+                    if(any(en)) {
+                        xr = xi;
+                        e1 = ei;
+                        ev = en;
+                        sr = 1.0;
+                        if(side === -1) sl *= 0.5;
+                        else sl = 1.0;
+                        side = -1;
+                    } else {
+                        xl = xi;
+                        e0 = ei;
+                        sl = 1.0;
+                        if(side === 1) sr *= 0.5;
+                        else sr = 1.0;
+                        side = 1;
+                    }
+                }
+                y1 = ret._at(0.5*(x0+xi),i-1);
+                ret.f[i] = f(xi,yi);
+                ret.x[i] = xi;
+                ret.y[i] = yi;
+                ret.ymid[i-1] = y1;
+                ret.events = ev;
+                ret.iterations = it;
+                return ret;
+            }
+        }
+        x0 += h;
+        y0 = y1;
+        e0 = e1;
+        h = min(0.8*h*pow(tol/erinf,0.25),4*h);
+    }
+    ret.iterations = it;
+    return ret;
+}
+
+// 11. Ax = b
+numeric.LU = function(A, fast) {
+  fast = fast || false;
+
+  var abs = Math.abs;
+  var i, j, k, absAjk, Akk, Ak, Pk, Ai;
+  var max;
+  var n = A.length, n1 = n-1;
+  var P = new Array(n);
+  if(!fast) A = numeric.clone(A);
+
+  for (k = 0; k < n; ++k) {
+    Pk = k;
+    Ak = A[k];
+    max = abs(Ak[k]);
+    for (j = k + 1; j < n; ++j) {
+      absAjk = abs(A[j][k]);
+      if (max < absAjk) {
+        max = absAjk;
+        Pk = j;
+      }
+    }
+    P[k] = Pk;
+
+    if (Pk != k) {
+      A[k] = A[Pk];
+      A[Pk] = Ak;
+      Ak = A[k];
+    }
+
+    Akk = Ak[k];
+
+    for (i = k + 1; i < n; ++i) {
+      A[i][k] /= Akk;
+    }
+
+    for (i = k + 1; i < n; ++i) {
+      Ai = A[i];
+      for (j = k + 1; j < n1; ++j) {
+        Ai[j] -= Ai[k] * Ak[j];
+        ++j;
+        Ai[j] -= Ai[k] * Ak[j];
+      }
+      if(j===n1) Ai[j] -= Ai[k] * Ak[j];
+    }
+  }
+
+  return {
+    LU: A,
+    P:  P
+  };
+}
+
+numeric.LUsolve = function LUsolve(LUP, b) {
+  var i, j;
+  var LU = LUP.LU;
+  var n   = LU.length;
+  var x = numeric.clone(b);
+  var P   = LUP.P;
+  var Pi, LUi, LUii, tmp;
+
+  for (i=n-1;i!==-1;--i) x[i] = b[i];
+  for (i = 0; i < n; ++i) {
+    Pi = P[i];
+    if (P[i] !== i) {
+      tmp = x[i];
+      x[i] = x[Pi];
+      x[Pi] = tmp;
+    }
+
+    LUi = LU[i];
+    for (j = 0; j < i; ++j) {
+      x[i] -= x[j] * LUi[j];
+    }
+  }
+
+  for (i = n - 1; i >= 0; --i) {
+    LUi = LU[i];
+    for (j = i + 1; j < n; ++j) {
+      x[i] -= x[j] * LUi[j];
+    }
+
+    x[i] /= LUi[i];
+  }
+
+  return x;
+}
+
+numeric.solve = function solve(A,b,fast) { return numeric.LUsolve(numeric.LU(A,fast), b); }
+
+// 12. Linear programming
+numeric.echelonize = function echelonize(A) {
+    var s = numeric.dim(A), m = s[0], n = s[1];
+    var I = numeric.identity(m);
+    var P = Array(m);
+    var i,j,k,l,Ai,Ii,Z,a;
+    var abs = Math.abs;
+    var diveq = numeric.diveq;
+    A = numeric.clone(A);
+    for(i=0;i<m;++i) {
+        k = 0;
+        Ai = A[i];
+        Ii = I[i];
+        for(j=1;j<n;++j) if(abs(Ai[k])<abs(Ai[j])) k=j;
+        P[i] = k;
+        diveq(Ii,Ai[k]);
+        diveq(Ai,Ai[k]);
+        for(j=0;j<m;++j) if(j!==i) {
+            Z = A[j]; a = Z[k];
+            for(l=n-1;l!==-1;--l) Z[l] -= Ai[l]*a;
+            Z = I[j];
+            for(l=m-1;l!==-1;--l) Z[l] -= Ii[l]*a;
+        }
+    }
+    return {I:I, A:A, P:P};
+}
+
+numeric.__solveLP = function __solveLP(c,A,b,tol,maxit,x,flag) {
+    var sum = numeric.sum, log = numeric.log, mul = numeric.mul, sub = numeric.sub, dot = numeric.dot, div = numeric.div, add = numeric.add;
+    var m = c.length, n = b.length,y;
+    var unbounded = false, cb,i0=0;
+    var alpha = 1.0;
+    var f0,df0,AT = numeric.transpose(A), svd = numeric.svd,transpose = numeric.transpose,leq = numeric.leq, sqrt = Math.sqrt, abs = Math.abs;
+    var muleq = numeric.muleq;
+    var norm = numeric.norminf, any = numeric.any,min = Math.min;
+    var all = numeric.all, gt = numeric.gt;
+    var p = Array(m), A0 = Array(n),e=numeric.rep([n],1), H;
+    var solve = numeric.solve, z = sub(b,dot(A,x)),count;
+    var dotcc = dot(c,c);
+    var g;
+    for(count=i0;count<maxit;++count) {
+        var i,j,d;
+        for(i=n-1;i!==-1;--i) A0[i] = div(A[i],z[i]);
+        var A1 = transpose(A0);
+        for(i=m-1;i!==-1;--i) p[i] = (/*x[i]+*/sum(A1[i]));
+        alpha = 0.25*abs(dotcc/dot(c,p));
+        var a1 = 100*sqrt(dotcc/dot(p,p));
+        if(!isFinite(alpha) || alpha>a1) alpha = a1;
+        g = add(c,mul(alpha,p));
+        H = dot(A1,A0);
+        for(i=m-1;i!==-1;--i) H[i][i] += 1;
+        d = solve(H,div(g,alpha),true);
+        var t0 = div(z,dot(A,d));
+        var t = 1.0;
+        for(i=n-1;i!==-1;--i) if(t0[i]<0) t = min(t,-0.999*t0[i]);
+        y = sub(x,mul(d,t));
+        z = sub(b,dot(A,y));
+        if(!all(gt(z,0))) return { solution: x, message: "", iterations: count };
+        x = y;
+        if(alpha<tol) return { solution: y, message: "", iterations: count };
+        if(flag) {
+            var s = dot(c,g), Ag = dot(A,g);
+            unbounded = true;
+            for(i=n-1;i!==-1;--i) if(s*Ag[i]<0) { unbounded = false; break; }
+        } else {
+            if(x[m-1]>=0) unbounded = false;
+            else unbounded = true;
+        }
+        if(unbounded) return { solution: y, message: "Unbounded", iterations: count };
+    }
+    return { solution: x, message: "maximum iteration count exceeded", iterations:count };
+}
+
+numeric._solveLP = function _solveLP(c,A,b,tol,maxit) {
+    var m = c.length, n = b.length,y;
+    var sum = numeric.sum, log = numeric.log, mul = numeric.mul, sub = numeric.sub, dot = numeric.dot, div = numeric.div, add = numeric.add;
+    var c0 = numeric.rep([m],0).concat([1]);
+    var J = numeric.rep([n,1],-1);
+    var A0 = numeric.blockMatrix([[A                   ,   J  ]]);
+    var b0 = b;
+    var y = numeric.rep([m],0).concat(Math.max(0,numeric.sup(numeric.neg(b)))+1);
+    var x0 = numeric.__solveLP(c0,A0,b0,tol,maxit,y,false);
+    var x = numeric.clone(x0.solution);
+    x.length = m;
+    var foo = numeric.inf(sub(b,dot(A,x)));
+    if(foo<0) { return { solution: NaN, message: "Infeasible", iterations: x0.iterations }; }
+    var ret = numeric.__solveLP(c, A, b, tol, maxit-x0.iterations, x, true);
+    ret.iterations += x0.iterations;
+    return ret;
+};
+
+numeric.solveLP = function solveLP(c,A,b,Aeq,beq,tol,maxit) {
+    if(typeof maxit === "undefined") maxit = 1000;
+    if(typeof tol === "undefined") tol = numeric.epsilon;
+    if(typeof Aeq === "undefined") return numeric._solveLP(c,A,b,tol,maxit);
+    var m = Aeq.length, n = Aeq[0].length, o = A.length;
+    var B = numeric.echelonize(Aeq);
+    var flags = numeric.rep([n],0);
+    var P = B.P;
+    var Q = [];
+    var i;
+    for(i=P.length-1;i!==-1;--i) flags[P[i]] = 1;
+    for(i=n-1;i!==-1;--i) if(flags[i]===0) Q.push(i);
+    var g = numeric.getRange;
+    var I = numeric.linspace(0,m-1), J = numeric.linspace(0,o-1);
+    var Aeq2 = g(Aeq,I,Q), A1 = g(A,J,P), A2 = g(A,J,Q), dot = numeric.dot, sub = numeric.sub;
+    var A3 = dot(A1,B.I);
+    var A4 = sub(A2,dot(A3,Aeq2)), b4 = sub(b,dot(A3,beq));
+    var c1 = Array(P.length), c2 = Array(Q.length);
+    for(i=P.length-1;i!==-1;--i) c1[i] = c[P[i]];
+    for(i=Q.length-1;i!==-1;--i) c2[i] = c[Q[i]];
+    var c4 = sub(c2,dot(c1,dot(B.I,Aeq2)));
+    var S = numeric._solveLP(c4,A4,b4,tol,maxit);
+    var x2 = S.solution;
+    if(x2!==x2) return S;
+    var x1 = dot(B.I,sub(beq,dot(Aeq2,x2)));
+    var x = Array(c.length);
+    for(i=P.length-1;i!==-1;--i) x[P[i]] = x1[i];
+    for(i=Q.length-1;i!==-1;--i) x[Q[i]] = x2[i];
+    return { solution: x, message:S.message, iterations: S.iterations };
+}
+
+numeric.MPStoLP = function MPStoLP(MPS) {
+    if(MPS instanceof String) { MPS.split('\n'); }
+    var state = 0;
+    var states = ['Initial state','NAME','ROWS','COLUMNS','RHS','BOUNDS','ENDATA'];
+    var n = MPS.length;
+    var i,j,z,N=0,rows = {}, sign = [], rl = 0, vars = {}, nv = 0;
+    var name;
+    var c = [], A = [], b = [];
+    function err(e) { throw new Error('MPStoLP: '+e+'\nLine '+i+': '+MPS[i]+'\nCurrent state: '+states[state]+'\n'); }
+    for(i=0;i<n;++i) {
+        z = MPS[i];
+        var w0 = z.match(/\S*/g);
+        var w = [];
+        for(j=0;j<w0.length;++j) if(w0[j]!=="") w.push(w0[j]);
+        if(w.length === 0) continue;
+        for(j=0;j<states.length;++j) if(z.substr(0,states[j].length) === states[j]) break;
+        if(j<states.length) {
+            state = j;
+            if(j===1) { name = w[1]; }
+            if(j===6) return { name:name, c:c, A:numeric.transpose(A), b:b, rows:rows, vars:vars };
+            continue;
+        }
+        switch(state) {
+        case 0: case 1: err('Unexpected line');
+        case 2: 
+            switch(w[0]) {
+            case 'N': if(N===0) N = w[1]; else err('Two or more N rows'); break;
+            case 'L': rows[w[1]] = rl; sign[rl] = 1; b[rl] = 0; ++rl; break;
+            case 'G': rows[w[1]] = rl; sign[rl] = -1;b[rl] = 0; ++rl; break;
+            case 'E': rows[w[1]] = rl; sign[rl] = 0;b[rl] = 0; ++rl; break;
+            default: err('Parse error '+numeric.prettyPrint(w));
+            }
+            break;
+        case 3:
+            if(!vars.hasOwnProperty(w[0])) { vars[w[0]] = nv; c[nv] = 0; A[nv] = numeric.rep([rl],0); ++nv; }
+            var p = vars[w[0]];
+            for(j=1;j<w.length;j+=2) {
+                if(w[j] === N) { c[p] = parseFloat(w[j+1]); continue; }
+                var q = rows[w[j]];
+                A[p][q] = (sign[q]<0?-1:1)*parseFloat(w[j+1]);
+            }
+            break;
+        case 4:
+            for(j=1;j<w.length;j+=2) b[rows[w[j]]] = (sign[rows[w[j]]]<0?-1:1)*parseFloat(w[j+1]);
+            break;
+        case 5: /*FIXME*/ break;
+        case 6: err('Internal error');
+        }
+    }
+    err('Reached end of file without ENDATA');
+}
+// seedrandom.js version 2.0.
+// Author: David Bau 4/2/2011
+//
+// Defines a method Math.seedrandom() that, when called, substitutes
+// an explicitly seeded RC4-based algorithm for Math.random().  Also
+// supports automatic seeding from local or network sources of entropy.
+//
+// Usage:
+//
+//   <script src=http://davidbau.com/encode/seedrandom-min.js>
+//
+//   Math.seedrandom('yipee'); Sets Math.random to a function that is
+//                             initialized using the given explicit seed.
+//
+//   Math.seedrandom();        Sets Math.random to a function that is
+//                             seeded using the current time, dom state,
+//                             and other accumulated local entropy.
+//                             The generated seed string is returned.
+//
+//   Math.seedrandom('yowza', true);
+//                             Seeds using the given explicit seed mixed
+//                             together with accumulated entropy.
+//
+//   <script src="http://bit.ly/srandom-512">
+//                             Seeds using physical random bits downloaded
+//                             from random.org.
+//
+//   <script src="https://jsonlib.appspot.com/urandom?callback=Math.seedrandom">
+//                    Seeds using urandom bits from call.jsonlib.com,
+//                             which is faster than random.org.
+//
+// Examples:
+//
+//   Math.seedrandom("hello");            // Use "hello" as the seed.
+//   document.write(Math.random());       // Always 0.5463663768140734
+//   document.write(Math.random());       // Always 0.43973793770592234
+//   var rng1 = Math.random;              // Remember the current prng.
+//
+//   var autoseed = Math.seedrandom();    // New prng with an automatic seed.
+//   document.write(Math.random());       // Pretty much unpredictable.
+//
+//   Math.random = rng1;                  // Continue "hello" prng sequence.
+//   document.write(Math.random());       // Always 0.554769432473455
+//
+//   Math.seedrandom(autoseed);           // Restart at the previous seed.
+//   document.write(Math.random());       // Repeat the 'unpredictable' value.
+//
+// Notes:
+//
+// Each time seedrandom('arg') is called, entropy from the passed seed
+// is accumulated in a pool to help generate future seeds for the
+// zero-argument form of Math.seedrandom, so entropy can be injected over
+// time by calling seedrandom with explicit data repeatedly.
+//
+// On speed - This javascript implementation of Math.random() is about
+// 3-10x slower than the built-in Math.random() because it is not native
+// code, but this is typically fast enough anyway.  Seeding is more expensive,
+// especially if you use auto-seeding.  Some details (timings on Chrome 4):
+//
+// Our Math.random()            - avg less than 0.002 milliseconds per call
+// seedrandom('explicit')       - avg less than 0.5 milliseconds per call
+// seedrandom('explicit', true) - avg less than 2 milliseconds per call
+// seedrandom()                 - avg about 38 milliseconds per call
+//
+// LICENSE (BSD):
+//
+// Copyright 2010 David Bau, all rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+// 
+//   1. Redistributions of source code must retain the above copyright
+//      notice, this list of conditions and the following disclaimer.
+//
+//   2. Redistributions in binary form must reproduce the above copyright
+//      notice, this list of conditions and the following disclaimer in the
+//      documentation and/or other materials provided with the distribution.
+// 
+//   3. Neither the name of this module nor the names of its contributors may
+//      be used to endorse or promote products derived from this software
+//      without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+/**
+ * All code is in an anonymous closure to keep the global namespace clean.
+ *
+ * @param {number=} overflow 
+ * @param {number=} startdenom
+ */
+
+// Patched by Seb so that seedrandom.js does not pollute the Math object.
+// My tests suggest that doing Math.trouble = 1 makes Math lookups about 5%
+// slower.
+numeric.seedrandom = { pow:Math.pow, random:Math.random };
+
+(function (pool, math, width, chunks, significance, overflow, startdenom) {
+
+
+//
+// seedrandom()
+// This is the seedrandom function described above.
+//
+math['seedrandom'] = function seedrandom(seed, use_entropy) {
+  var key = [];
+  var arc4;
+
+  // Flatten the seed string or build one from local entropy if needed.
+  seed = mixkey(flatten(
+    use_entropy ? [seed, pool] :
+    arguments.length ? seed :
+    [new Date().getTime(), pool, window], 3), key);
+
+  // Use the seed to initialize an ARC4 generator.
+  arc4 = new ARC4(key);
+
+  // Mix the randomness into accumulated entropy.
+  mixkey(arc4.S, pool);
+
+  // Override Math.random
+
+  // This function returns a random double in [0, 1) that contains
+  // randomness in every bit of the mantissa of the IEEE 754 value.
+
+  math['random'] = function random() {  // Closure to return a random double:
+    var n = arc4.g(chunks);             // Start with a numerator n < 2 ^ 48
+    var d = startdenom;                 //   and denominator d = 2 ^ 48.
+    var x = 0;                          //   and no 'extra last byte'.
+    while (n < significance) {          // Fill up all significant digits by
+      n = (n + x) * width;              //   shifting numerator and
+      d *= width;                       //   denominator and generating a
+      x = arc4.g(1);                    //   new least-significant-byte.
+    }
+    while (n >= overflow) {             // To avoid rounding up, before adding
+      n /= 2;                           //   last byte, shift everything
+      d /= 2;                           //   right using integer math until
+      x >>>= 1;                         //   we have exactly the desired bits.
+    }
+    return (n + x) / d;                 // Form the number within [0, 1).
+  };
+
+  // Return the seed that was used
+  return seed;
+};
+
+//
+// ARC4
+//
+// An ARC4 implementation.  The constructor takes a key in the form of
+// an array of at most (width) integers that should be 0 <= x < (width).
+//
+// The g(count) method returns a pseudorandom integer that concatenates
+// the next (count) outputs from ARC4.  Its return value is a number x
+// that is in the range 0 <= x < (width ^ count).
+//
+/** @constructor */
+function ARC4(key) {
+  var t, u, me = this, keylen = key.length;
+  var i = 0, j = me.i = me.j = me.m = 0;
+  me.S = [];
+  me.c = [];
+
+  // The empty key [] is treated as [0].
+  if (!keylen) { key = [keylen++]; }
+
+  // Set up S using the standard key scheduling algorithm.
+  while (i < width) { me.S[i] = i++; }
+  for (i = 0; i < width; i++) {
+    t = me.S[i];
+    j = lowbits(j + t + key[i % keylen]);
+    u = me.S[j];
+    me.S[i] = u;
+    me.S[j] = t;
+  }
+
+  // The "g" method returns the next (count) outputs as one number.
+  me.g = function getnext(count) {
+    var s = me.S;
+    var i = lowbits(me.i + 1); var t = s[i];
+    var j = lowbits(me.j + t); var u = s[j];
+    s[i] = u;
+    s[j] = t;
+    var r = s[lowbits(t + u)];
+    while (--count) {
+      i = lowbits(i + 1); t = s[i];
+      j = lowbits(j + t); u = s[j];
+      s[i] = u;
+      s[j] = t;
+      r = r * width + s[lowbits(t + u)];
+    }
+    me.i = i;
+    me.j = j;
+    return r;
+  };
+  // For robust unpredictability discard an initial batch of values.
+  // See http://www.rsa.com/rsalabs/node.asp?id=2009
+  me.g(width);
+}
+
+//
+// flatten()
+// Converts an object tree to nested arrays of strings.
+//
+/** @param {Object=} result 
+  * @param {string=} prop
+  * @param {string=} typ */
+function flatten(obj, depth, result, prop, typ) {
+  result = [];
+  typ = typeof(obj);
+  if (depth && typ == 'object') {
+    for (prop in obj) {
+      if (prop.indexOf('S') < 5) {    // Avoid FF3 bug (local/sessionStorage)
+        try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
+      }
+    }
+  }
+  return (result.length ? result : obj + (typ != 'string' ? '\0' : ''));
+}
+
+//
+// mixkey()
+// Mixes a string seed into a key that is an array of integers, and
+// returns a shortened string seed that is equivalent to the result key.
+//
+/** @param {number=} smear 
+  * @param {number=} j */
+function mixkey(seed, key, smear, j) {
+  seed += '';                         // Ensure the seed is a string
+  smear = 0;
+  for (j = 0; j < seed.length; j++) {
+    key[lowbits(j)] =
+      lowbits((smear ^= key[lowbits(j)] * 19) + seed.charCodeAt(j));
+  }
+  seed = '';
+  for (j in key) { seed += String.fromCharCode(key[j]); }
+  return seed;
+}
+
+//
+// lowbits()
+// A quick "n mod width" for width a power of 2.
+//
+function lowbits(n) { return n & (width - 1); }
+
+//
+// The following constants are related to IEEE 754 limits.
+//
+startdenom = math.pow(width, chunks);
+significance = math.pow(2, significance);
+overflow = significance * 2;
+
+//
+// When seedrandom.js is loaded, we immediately mix a few bits
+// from the built-in RNG into the entropy pool.  Because we do
+// not want to intefere with determinstic PRNG state later,
+// seedrandom will not call math.random on its own again after
+// initialization.
+//
+mixkey(math.random(), pool);
+
+// End anonymous scope, and pass initial values.
+}(
+  [],   // pool: entropy pool starts empty
+  numeric.seedrandom, // math: package containing random, pow, and seedrandom
+  256,  // width: each RC4 output is 0 <= x < 256
+  6,    // chunks: at least six RC4 outputs for each double
+  52    // significance: there are 52 significant digits in a double
+  ));
+/* This file is a slightly modified version of quadprog.js from Alberto Santini.
+ * It has been slightly modified by Sébastien Loisel to make sure that it handles
+ * 0-based Arrays instead of 1-based Arrays.
+ * License is in resources/LICENSE.quadprog */
+(function(exports) {
+
+function base0to1(A) {
+    if(typeof A !== "object") { return A; }
+    var ret = [], i,n=A.length;
+    for(i=0;i<n;i++) ret[i+1] = base0to1(A[i]);
+    return ret;
+}
+function base1to0(A) {
+    if(typeof A !== "object") { return A; }
+    var ret = [], i,n=A.length;
+    for(i=1;i<n;i++) ret[i-1] = base1to0(A[i]);
+    return ret;
+}
+
+function dpori(a, lda, n) {
+    var i, j, k, kp1, t;
+
+    for (k = 1; k <= n; k = k + 1) {
+        a[k][k] = 1 / a[k][k];
+        t = -a[k][k];
+        //~ dscal(k - 1, t, a[1][k], 1);
+        for (i = 1; i < k; i = i + 1) {
+            a[i][k] = t * a[i][k];
+        }
+
+        kp1 = k + 1;
+        if (n < kp1) {
+            break;
+        }
+        for (j = kp1; j <= n; j = j + 1) {
+            t = a[k][j];
+            a[k][j] = 0;
+            //~ daxpy(k, t, a[1][k], 1, a[1][j], 1);
+            for (i = 1; i <= k; i = i + 1) {
+                a[i][j] = a[i][j] + (t * a[i][k]);
+            }
+        }
+    }
+
+}
+
+function dposl(a, lda, n, b) {
+    var i, k, kb, t;
+
+    for (k = 1; k <= n; k = k + 1) {
+        //~ t = ddot(k - 1, a[1][k], 1, b[1], 1);
+        t = 0;
+        for (i = 1; i < k; i = i + 1) {
+            t = t + (a[i][k] * b[i]);
+        }
+
+        b[k] = (b[k] - t) / a[k][k];
+    }
+
+    for (kb = 1; kb <= n; kb = kb + 1) {
+        k = n + 1 - kb;
+        b[k] = b[k] / a[k][k];
+        t = -b[k];
+        //~ daxpy(k - 1, t, a[1][k], 1, b[1], 1);
+        for (i = 1; i < k; i = i + 1) {
+            b[i] = b[i] + (t * a[i][k]);
+        }
+    }
+}
+
+function dpofa(a, lda, n, info) {
+    var i, j, jm1, k, t, s;
+
+    for (j = 1; j <= n; j = j + 1) {
+        info[1] = j;
+        s = 0;
+        jm1 = j - 1;
+        if (jm1 < 1) {
+            s = a[j][j] - s;
+            if (s <= 0) {
+                break;
+            }
+            a[j][j] = Math.sqrt(s);
+        } else {
+            for (k = 1; k <= jm1; k = k + 1) {
+                //~ t = a[k][j] - ddot(k - 1, a[1][k], 1, a[1][j], 1);
+                t = a[k][j];
+                for (i = 1; i < k; i = i + 1) {
+                    t = t - (a[i][j] * a[i][k]);
+                }
+                t = t / a[k][k];
+                a[k][j] = t;
+                s = s + t * t;
+            }
+            s = a[j][j] - s;
+            if (s <= 0) {
+                break;
+            }
+            a[j][j] = Math.sqrt(s);
+        }
+        info[1] = 0;
+    }
+}
+
+function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
+    bvec, fdamat, q, meq, iact, nact, iter, work, ierr) {
+
+    var i, j, l, l1, info, it1, iwzv, iwrv, iwrm, iwsv, iwuv, nvl, r, iwnbv,
+        temp, sum, t1, tt, gc, gs, nu,
+        t1inf, t2min,
+        vsmall, tmpa, tmpb,
+        go;
+
+    r = Math.min(n, q);
+    l = 2 * n + (r * (r + 5)) / 2 + 2 * q + 1;
+
+    vsmall = 1.0e-60;
+    do {
+        vsmall = vsmall + vsmall;
+        tmpa = 1 + 0.1 * vsmall;
+        tmpb = 1 + 0.2 * vsmall;
+    } while (tmpa <= 1 || tmpb <= 1);
+
+    for (i = 1; i <= n; i = i + 1) {
+        work[i] = dvec[i];
+    }
+    for (i = n + 1; i <= l; i = i + 1) {
+        work[i] = 0;
+    }
+    for (i = 1; i <= q; i = i + 1) {
+        iact[i] = 0;
+    }
+
+    info = [];
+
+    if (ierr[1] === 0) {
+        dpofa(dmat, fddmat, n, info);
+        if (info[1] !== 0) {
+            ierr[1] = 2;
+            return;
+        }
+        dposl(dmat, fddmat, n, dvec);
+        dpori(dmat, fddmat, n);
+    } else {
+        for (j = 1; j <= n; j = j + 1) {
+            sol[j] = 0;
+            for (i = 1; i <= j; i = i + 1) {
+                sol[j] = sol[j] + dmat[i][j] * dvec[i];
+            }
+        }
+        for (j = 1; j <= n; j = j + 1) {
+            dvec[j] = 0;
+            for (i = j; i <= n; i = i + 1) {
+                dvec[j] = dvec[j] + dmat[j][i] * sol[i];
+            }
+        }
+    }
+
+    crval[1] = 0;
+    for (j = 1; j <= n; j = j + 1) {
+        sol[j] = dvec[j];
+        crval[1] = crval[1] + work[j] * sol[j];
+        work[j] = 0;
+        for (i = j + 1; i <= n; i = i + 1) {
+            dmat[i][j] = 0;
+        }
+    }
+    crval[1] = -crval[1] / 2;
+    ierr[1] = 0;
+
+    iwzv = n;
+    iwrv = iwzv + n;
+    iwuv = iwrv + r;
+    iwrm = iwuv + r + 1;
+    iwsv = iwrm + (r * (r + 1)) / 2;
+    iwnbv = iwsv + q;
+
+    for (i = 1; i <= q; i = i + 1) {
+        sum = 0;
+        for (j = 1; j <= n; j = j + 1) {
+            sum = sum + amat[j][i] * amat[j][i];
+        }
+        work[iwnbv + i] = Math.sqrt(sum);
+    }
+    nact = 0;
+    iter[1] = 0;
+    iter[2] = 0;
+
+    function fn_goto_50() {
+        iter[1] = iter[1] + 1;
+
+        l = iwsv;
+        for (i = 1; i <= q; i = i + 1) {
+            l = l + 1;
+            sum = -bvec[i];
+            for (j = 1; j <= n; j = j + 1) {
+                sum = sum + amat[j][i] * sol[j];
+            }
+            if (Math.abs(sum) < vsmall) {
+                sum = 0;
+            }
+            if (i > meq) {
+                work[l] = sum;
+            } else {
+                work[l] = -Math.abs(sum);
+                if (sum > 0) {
+                    for (j = 1; j <= n; j = j + 1) {
+                        amat[j][i] = -amat[j][i];
+                    }
+                    bvec[i] = -bvec[i];
+                }
+            }
+        }
+
+        for (i = 1; i <= nact; i = i + 1) {
+            work[iwsv + iact[i]] = 0;
+        }
+
+        nvl = 0;
+        temp = 0;
+        for (i = 1; i <= q; i = i + 1) {
+            if (work[iwsv + i] < temp * work[iwnbv + i]) {
+                nvl = i;
+                temp = work[iwsv + i] / work[iwnbv + i];
+            }
+        }
+        if (nvl === 0) {
+            return 999;
+        }
+
+        return 0;
+    }
+
+    function fn_goto_55() {
+        for (i = 1; i <= n; i = i + 1) {
+            sum = 0;
+            for (j = 1; j <= n; j = j + 1) {
+                sum = sum + dmat[j][i] * amat[j][nvl];
+            }
+            work[i] = sum;
+        }
+
+        l1 = iwzv;
+        for (i = 1; i <= n; i = i + 1) {
+            work[l1 + i] = 0;
+        }
+        for (j = nact + 1; j <= n; j = j + 1) {
+            for (i = 1; i <= n; i = i + 1) {
+                work[l1 + i] = work[l1 + i] + dmat[i][j] * work[j];
+            }
+        }
+
+        t1inf = true;
+        for (i = nact; i >= 1; i = i - 1) {
+            sum = work[i];
+            l = iwrm + (i * (i + 3)) / 2;
+            l1 = l - i;
+            for (j = i + 1; j <= nact; j = j + 1) {
+                sum = sum - work[l] * work[iwrv + j];
+                l = l + j;
+            }
+            sum = sum / work[l1];
+            work[iwrv + i] = sum;
+            if (iact[i] < meq) {
+                // continue;
+                break;
+            }
+            if (sum < 0) {
+                // continue;
+                break;
+            }
+            t1inf = false;
+            it1 = i;
+        }
+
+        if (!t1inf) {
+            t1 = work[iwuv + it1] / work[iwrv + it1];
+            for (i = 1; i <= nact; i = i + 1) {
+                if (iact[i] < meq) {
+                    // continue;
+                    break;
+                }
+                if (work[iwrv + i] < 0) {
+                    // continue;
+                    break;
+                }
+                temp = work[iwuv + i] / work[iwrv + i];
+                if (temp < t1) {
+                    t1 = temp;
+                    it1 = i;
+                }
+            }
+        }
+
+        sum = 0;
+        for (i = iwzv + 1; i <= iwzv + n; i = i + 1) {
+            sum = sum + work[i] * work[i];
+        }
+        if (Math.abs(sum) <= vsmall) {
+            if (t1inf) {
+                ierr[1] = 1;
+                // GOTO 999
+                return 999;
+            } else {
+                for (i = 1; i <= nact; i = i + 1) {
+                    work[iwuv + i] = work[iwuv + i] - t1 * work[iwrv + i];
+                }
+                work[iwuv + nact + 1] = work[iwuv + nact + 1] + t1;
+                // GOTO 700
+                return 700;
+            }
+        } else {
+            sum = 0;
+            for (i = 1; i <= n; i = i + 1) {
+                sum = sum + work[iwzv + i] * amat[i][nvl];
+            }
+            tt = -work[iwsv + nvl] / sum;
+            t2min = true;
+            if (!t1inf) {
+                if (t1 < tt) {
+                    tt = t1;
+                    t2min = false;
+                }
+            }
+
+            for (i = 1; i <= n; i = i + 1) {
+                sol[i] = sol[i] + tt * work[iwzv + i];
+                if (Math.abs(sol[i]) < vsmall) {
+                    sol[i] = 0;
+                }
+            }
+
+            crval[1] = crval[1] + tt * sum * (tt / 2 + work[iwuv + nact + 1]);
+            for (i = 1; i <= nact; i = i + 1) {
+                work[iwuv + i] = work[iwuv + i] - tt * work[iwrv + i];
+            }
+            work[iwuv + nact + 1] = work[iwuv + nact + 1] + tt;
+
+            if (t2min) {
+                nact = nact + 1;
+                iact[nact] = nvl;
+
+                l = iwrm + ((nact - 1) * nact) / 2 + 1;
+                for (i = 1; i <= nact - 1; i = i + 1) {
+                    work[l] = work[i];
+                    l = l + 1;
+                }
+
+                if (nact === n) {
+                    work[l] = work[n];
+                } else {
+                    for (i = n; i >= nact + 1; i = i - 1) {
+                        if (work[i] === 0) {
+                            // continue;
+                            break;
+                        }
+                        gc = Math.max(Math.abs(work[i - 1]), Math.abs(work[i]));
+                        gs = Math.min(Math.abs(work[i - 1]), Math.abs(work[i]));
+                        if (work[i - 1] >= 0) {
+                            temp = Math.abs(gc * Math.sqrt(1 + gs * gs / (gc * gc)));
+                        } else {
+                            temp = -Math.abs(gc * Math.sqrt(1 + gs * gs / (gc * gc)));
+                        }
+                        gc = work[i - 1] / temp;
+                        gs = work[i] / temp;
+
+                        if (gc === 1) {
+                            // continue;
+                            break;
+                        }
+                        if (gc === 0) {
+                            work[i - 1] = gs * temp;
+                            for (j = 1; j <= n; j = j + 1) {
+                                temp = dmat[j][i - 1];
+                                dmat[j][i - 1] = dmat[j][i];
+                                dmat[j][i] = temp;
+                            }
+                        } else {
+                            work[i - 1] = temp;
+                            nu = gs / (1 + gc);
+                            for (j = 1; j <= n; j = j + 1) {
+                                temp = gc * dmat[j][i - 1] + gs * dmat[j][i];
+                                dmat[j][i] = nu * (dmat[j][i - 1] + temp) - dmat[j][i];
+                                dmat[j][i - 1] = temp;
+
+                            }
+                        }
+                    }
+                    work[l] = work[nact];
+                }
+            } else {
+                sum = -bvec[nvl];
+                for (j = 1; j <= n; j = j + 1) {
+                    sum = sum + sol[j] * amat[j][nvl];
+                }
+                if (nvl > meq) {
+                    work[iwsv + nvl] = sum;
+                } else {
+                    work[iwsv + nvl] = -Math.abs(sum);
+                    if (sum > 0) {
+                        for (j = 1; j <= n; j = j + 1) {
+                            amat[j][nvl] = -amat[j][nvl];
+                        }
+                        bvec[nvl] = -bvec[nvl];
+                    }
+                }
+                // GOTO 700
+                return 700;
+            }
+        }
+
+        return 0;
+    }
+
+    function fn_goto_797() {
+        l = iwrm + (it1 * (it1 + 1)) / 2 + 1;
+        l1 = l + it1;
+        if (work[l1] === 0) {
+            // GOTO 798
+            return 798;
+        }
+        gc = Math.max(Math.abs(work[l1 - 1]), Math.abs(work[l1]));
+        gs = Math.min(Math.abs(work[l1 - 1]), Math.abs(work[l1]));
+        if (work[l1 - 1] >= 0) {
+            temp = Math.abs(gc * Math.sqrt(1 + gs * gs / (gc * gc)));
+        } else {
+            temp = -Math.abs(gc * Math.sqrt(1 + gs * gs / (gc * gc)));
+        }
+        gc = work[l1 - 1] / temp;
+        gs = work[l1] / temp;
+
+        if (gc === 1) {
+            // GOTO 798
+            return 798;
+        }
+        if (gc === 0) {
+            for (i = it1 + 1; i <= nact; i = i + 1) {
+                temp = work[l1 - 1];
+                work[l1 - 1] = work[l1];
+                work[l1] = temp;
+                l1 = l1 + i;
+            }
+            for (i = 1; i <= n; i = i + 1) {
+                temp = dmat[i][it1];
+                dmat[i][it1] = dmat[i][it1 + 1];
+                dmat[i][it1 + 1] = temp;
+            }
+        } else {
+            nu = gs / (1 + gc);
+            for (i = it1 + 1; i <= nact; i = i + 1) {
+                temp = gc * work[l1 - 1] + gs * work[l1];
+                work[l1] = nu * (work[l1 - 1] + temp) - work[l1];
+                work[l1 - 1] = temp;
+                l1 = l1 + i;
+            }
+            for (i = 1; i <= n; i = i + 1) {
+                temp = gc * dmat[i][it1] + gs * dmat[i][it1 + 1];
+                dmat[i][it1 + 1] = nu * (dmat[i][it1] + temp) - dmat[i][it1 + 1];
+                dmat[i][it1] = temp;
+            }
+        }
+
+        return 0;
+    }
+
+    function fn_goto_798() {
+        l1 = l - it1;
+        for (i = 1; i <= it1; i = i + 1) {
+            work[l1] = work[l];
+            l = l + 1;
+            l1 = l1 + 1;
+        }
+
+        work[iwuv + it1] = work[iwuv + it1 + 1];
+        iact[it1] = iact[it1 + 1];
+        it1 = it1 + 1;
+        if (it1 < nact) {
+            // GOTO 797
+            return 797;
+        }
+
+        return 0;
+    }
+
+    function fn_goto_799() {
+        work[iwuv + nact] = work[iwuv + nact + 1];
+        work[iwuv + nact + 1] = 0;
+        iact[nact] = 0;
+        nact = nact - 1;
+        iter[2] = iter[2] + 1;
+
+        return 0;
+    }
+
+    go = 0;
+    while (true) {
+        go = fn_goto_50();
+        if (go === 999) {
+            return;
+        }
+        while (true) {
+            go = fn_goto_55();
+            if (go === 0) {
+                break;
+            }
+            if (go === 999) {
+                return;
+            }
+            if (go === 700) {
+                if (it1 === nact) {
+                    fn_goto_799();
+                } else {
+                    while (true) {
+                        fn_goto_797();
+                        go = fn_goto_798();
+                        if (go !== 797) {
+                            break;
+                        }
+                    }
+                    fn_goto_799();
+                }
+            }
+        }
+    }
+
+}
+
+function solveQP(Dmat, dvec, Amat, bvec, meq, factorized) {
+    Dmat = base0to1(Dmat);
+    dvec = base0to1(dvec);
+    Amat = base0to1(Amat);
+    var i, n, q,
+        nact, r,
+        crval = [], iact = [], sol = [], work = [], iter = [],
+        message;
+
+    meq = meq || 0;
+    factorized = factorized ? base0to1(factorized) : [undefined, 0];
+    bvec = bvec ? base0to1(bvec) : [];
+
+    // In Fortran the array index starts from 1
+    n = Dmat.length - 1;
+    q = Amat[1].length - 1;
+
+    if (!bvec) {
+        for (i = 1; i <= q; i = i + 1) {
+            bvec[i] = 0;
+        }
+    }
+    for (i = 1; i <= q; i = i + 1) {
+        iact[i] = 0;
+    }
+    nact = 0;
+    r = Math.min(n, q);
+    for (i = 1; i <= n; i = i + 1) {
+        sol[i] = 0;
+    }
+    crval[1] = 0;
+    for (i = 1; i <= (2 * n + (r * (r + 5)) / 2 + 2 * q + 1); i = i + 1) {
+        work[i] = 0;
+    }
+    for (i = 1; i <= 2; i = i + 1) {
+        iter[i] = 0;
+    }
+
+    qpgen2(Dmat, dvec, n, n, sol, crval, Amat,
+        bvec, n, q, meq, iact, nact, iter, work, factorized);
+
+    message = "";
+    if (factorized[1] === 1) {
+        message = "constraints are inconsistent, no solution!";
+    }
+    if (factorized[1] === 2) {
+        message = "matrix D in quadratic function is not positive definite!";
+    }
+
+    return {
+        solution: base1to0(sol),
+        value: base1to0(crval),
+        unconstrained_solution: base1to0(dvec),
+        iterations: base1to0(iter),
+        iact: base1to0(iact),
+        message: message
+    };
+}
+exports.solveQP = solveQP;
+}(numeric));
+/*
+
+Shanti Rao sent me this routine by private email. I had to modify it
+
+slightly to work on Arrays instead of using a Matrix object.
+
+It is apparently translated from http://stitchpanorama.sourceforge.net/Python/svd.py
+
+*/
+
+
+
+numeric.svd= function svd(A) {
+
+    var temp;
+
+//Compute the thin SVD from G. H. Golub and C. Reinsch, Numer. Math. 14, 403-420 (1970)
+
+	var prec= numeric.epsilon; //Math.pow(2,-52) // assumes double prec
+
+	var tolerance= 1.e-64/prec;
+
+	var itmax= 50;
+
+	var c=0;
+
+	var i=0;
+
+	var j=0;
+
+	var k=0;
+
+	var l=0;
+
+	
+
+	var u= numeric.clone(A);
+
+	var m= u.length;
+
+	
+
+	var n= u[0].length;
+
+	
+
+	if (m < n) throw "Need more rows than columns"
+
+	
+
+	var e = new Array(n);
+
+	var q = new Array(n);
+
+	for (i=0; i<n; i++) e[i] = q[i] = 0.0;
+
+	var v = numeric.rep([n,n],0);
+
+//	v.zero();
+
+	
+
+ 	function pythag(a,b)
+
+ 	{
+
+		a = Math.abs(a)
+
+		b = Math.abs(b)
+
+		if (a > b)
+
+			return a*Math.sqrt(1.0+(b*b/a/a))
+
+		else if (b == 0.0) 
+
+			return a
+
+		return b*Math.sqrt(1.0+(a*a/b/b))
+
+	}
+
+
+
+	//Householder's reduction to bidiagonal form
+
+
+
+	var f= 0.0;
+
+	var g= 0.0;
+
+	var h= 0.0;
+
+	var x= 0.0;
+
+	var y= 0.0;
+
+	var z= 0.0;
+
+	var s= 0.0;
+
+	
+
+	for (i=0; i < n; i++)
+
+	{	
+
+		e[i]= g;
+
+		s= 0.0;
+
+		l= i+1;
+
+		for (j=i; j < m; j++) 
+
+			s += (u[j][i]*u[j][i]);
+
+		if (s <= tolerance)
+
+			g= 0.0;
+
+		else
+
+		{	
+
+			f= u[i][i];
+
+			g= Math.sqrt(s);
+
+			if (f >= 0.0) g= -g;
+
+			h= f*g-s
+
+			u[i][i]=f-g;
+
+			for (j=l; j < n; j++)
+
+			{
+
+				s= 0.0
+
+				for (k=i; k < m; k++) 
+
+					s += u[k][i]*u[k][j]
+
+				f= s/h
+
+				for (k=i; k < m; k++) 
+
+					u[k][j]+=f*u[k][i]
+
+			}
+
+		}
+
+		q[i]= g
+
+		s= 0.0
+
+		for (j=l; j < n; j++) 
+
+			s= s + u[i][j]*u[i][j]
+
+		if (s <= tolerance)
+
+			g= 0.0
+
+		else
+
+		{	
+
+			f= u[i][i+1]
+
+			g= Math.sqrt(s)
+
+			if (f >= 0.0) g= -g
+
+			h= f*g - s
+
+			u[i][i+1] = f-g;
+
+			for (j=l; j < n; j++) e[j]= u[i][j]/h
+
+			for (j=l; j < m; j++)
+
+			{	
+
+				s=0.0
+
+				for (k=l; k < n; k++) 
+
+					s += (u[j][k]*u[i][k])
+
+				for (k=l; k < n; k++) 
+
+					u[j][k]+=s*e[k]
+
+			}	
+
+		}
+
+		y= Math.abs(q[i])+Math.abs(e[i])
+
+		if (y>x) 
+
+			x=y
+
+	}
+
+	
+
+	// accumulation of right hand gtransformations
+
+	for (i=n-1; i != -1; i+= -1)
+
+	{	
+
+		if (g != 0.0)
+
+		{
+
+		 	h= g*u[i][i+1]
+
+			for (j=l; j < n; j++) 
+
+				v[j][i]=u[i][j]/h
+
+			for (j=l; j < n; j++)
+
+			{	
+
+				s=0.0
+
+				for (k=l; k < n; k++) 
+
+					s += u[i][k]*v[k][j]
+
+				for (k=l; k < n; k++) 
+
+					v[k][j]+=(s*v[k][i])
+
+			}	
+
+		}
+
+		for (j=l; j < n; j++)
+
+		{
+
+			v[i][j] = 0;
+
+			v[j][i] = 0;
+
+		}
+
+		v[i][i] = 1;
+
+		g= e[i]
+
+		l= i
+
+	}
+
+	
+
+	// accumulation of left hand transformations
+
+	for (i=n-1; i != -1; i+= -1)
+
+	{	
+
+		l= i+1
+
+		g= q[i]
+
+		for (j=l; j < n; j++) 
+
+			u[i][j] = 0;
+
+		if (g != 0.0)
+
+		{
+
+			h= u[i][i]*g
+
+			for (j=l; j < n; j++)
+
+			{
+
+				s=0.0
+
+				for (k=l; k < m; k++) s += u[k][i]*u[k][j];
+
+				f= s/h
+
+				for (k=i; k < m; k++) u[k][j]+=f*u[k][i];
+
+			}
+
+			for (j=i; j < m; j++) u[j][i] = u[j][i]/g;
+
+		}
+
+		else
+
+			for (j=i; j < m; j++) u[j][i] = 0;
+
+		u[i][i] += 1;
+
+	}
+
+	
+
+	// diagonalization of the bidiagonal form
+
+	prec= prec*x
+
+	for (k=n-1; k != -1; k+= -1)
+
+	{
+
+		for (var iteration=0; iteration < itmax; iteration++)
+
+		{	// test f splitting
+
+			var test_convergence = false
+
+			for (l=k; l != -1; l+= -1)
+
+			{	
+
+				if (Math.abs(e[l]) <= prec)
+
+				{	test_convergence= true
+
+					break 
+
+				}
+
+				if (Math.abs(q[l-1]) <= prec)
+
+					break 
+
+			}
+
+			if (!test_convergence)
+
+			{	// cancellation of e[l] if l>0
+
+				c= 0.0
+
+				s= 1.0
+
+				var l1= l-1
+
+				for (i =l; i<k+1; i++)
+
+				{	
+
+					f= s*e[i]
+
+					e[i]= c*e[i]
+
+					if (Math.abs(f) <= prec)
+
+						break
+
+					g= q[i]
+
+					h= pythag(f,g)
+
+					q[i]= h
+
+					c= g/h
+
+					s= -f/h
+
+					for (j=0; j < m; j++)
+
+					{	
+
+						y= u[j][l1]
+
+						z= u[j][i]
+
+						u[j][l1] =  y*c+(z*s)
+
+						u[j][i] = -y*s+(z*c)
+
+					} 
+
+				}	
+
+			}
+
+			// test f convergence
+
+			z= q[k]
+
+			if (l== k)
+
+			{	//convergence
+
+				if (z<0.0)
+
+				{	//q[k] is made non-negative
+
+					q[k]= -z
+
+					for (j=0; j < n; j++)
+
+						v[j][k] = -v[j][k]
+
+				}
+
+				break  //break out of iteration loop and move on to next k value
+
+			}
+
+			if (iteration >= itmax-1)
+
+				throw 'Error: no convergence.'
+
+			// shift from bottom 2x2 minor
+
+			x= q[l]
+
+			y= q[k-1]
+
+			g= e[k-1]
+
+			h= e[k]
+
+			f= ((y-z)*(y+z)+(g-h)*(g+h))/(2.0*h*y)
+
+			g= pythag(f,1.0)
+
+			if (f < 0.0)
+
+				f= ((x-z)*(x+z)+h*(y/(f-g)-h))/x
+
+			else
+
+				f= ((x-z)*(x+z)+h*(y/(f+g)-h))/x
+
+			// next QR transformation
+
+			c= 1.0
+
+			s= 1.0
+
+			for (i=l+1; i< k+1; i++)
+
+			{	
+
+				g= e[i]
+
+				y= q[i]
+
+				h= s*g
+
+				g= c*g
+
+				z= pythag(f,h)
+
+				e[i-1]= z
+
+				c= f/z
+
+				s= h/z
+
+				f= x*c+g*s
+
+				g= -x*s+g*c
+
+				h= y*s
+
+				y= y*c
+
+				for (j=0; j < n; j++)
+
+				{	
+
+					x= v[j][i-1]
+
+					z= v[j][i]
+
+					v[j][i-1] = x*c+z*s
+
+					v[j][i] = -x*s+z*c
+
+				}
+
+				z= pythag(f,h)
+
+				q[i-1]= z
+
+				c= f/z
+
+				s= h/z
+
+				f= c*g+s*y
+
+				x= -s*g+c*y
+
+				for (j=0; j < m; j++)
+
+				{
+
+					y= u[j][i-1]
+
+					z= u[j][i]
+
+					u[j][i-1] = y*c+z*s
+
+					u[j][i] = -y*s+z*c
+
+				}
+
+			}
+
+			e[l]= 0.0
+
+			e[k]= f
+
+			q[k]= x
+
+		} 
+
+	}
+
+		
+
+	//vt= transpose(v)
+
+	//return (u,q,vt)
+
+	for (i=0;i<q.length; i++) 
+
+	  if (q[i] < prec) q[i] = 0
+
+	  
+
+	//sort eigenvalues	
+
+	for (i=0; i< n; i++)
+
+	{	 
+
+	//writeln(q)
+
+	 for (j=i-1; j >= 0; j--)
+
+	 {
+
+	  if (q[j] < q[i])
+
+	  {
+
+	//  writeln(i,'-',j)
+
+	   c = q[j]
+
+	   q[j] = q[i]
+
+	   q[i] = c
+
+	   for(k=0;k<u.length;k++) { temp = u[k][i]; u[k][i] = u[k][j]; u[k][j] = temp; }
+
+	   for(k=0;k<v.length;k++) { temp = v[k][i]; v[k][i] = v[k][j]; v[k][j] = temp; }
+
+//	   u.swapCols(i,j)
+
+//	   v.swapCols(i,j)
+
+	   i = j	   
+
+	  }
+
+	 }	
+
+	}
+
+	
+
+	return {U:u,S:q,V:v}
+
+};
+
+
+
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/numeric/numeric-1.2.6.js","/node_modules/numeric")
+
+},{"_process":50,"buffer":14}],49:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var polyline = {};
 
@@ -25848,7 +30689,7 @@ if (typeof module !== undefined) module.exports = polyline;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/polyline/src/polyline.js","/node_modules/polyline/src")
 
-},{"_process":48,"buffer":13}],48:[function(require,module,exports){
+},{"_process":50,"buffer":14}],50:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 // shim for using process in browser
 
@@ -25947,7 +30788,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/process/browser.js","/node_modules/process")
 
-},{"_process":48,"buffer":13}],49:[function(require,module,exports){
+},{"_process":50,"buffer":14}],51:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * URI.js - Mutating URLs
@@ -26137,7 +30978,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/IPv6.js","/node_modules/urijs/src")
 
-},{"_process":48,"buffer":13}],50:[function(require,module,exports){
+},{"_process":50,"buffer":14}],52:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * URI.js - Mutating URLs
@@ -26382,7 +31223,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/SecondLevelDomains.js","/node_modules/urijs/src")
 
-},{"_process":48,"buffer":13}],51:[function(require,module,exports){
+},{"_process":50,"buffer":14}],53:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * URI.js - Mutating URLs
@@ -28597,7 +33438,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/URI.js","/node_modules/urijs/src")
 
-},{"./IPv6":49,"./SecondLevelDomains":50,"./punycode":52,"_process":48,"buffer":13}],52:[function(require,module,exports){
+},{"./IPv6":51,"./SecondLevelDomains":52,"./punycode":54,"_process":50,"buffer":14}],54:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*! https://mths.be/punycode v1.4.0 by @mathias */
 ;(function(root) {
@@ -29135,7 +33976,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/punycode.js","/node_modules/urijs/src")
 
-},{"_process":48,"buffer":13}],53:[function(require,module,exports){
+},{"_process":50,"buffer":14}],55:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function(self) {
   'use strict';
@@ -29573,7 +34414,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/whatwg-fetch/fetch.js","/node_modules/whatwg-fetch")
 
-},{"_process":48,"buffer":13}]},{},[11])
+},{"_process":50,"buffer":14}]},{},[12])
 
 
 //# sourceMappingURL=portal.js.map
