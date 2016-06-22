@@ -1,8 +1,12 @@
 <script type="text/ng-template" id="campusMap.html">
-    <campusmap id="map"
+	<div data-tap-disabled="true">
+		<campusmap id="map"
                style="border: 1px solid black; width: 100%; height: 600px;"
                map="campusMap"
                />
+        
+        <p class="share">View or share with the <a href="{{ uri.value }}">University of Waterloo Campus Map</a>.</p>
+   </div>
 </script>
 
 <script type="text/ng-template" id="campusMapSettings.html">
