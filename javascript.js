@@ -2641,8 +2641,6 @@ var LocatorControl = function (_L$Control) {
 	}; // End of onRemove
 
 	LocatorControl.prototype._locationFound = function _locationFound(event) {
-		console.warn(event);
-
 		if (event.accuracy > 300) {
 			this._locationError({ msg: 'Location is not accurate enough.' });
 			return;
