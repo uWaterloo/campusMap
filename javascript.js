@@ -22,6 +22,10 @@ var _leaflet = require('leaflet');
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
+var _locator = require('./locator');
+
+var _locator2 = _interopRequireDefault(_locator);
+
 var _parent = require('./layer/parent');
 
 var _parent2 = _interopRequireDefault(_parent);
@@ -99,6 +103,9 @@ var CampusMap = function () {
 
         // Configure map indicators/controls
         console.debug('Configuring map indicators/controls...');
+
+        this._locator = new _locator2.default(this._config.map.locator);
+        this._locator.addTo(this._map);
 
         this._scalebar = _leaflet2.default.control.scale(this._config.map.scalebar);
         this._scalebar.addTo(this._map);
@@ -391,7 +398,7 @@ exports.default = CampusMap;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/campusmap.js","/js")
 
-},{"./directions":3,"./layer/building":4,"./layer/data":5,"./layer/html":6,"./layer/parent":8,"./layer/parking":9,"_process":52,"buffer":16,"es6-promise":18,"leaflet":47,"minivents":49,"urijs":55,"whatwg-fetch":57}],2:[function(require,module,exports){
+},{"./directions":3,"./layer/building":4,"./layer/data":5,"./layer/html":6,"./layer/parent":8,"./layer/parking":9,"./locator":12,"_process":53,"buffer":17,"es6-promise":19,"leaflet":48,"minivents":50,"urijs":56,"whatwg-fetch":58}],2:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -438,6 +445,31 @@ var config = {
         scalebar: {
             position: 'bottomleft',
             metric: true
+        },
+
+        locator: {
+            position: 'topleft',
+            marker_style: {
+                radius: 6,
+                stroke: true,
+                color: '#ffffff',
+                weight: 2,
+                opacity: 1,
+                fill: true,
+                fillColor: '#0033ff',
+                fillOpacity: 1,
+                clickable: false
+            },
+            accuracy_marker_style: {
+                stroke: true,
+                color: '#abcdef',
+                weight: 3,
+                opacity: 0.5,
+                fill: true,
+                fillColor: '#abcdef',
+                fillOpacity: 0.2,
+                clickable: false
+            }
         },
 
         controls: {
@@ -579,7 +611,7 @@ exports.default = config;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/config.js","/js")
 
-},{"./layers":10,"./secrets":13,"_process":52,"buffer":16,"leaflet":47}],3:[function(require,module,exports){
+},{"./layers":10,"./secrets":14,"_process":53,"buffer":17,"leaflet":48}],3:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -757,6 +789,7 @@ var UWPlan = function (_L$Routing$Plan) {
         var _this3 = _possibleConstructorReturn(this, _L$Routing$Plan.call(this, waypoints, options));
 
         _this3._directionsController = directions_controller;
+        _this3._latLng = null;
         return _this3;
     } // End of constructor
 
@@ -851,6 +884,8 @@ var UWPlan = function (_L$Routing$Plan) {
     }; // End of geocoderClass function
 
     UWPlan.prototype.createGeocoder = function createGeocoder(index, num_waypoints, options) {
+        var _this5 = this;
+
         var container = _leaflet2.default.DomUtil.create('div', 'waypoint');
         var input_group = _leaflet2.default.DomUtil.create('div', 'input-group', container);
         var input = _leaflet2.default.DomUtil.create('input', 'form-control', input_group);
@@ -865,12 +900,24 @@ var UWPlan = function (_L$Routing$Plan) {
 
         var my_location = _leaflet2.default.DomUtil.create('button', 'btn btn-default my-location', buttons);
         my_location.type = 'button';
+        my_location.disabled = this._latLng === null;
         var my_location_icon = _leaflet2.default.DomUtil.create('i', 'icon-direction', my_location);
         my_location_icon.alt = 'My Location';
 
+        this._directionsController.campusMap.map.on('locationfound', function (event) {
+            my_location.disabled = event.accuracy > 300;
+            _this5._latLng = event.accuracy > 300 ? null : event.latlng;
+        });
+        this._directionsController.campusMap.map.on('locationerror', function (event) {
+            my_location.disabled = true;
+            _this5._latLng = null;
+        });
+
         _leaflet2.default.DomEvent.addListener(my_location, 'click', function (event) {
             _leaflet2.default.DomEvent.preventDefault(event);
-            console.warn('My Location---Not Implemented');
+            if (_this5._latLng) {
+                _this5.spliceWaypoints(index, 1, _leaflet2.default.Routing.waypoint(_this5._latLng, 'My Location'));
+            }
         });
 
         return {
@@ -918,7 +965,7 @@ var Directions = function () {
     } // End of constructor
 
     Directions.prototype.generateDirectionsLink = function generateDirectionsLink(lat, lng, name) {
-        var _this5 = this;
+        var _this6 = this;
 
         lat = parseFloat(lat);
         lng = parseFloat(lng);
@@ -928,8 +975,8 @@ var Directions = function () {
         directionsToHere.innerHTML = 'Directions to here';
         _leaflet2.default.DomEvent.addListener(directionsToHere, 'click', function (evt) {
             console.warn('Setting destination');
-            _this5._routingControl.spliceWaypoints(_this5._routingControl.getWaypoints().length - 1, 1, _leaflet2.default.Routing.waypoint(_leaflet2.default.latLng(lat, lng), name));
-            _this5._routingControl.show();
+            _this6._routingControl.spliceWaypoints(_this6._routingControl.getWaypoints().length - 1, 1, _leaflet2.default.Routing.waypoint(_leaflet2.default.latLng(lat, lng), name));
+            _this6._routingControl.show();
         });
 
         _leaflet2.default.DomUtil.create('br', '', element);
@@ -938,8 +985,8 @@ var Directions = function () {
         addDestination.innerHTML = 'Add as next destination';
         _leaflet2.default.DomEvent.addListener(addDestination, 'click', function (evt) {
             console.warn('Adding as next destination');
-            _this5._routingControl.spliceWaypoints(_this5._routingControl.getWaypoints().length, 0, _leaflet2.default.Routing.waypoint(_leaflet2.default.latLng(lat, lng), name));
-            _this5._routingControl.show();
+            _this6._routingControl.spliceWaypoints(_this6._routingControl.getWaypoints().length, 0, _leaflet2.default.Routing.waypoint(_leaflet2.default.latLng(lat, lng), name));
+            _this6._routingControl.show();
         });
 
         return element;
@@ -970,7 +1017,7 @@ exports.default = Directions;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/directions.js","/js")
 
-},{"_process":52,"buffer":16,"leaflet":47,"leaflet-control-geocoder":32,"leaflet-routing-machine":35,"lrm-mapzen":48}],4:[function(require,module,exports){
+},{"_process":53,"buffer":17,"leaflet":48,"leaflet-control-geocoder":33,"leaflet-routing-machine":36,"lrm-mapzen":49}],4:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1495,7 +1542,7 @@ exports.default = BuildingLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/building.js","/js/layer")
 
-},{"../lib/projective":11,"./data":5,"_process":52,"buffer":16,"leaflet":47}],5:[function(require,module,exports){
+},{"../lib/projective":11,"./data":5,"_process":53,"buffer":17,"leaflet":48}],5:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1732,7 +1779,7 @@ var UnclusteredDataLayer = exports.UnclusteredDataLayer = function (_NamedGeoJSO
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/data.js","/js/layer")
 
-},{"./named":7,"_process":52,"buffer":16,"leaflet":47,"leaflet.markercluster":46}],6:[function(require,module,exports){
+},{"./named":7,"_process":53,"buffer":17,"leaflet":48,"leaflet.markercluster":47}],6:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1789,7 +1836,7 @@ exports.default = HTMLLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/html.js","/js/layer")
 
-},{"./named":7,"_process":52,"buffer":16}],7:[function(require,module,exports){
+},{"./named":7,"_process":53,"buffer":17}],7:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1941,7 +1988,7 @@ var NamedGeoJSONLayer = exports.NamedGeoJSONLayer = function (_L$GeoJSON) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/named.js","/js/layer")
 
-},{"_process":52,"buffer":16,"leaflet":47,"minivents":49}],8:[function(require,module,exports){
+},{"_process":53,"buffer":17,"leaflet":48,"minivents":50}],8:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -1990,7 +2037,7 @@ exports.default = ParentLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/parent.js","/js/layer")
 
-},{"./named":7,"_process":52,"buffer":16}],9:[function(require,module,exports){
+},{"./named":7,"_process":53,"buffer":17}],9:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -2107,7 +2154,7 @@ exports.default = ParkingLayer;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layer/parking.js","/js/layer")
 
-},{"../directions":3,"./data":5,"_process":52,"buffer":16,"leaflet":47}],10:[function(require,module,exports){
+},{"../directions":3,"./data":5,"_process":53,"buffer":17,"leaflet":48}],10:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -2404,7 +2451,7 @@ exports.default = layers;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/layers.js","/js")
 
-},{"_process":52,"buffer":16,"leaflet":47}],11:[function(require,module,exports){
+},{"_process":53,"buffer":17,"leaflet":48}],11:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -2518,7 +2565,120 @@ module.exports = Projective;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/lib/projective.js","/js/lib")
 
-},{"_process":52,"buffer":16,"numeric":50}],12:[function(require,module,exports){
+},{"_process":53,"buffer":17,"numeric":51}],12:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _leaflet = require('leaflet');
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LocatorControl = function (_L$Control) {
+	_inherits(LocatorControl, _L$Control);
+
+	function LocatorControl(config) {
+		_classCallCheck(this, LocatorControl);
+
+		var _this = _possibleConstructorReturn(this, _L$Control.call(this, config));
+
+		_this._locator_marker = _leaflet2.default.circleMarker(null, config.marker_style);
+		_this._accuracy_marker = _leaflet2.default.circle(null, null, config.accuracy_marker_style);
+		return _this;
+	} // End of constructor
+
+	LocatorControl.prototype.onAdd = function onAdd(map) {
+		var _this2 = this;
+
+		this._map = map;
+
+		var container = _leaflet2.default.DomUtil.create('div', 'leaflet-bar leaflet-control');
+		this._button = _leaflet2.default.DomUtil.create('a', 'my-location-btn disabled', container);
+		this._button.href = '#';
+		this._button.alt = 'Enable geolocation';
+		this._button.setAttribute('aria-label', 'Enable geolocation');
+		this._button.disabled = true;
+
+		_leaflet2.default.DomEvent.addListener(this._button, 'click', function (event) {
+			_leaflet2.default.DomEvent.preventDefault(event);
+
+			if (_this2._latLng) {
+				_this2._map.setView(_this2._latLng, 17);
+			} // End of if
+		});
+
+		this._icon = _leaflet2.default.DomUtil.create('i', 'icon-circle', this._button);
+
+		map.on('locationfound', this._locationFound.bind(this));
+		map.on('locationerror', this._locationError.bind(this));
+
+		// Start locating the user
+		map.locate({
+			watch: true,
+			timeout: 10000,
+			enableHighAccuracy: true
+		});
+
+		return container;
+	}; // End of onAdd
+
+	LocatorControl.prototype.onRemove = function onRemove(map) {
+		this._map.off('locationfound', this._locationFound.bind(this));
+		this._map.off('locationerror', this._locationError.bind(this));
+
+		this._map = null;
+	}; // End of onRemove
+
+	LocatorControl.prototype._locationFound = function _locationFound(event) {
+		console.warn(event);
+
+		if (event.accuracy > 300) {
+			this._locationError({ msg: 'Location is not accurate enough.' });
+			return;
+		} // End of if
+
+		this._latLng = event.latlng;
+
+		_leaflet2.default.DomUtil.removeClass(this._button, 'disabled');
+
+		this._locator_marker.setLatLng(event.latlng);
+		this._locator_marker.addTo(this._map);
+
+		this._accuracy_marker.setLatLng(event.latlng);
+		this._accuracy_marker.setRadius(event.accuracy);
+		this._accuracy_marker.addTo(this._map);
+	}; // End of _locationFound
+
+	LocatorControl.prototype._locationError = function _locationError(error) {
+		console.warn(error);
+
+		this._latLng = null;
+		_leaflet2.default.DomUtil.addClass(this._button, 'disabled');
+		this._map.removeLayer(this._locator_marker);
+		this._map.removeLayer(this._accuracy_marker);
+	}; // End of _locationError
+
+
+	return LocatorControl;
+}(_leaflet2.default.Control); // End of LocatorControl class
+
+
+exports.default = LocatorControl;
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/locator.js","/js")
+
+},{"_process":53,"buffer":17,"leaflet":48}],13:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -2552,7 +2712,6 @@ var campusmap = null;
 var app = angular.module('portalApp');
 
 app.controller('campusMapCtrl', ['$scope', '$timeout', 'directionsService', function ($scope, $timeout, directionsService) {
-	console.warn(directionsService);
 	window.directionsService = directionsService;
 
 	var presentCallback = null;
@@ -2703,7 +2862,7 @@ app.controller('campusMapCtrl', ['$scope', '$timeout', 'directionsService', func
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/portal.js","/js")
 
-},{"./campusmap":1,"./config":2,"./uri":14,"_process":52,"buffer":16,"leaflet":47,"urijs":55}],13:[function(require,module,exports){
+},{"./campusmap":1,"./config":2,"./uri":15,"_process":53,"buffer":17,"leaflet":48,"urijs":56}],14:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -2718,7 +2877,7 @@ exports.default = secrets;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/secrets.js","/js")
 
-},{"_process":52,"buffer":16}],14:[function(require,module,exports){
+},{"_process":53,"buffer":17}],15:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 
@@ -3086,7 +3245,7 @@ exports.default = URIController;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/js/uri.js","/js")
 
-},{"./campusmap":1,"_process":52,"buffer":16,"leaflet":47,"minivents":49,"urijs":55}],15:[function(require,module,exports){
+},{"./campusmap":1,"_process":53,"buffer":17,"leaflet":48,"minivents":50,"urijs":56}],16:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict'
 
@@ -3200,7 +3359,7 @@ function fromByteArray (uint8) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/base64-js/lib/b64.js","/node_modules/base64-js/lib")
 
-},{"_process":52,"buffer":16}],16:[function(require,module,exports){
+},{"_process":53,"buffer":17}],17:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * The buffer module from node.js, for the browser.
@@ -4916,7 +5075,7 @@ function isnan (val) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/buffer/index.js","/node_modules/buffer")
 
-},{"_process":52,"base64-js":15,"buffer":16,"ieee754":19,"isarray":20}],17:[function(require,module,exports){
+},{"_process":53,"base64-js":16,"buffer":17,"ieee754":20,"isarray":21}],18:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 function corslite(url, callback, cors) {
     var sent = false;
@@ -5014,7 +5173,7 @@ if (typeof module !== 'undefined') module.exports = corslite;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/corslite/corslite.js","/node_modules/corslite")
 
-},{"_process":52,"buffer":16}],18:[function(require,module,exports){
+},{"_process":53,"buffer":17}],19:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * @overview es6-promise - a tiny implementation of Promises/A+.
@@ -5978,7 +6137,7 @@ if (typeof module !== 'undefined') module.exports = corslite;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/es6-promise/dist/es6-promise.js","/node_modules/es6-promise/dist")
 
-},{"_process":52,"buffer":16}],19:[function(require,module,exports){
+},{"_process":53,"buffer":17}],20:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -6067,7 +6226,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/ieee754/index.js","/node_modules/ieee754")
 
-},{"_process":52,"buffer":16}],20:[function(require,module,exports){
+},{"_process":53,"buffer":17}],21:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var toString = {}.toString;
 
@@ -6077,7 +6236,7 @@ module.exports = Array.isArray || function (arr) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/isarray/index.js","/node_modules/isarray")
 
-},{"_process":52,"buffer":16}],21:[function(require,module,exports){
+},{"_process":53,"buffer":17}],22:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Nominatim = require('./geocoders/nominatim').class;
@@ -6312,7 +6471,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/control.js","/node_modules/leaflet-control-geocoder/src")
 
-},{"./geocoders/nominatim":29,"_process":52,"buffer":16,"leaflet":47}],22:[function(require,module,exports){
+},{"./geocoders/nominatim":30,"_process":53,"buffer":17,"leaflet":48}],23:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6400,7 +6559,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/arcgis.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],23:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],24:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6458,7 +6617,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/bing.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],24:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],25:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6552,7 +6711,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/google.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],25:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],26:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
     Util = require('../util');
@@ -6627,7 +6786,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/here.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],26:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],27:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6720,7 +6879,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/mapbox.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],27:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],28:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6810,7 +6969,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/mapquest.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],28:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],29:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6889,7 +7048,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/mapzen.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],29:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],30:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -6988,7 +7147,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/nominatim.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],30:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],31:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -7092,7 +7251,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/photon.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],31:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],32:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Util = require('../util');
@@ -7161,7 +7320,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/geocoders/what3words.js","/node_modules/leaflet-control-geocoder/src/geocoders")
 
-},{"../util":33,"_process":52,"buffer":16,"leaflet":47}],32:[function(require,module,exports){
+},{"../util":34,"_process":53,"buffer":17,"leaflet":48}],33:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	Control = require('./control'),
@@ -7206,7 +7365,7 @@ L.Util.extend(L.Control, {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/index.js","/node_modules/leaflet-control-geocoder/src")
 
-},{"./control":21,"./geocoders/arcgis":22,"./geocoders/bing":23,"./geocoders/google":24,"./geocoders/here":25,"./geocoders/mapbox":26,"./geocoders/mapquest":27,"./geocoders/mapzen":28,"./geocoders/nominatim":29,"./geocoders/photon":30,"./geocoders/what3words":31,"_process":52,"buffer":16,"leaflet":47}],33:[function(require,module,exports){
+},{"./control":22,"./geocoders/arcgis":23,"./geocoders/bing":24,"./geocoders/google":25,"./geocoders/here":26,"./geocoders/mapbox":27,"./geocoders/mapquest":28,"./geocoders/mapzen":29,"./geocoders/nominatim":30,"./geocoders/photon":31,"./geocoders/what3words":32,"_process":53,"buffer":17,"leaflet":48}],34:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var L = require('leaflet'),
 	lastCallbackId = 0,
@@ -7293,7 +7452,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-control-geocoder/src/util.js","/node_modules/leaflet-control-geocoder/src")
 
-},{"_process":52,"buffer":16,"leaflet":47}],34:[function(require,module,exports){
+},{"_process":53,"buffer":17,"leaflet":48}],35:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7502,7 +7661,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Autocomplete.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":52,"buffer":16}],35:[function(require,module,exports){
+},{"_process":53,"buffer":17}],36:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7818,7 +7977,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Control.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.ErrorControl":36,"./L.Routing.Itinerary":39,"./L.Routing.Line":41,"./L.Routing.OSRMv1":43,"./L.Routing.Plan":44,"_process":52,"buffer":16,"leaflet":47}],36:[function(require,module,exports){
+},{"./L.Routing.ErrorControl":37,"./L.Routing.Itinerary":40,"./L.Routing.Line":42,"./L.Routing.OSRMv1":44,"./L.Routing.Plan":45,"_process":53,"buffer":17,"leaflet":48}],37:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -7882,7 +8041,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.ErrorControl.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":52,"buffer":16}],37:[function(require,module,exports){
+},{"_process":53,"buffer":17}],38:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8031,7 +8190,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Formatter.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Localization":42,"_process":52,"buffer":16,"leaflet":47}],38:[function(require,module,exports){
+},{"./L.Routing.Localization":43,"_process":53,"buffer":17,"leaflet":48}],39:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8188,7 +8347,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.GeocoderElement.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Autocomplete":34,"_process":52,"buffer":16,"leaflet":47}],39:[function(require,module,exports){
+},{"./L.Routing.Autocomplete":35,"_process":53,"buffer":17,"leaflet":48}],40:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8426,7 +8585,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Itinerary.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Formatter":37,"./L.Routing.ItineraryBuilder":40,"_process":52,"buffer":16,"leaflet":47}],40:[function(require,module,exports){
+},{"./L.Routing.Formatter":38,"./L.Routing.ItineraryBuilder":41,"_process":53,"buffer":17,"leaflet":48}],41:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8478,7 +8637,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.ItineraryBuilder.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":52,"buffer":16,"leaflet":47}],41:[function(require,module,exports){
+},{"_process":53,"buffer":17,"leaflet":48}],42:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -8625,7 +8784,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Line.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":52,"buffer":16,"leaflet":47}],42:[function(require,module,exports){
+},{"_process":53,"buffer":17,"leaflet":48}],43:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -9124,7 +9283,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Localization.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":52,"buffer":16}],43:[function(require,module,exports){
+},{"_process":53,"buffer":17}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -9475,7 +9634,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.OSRMv1.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.Waypoint":45,"_process":52,"buffer":16,"corslite":17,"leaflet":47,"polyline":51}],44:[function(require,module,exports){
+},{"./L.Routing.Waypoint":46,"_process":53,"buffer":17,"corslite":18,"leaflet":48,"polyline":52}],45:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -9828,7 +9987,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Plan.js","/node_modules/leaflet-routing-machine/src")
 
-},{"./L.Routing.GeocoderElement":38,"./L.Routing.Waypoint":45,"_process":52,"buffer":16,"leaflet":47}],45:[function(require,module,exports){
+},{"./L.Routing.GeocoderElement":39,"./L.Routing.Waypoint":46,"_process":53,"buffer":17,"leaflet":48}],46:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function() {
 	'use strict';
@@ -9856,7 +10015,7 @@ module.exports = {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet-routing-machine/src/L.Routing.Waypoint.js","/node_modules/leaflet-routing-machine/src")
 
-},{"_process":52,"buffer":16,"leaflet":47}],46:[function(require,module,exports){
+},{"_process":53,"buffer":17,"leaflet":48}],47:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*
  Leaflet.markercluster, Provides Beautiful Animated Marker Clustering functionality for Leaflet, a JS library for interactive maps.
@@ -9866,7 +10025,7 @@ module.exports = {
 !function(t,e,i){L.MarkerClusterGroup=L.FeatureGroup.extend({options:{maxClusterRadius:80,iconCreateFunction:null,spiderfyOnMaxZoom:!0,showCoverageOnHover:!0,zoomToBoundsOnClick:!0,singleMarkerMode:!1,disableClusteringAtZoom:null,removeOutsideVisibleBounds:!0,animate:!0,animateAddingMarkers:!1,spiderfyDistanceMultiplier:1,spiderLegPolylineOptions:{weight:1.5,color:"#222",opacity:.5},chunkedLoading:!1,chunkInterval:200,chunkDelay:50,chunkProgress:null,polygonOptions:{}},initialize:function(t){L.Util.setOptions(this,t),this.options.iconCreateFunction||(this.options.iconCreateFunction=this._defaultIconCreateFunction),this._featureGroup=L.featureGroup(),this._featureGroup.on(L.FeatureGroup.EVENTS,this._propagateEvent,this),this._nonPointGroup=L.featureGroup(),this._nonPointGroup.on(L.FeatureGroup.EVENTS,this._propagateEvent,this),this._inZoomAnimation=0,this._needsClustering=[],this._needsRemoving=[],this._currentShownBounds=null,this._queue=[];var e=L.DomUtil.TRANSITION&&this.options.animate;L.extend(this,e?this._withAnimation:this._noAnimation),this._markerCluster=e?L.MarkerCluster:L.MarkerClusterNonAnimated},addLayer:function(t){if(t instanceof L.LayerGroup){var e=[];for(var i in t._layers)e.push(t._layers[i]);return this.addLayers(e)}if(!t.getLatLng)return this._nonPointGroup.addLayer(t),this;if(!this._map)return this._needsClustering.push(t),this;if(this.hasLayer(t))return this;this._unspiderfy&&this._unspiderfy(),this._addLayer(t,this._maxZoom),this._topClusterLevel._recalculateBounds();var n=t,s=this._map.getZoom();if(t.__parent)for(;n.__parent._zoom>=s;)n=n.__parent;return this._currentShownBounds.contains(n.getLatLng())&&(this.options.animateAddingMarkers?this._animationAddLayer(t,n):this._animationAddLayerNonAnimated(t,n)),this},removeLayer:function(t){if(t instanceof L.LayerGroup){var e=[];for(var i in t._layers)e.push(t._layers[i]);return this.removeLayers(e)}return t.getLatLng?this._map?t.__parent?(this._unspiderfy&&(this._unspiderfy(),this._unspiderfyLayer(t)),this._removeLayer(t,!0),this._topClusterLevel._recalculateBounds(),this._featureGroup.hasLayer(t)&&(this._featureGroup.removeLayer(t),t.clusterShow&&t.clusterShow()),this):this:(!this._arraySplice(this._needsClustering,t)&&this.hasLayer(t)&&this._needsRemoving.push(t),this):(this._nonPointGroup.removeLayer(t),this)},addLayers:function(t){var e,i,n,s,r=this._featureGroup,o=this._nonPointGroup,a=this.options.chunkedLoading,h=this.options.chunkInterval,u=this.options.chunkProgress;if(this._map){var _=0,l=(new Date).getTime(),d=L.bind(function(){for(var e=(new Date).getTime();_<t.length;_++){if(a&&0===_%200){var i=(new Date).getTime()-e;if(i>h)break}if(s=t[_],s.getLatLng){if(!this.hasLayer(s)&&(this._addLayer(s,this._maxZoom),s.__parent&&2===s.__parent.getChildCount())){var n=s.__parent.getAllChildMarkers(),c=n[0]===s?n[1]:n[0];r.removeLayer(c)}}else o.addLayer(s)}u&&u(_,t.length,(new Date).getTime()-l),_===t.length?(this._topClusterLevel._recalculateBounds(),this._featureGroup.eachLayer(function(t){t instanceof L.MarkerCluster&&t._iconNeedsUpdate&&t._updateIcon()}),this._topClusterLevel._recursivelyAddChildrenToMap(null,this._zoom,this._currentShownBounds)):setTimeout(d,this.options.chunkDelay)},this);d()}else{for(e=[],i=0,n=t.length;n>i;i++)s=t[i],s.getLatLng?this.hasLayer(s)||e.push(s):o.addLayer(s);this._needsClustering=this._needsClustering.concat(e)}return this},removeLayers:function(t){var e,i,n,s=this._featureGroup,r=this._nonPointGroup;if(!this._map){for(e=0,i=t.length;i>e;e++)n=t[e],this._arraySplice(this._needsClustering,n),r.removeLayer(n),this.hasLayer(n)&&this._needsRemoving.push(n);return this}if(this._unspiderfy)for(this._unspiderfy(),e=0,i=t.length;i>e;e++)n=t[e],this._unspiderfyLayer(n);for(e=0,i=t.length;i>e;e++)n=t[e],n.__parent?(this._removeLayer(n,!0,!0),s.hasLayer(n)&&(s.removeLayer(n),n.clusterShow&&n.clusterShow())):r.removeLayer(n);return this._topClusterLevel._recalculateBounds(),this._topClusterLevel._recursivelyAddChildrenToMap(null,this._zoom,this._currentShownBounds),s.eachLayer(function(t){t instanceof L.MarkerCluster&&t._updateIcon()}),this},clearLayers:function(){return this._map||(this._needsClustering=[],delete this._gridClusters,delete this._gridUnclustered),this._noanimationUnspiderfy&&this._noanimationUnspiderfy(),this._featureGroup.clearLayers(),this._nonPointGroup.clearLayers(),this.eachLayer(function(t){delete t.__parent}),this._map&&this._generateInitialClusters(),this},getBounds:function(){var t=new L.LatLngBounds;this._topClusterLevel&&t.extend(this._topClusterLevel._bounds);for(var e=this._needsClustering.length-1;e>=0;e--)t.extend(this._needsClustering[e].getLatLng());return t.extend(this._nonPointGroup.getBounds()),t},eachLayer:function(t,e){var i,n=this._needsClustering.slice();for(this._topClusterLevel&&this._topClusterLevel.getAllChildMarkers(n),i=n.length-1;i>=0;i--)t.call(e,n[i]);this._nonPointGroup.eachLayer(t,e)},getLayers:function(){var t=[];return this.eachLayer(function(e){t.push(e)}),t},getLayer:function(t){var e=null;return t=parseInt(t,10),this.eachLayer(function(i){L.stamp(i)===t&&(e=i)}),e},hasLayer:function(t){if(!t)return!1;var e,i=this._needsClustering;for(e=i.length-1;e>=0;e--)if(i[e]===t)return!0;for(i=this._needsRemoving,e=i.length-1;e>=0;e--)if(i[e]===t)return!1;return!(!t.__parent||t.__parent._group!==this)||this._nonPointGroup.hasLayer(t)},zoomToShowLayer:function(t,e){"function"!=typeof e&&(e=function(){});var i=function(){!t._icon&&!t.__parent._icon||this._inZoomAnimation||(this._map.off("moveend",i,this),this.off("animationend",i,this),t._icon?e():t.__parent._icon&&(this.once("spiderfied",e,this),t.__parent.spiderfy()))};if(t._icon&&this._map.getBounds().contains(t.getLatLng()))e();else if(t.__parent._zoom<this._map.getZoom())this._map.on("moveend",i,this),this._map.panTo(t.getLatLng());else{var n=function(){this._map.off("movestart",n,this),n=null};this._map.on("movestart",n,this),this._map.on("moveend",i,this),this.on("animationend",i,this),t.__parent.zoomToBounds(),n&&i.call(this)}},onAdd:function(t){this._map=t;var e,i,n;if(!isFinite(this._map.getMaxZoom()))throw"Map has no maxZoom specified";for(this._featureGroup.onAdd(t),this._nonPointGroup.onAdd(t),this._gridClusters||this._generateInitialClusters(),this._maxLat=t.options.crs.projection.MAX_LATITUDE,e=0,i=this._needsRemoving.length;i>e;e++)n=this._needsRemoving[e],this._removeLayer(n,!0);this._needsRemoving=[],this._zoom=this._map.getZoom(),this._currentShownBounds=this._getExpandedVisibleBounds(),this._map.on("zoomend",this._zoomEnd,this),this._map.on("moveend",this._moveEnd,this),this._spiderfierOnAdd&&this._spiderfierOnAdd(),this._bindEvents(),i=this._needsClustering,this._needsClustering=[],this.addLayers(i)},onRemove:function(t){t.off("zoomend",this._zoomEnd,this),t.off("moveend",this._moveEnd,this),this._unbindEvents(),this._map._mapPane.className=this._map._mapPane.className.replace(" leaflet-cluster-anim",""),this._spiderfierOnRemove&&this._spiderfierOnRemove(),delete this._maxLat,this._hideCoverage(),this._featureGroup.onRemove(t),this._nonPointGroup.onRemove(t),this._featureGroup.clearLayers(),this._map=null},getVisibleParent:function(t){for(var e=t;e&&!e._icon;)e=e.__parent;return e||null},_arraySplice:function(t,e){for(var i=t.length-1;i>=0;i--)if(t[i]===e)return t.splice(i,1),!0},_removeFromGridUnclustered:function(t,e){for(var i=this._map,n=this._gridUnclustered;e>=0&&n[e].removeObject(t,i.project(t.getLatLng(),e));e--);},_removeLayer:function(t,e,i){var n=this._gridClusters,s=this._gridUnclustered,r=this._featureGroup,o=this._map;e&&this._removeFromGridUnclustered(t,this._maxZoom);var a,h=t.__parent,u=h._markers;for(this._arraySplice(u,t);h&&(h._childCount--,h._boundsNeedUpdate=!0,!(h._zoom<0));)e&&h._childCount<=1?(a=h._markers[0]===t?h._markers[1]:h._markers[0],n[h._zoom].removeObject(h,o.project(h._cLatLng,h._zoom)),s[h._zoom].addObject(a,o.project(a.getLatLng(),h._zoom)),this._arraySplice(h.__parent._childClusters,h),h.__parent._markers.push(a),a.__parent=h.__parent,h._icon&&(r.removeLayer(h),i||r.addLayer(a))):i&&h._icon||h._updateIcon(),h=h.__parent;delete t.__parent},_isOrIsParent:function(t,e){for(;e;){if(t===e)return!0;e=e.parentNode}return!1},_propagateEvent:function(t){if(t.layer instanceof L.MarkerCluster){if(t.originalEvent&&this._isOrIsParent(t.layer._icon,t.originalEvent.relatedTarget))return;t.type="cluster"+t.type}this.fire(t.type,t)},_defaultIconCreateFunction:function(t){var e=t.getChildCount(),i=" marker-cluster-";return i+=10>e?"small":100>e?"medium":"large",new L.DivIcon({html:"<div><span>"+e+"</span></div>",className:"marker-cluster"+i,iconSize:new L.Point(40,40)})},_bindEvents:function(){var t=this._map,e=this.options.spiderfyOnMaxZoom,i=this.options.showCoverageOnHover,n=this.options.zoomToBoundsOnClick;(e||n)&&this.on("clusterclick",this._zoomOrSpiderfy,this),i&&(this.on("clustermouseover",this._showCoverage,this),this.on("clustermouseout",this._hideCoverage,this),t.on("zoomend",this._hideCoverage,this))},_zoomOrSpiderfy:function(t){for(var e=t.layer,i=e;1===i._childClusters.length;)i=i._childClusters[0];i._zoom===this._maxZoom&&i._childCount===e._childCount?this.options.spiderfyOnMaxZoom&&e.spiderfy():this.options.zoomToBoundsOnClick&&e.zoomToBounds(),t.originalEvent&&13===t.originalEvent.keyCode&&this._map._container.focus()},_showCoverage:function(t){var e=this._map;this._inZoomAnimation||(this._shownPolygon&&e.removeLayer(this._shownPolygon),t.layer.getChildCount()>2&&t.layer!==this._spiderfied&&(this._shownPolygon=new L.Polygon(t.layer.getConvexHull(),this.options.polygonOptions),e.addLayer(this._shownPolygon)))},_hideCoverage:function(){this._shownPolygon&&(this._map.removeLayer(this._shownPolygon),this._shownPolygon=null)},_unbindEvents:function(){var t=this.options.spiderfyOnMaxZoom,e=this.options.showCoverageOnHover,i=this.options.zoomToBoundsOnClick,n=this._map;(t||i)&&this.off("clusterclick",this._zoomOrSpiderfy,this),e&&(this.off("clustermouseover",this._showCoverage,this),this.off("clustermouseout",this._hideCoverage,this),n.off("zoomend",this._hideCoverage,this))},_zoomEnd:function(){this._map&&(this._mergeSplitClusters(),this._zoom=this._map._zoom,this._currentShownBounds=this._getExpandedVisibleBounds())},_moveEnd:function(){if(!this._inZoomAnimation){var t=this._getExpandedVisibleBounds();this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,this._zoom,t),this._topClusterLevel._recursivelyAddChildrenToMap(null,this._map._zoom,t),this._currentShownBounds=t}},_generateInitialClusters:function(){var t=this._map.getMaxZoom(),e=this.options.maxClusterRadius,i=e;"function"!=typeof e&&(i=function(){return e}),this.options.disableClusteringAtZoom&&(t=this.options.disableClusteringAtZoom-1),this._maxZoom=t,this._gridClusters={},this._gridUnclustered={};for(var n=t;n>=0;n--)this._gridClusters[n]=new L.DistanceGrid(i(n)),this._gridUnclustered[n]=new L.DistanceGrid(i(n));this._topClusterLevel=new this._markerCluster(this,-1)},_addLayer:function(t,e){var i,n,s=this._gridClusters,r=this._gridUnclustered;for(this.options.singleMarkerMode&&this._overrideMarkerIcon(t);e>=0;e--){i=this._map.project(t.getLatLng(),e);var o=s[e].getNearObject(i);if(o)return o._addChild(t),t.__parent=o,void 0;if(o=r[e].getNearObject(i)){var a=o.__parent;a&&this._removeLayer(o,!1);var h=new this._markerCluster(this,e,o,t);s[e].addObject(h,this._map.project(h._cLatLng,e)),o.__parent=h,t.__parent=h;var u=h;for(n=e-1;n>a._zoom;n--)u=new this._markerCluster(this,n,u),s[n].addObject(u,this._map.project(o.getLatLng(),n));return a._addChild(u),this._removeFromGridUnclustered(o,e),void 0}r[e].addObject(t,i)}this._topClusterLevel._addChild(t),t.__parent=this._topClusterLevel},_enqueue:function(t){this._queue.push(t),this._queueTimeout||(this._queueTimeout=setTimeout(L.bind(this._processQueue,this),300))},_processQueue:function(){for(var t=0;t<this._queue.length;t++)this._queue[t].call(this);this._queue.length=0,clearTimeout(this._queueTimeout),this._queueTimeout=null},_mergeSplitClusters:function(){this._processQueue(),this._zoom<this._map._zoom&&this._currentShownBounds.intersects(this._getExpandedVisibleBounds())?(this._animationStart(),this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,this._zoom,this._getExpandedVisibleBounds()),this._animationZoomIn(this._zoom,this._map._zoom)):this._zoom>this._map._zoom?(this._animationStart(),this._animationZoomOut(this._zoom,this._map._zoom)):this._moveEnd()},_getExpandedVisibleBounds:function(){return this.options.removeOutsideVisibleBounds?L.Browser.mobile?this._checkBoundsMaxLat(this._map.getBounds()):this._checkBoundsMaxLat(this._map.getBounds().pad(1)):this._mapBoundsInfinite},_checkBoundsMaxLat:function(t){var e=this._maxLat;return e!==i&&(t.getNorth()>=e&&(t._northEast.lat=1/0),t.getSouth()<=-e&&(t._southWest.lat=-1/0)),t},_animationAddLayerNonAnimated:function(t,e){if(e===t)this._featureGroup.addLayer(t);else if(2===e._childCount){e._addToMap();var i=e.getAllChildMarkers();this._featureGroup.removeLayer(i[0]),this._featureGroup.removeLayer(i[1])}else e._updateIcon()},_overrideMarkerIcon:function(t){var e=t.options.icon=this.options.iconCreateFunction({getChildCount:function(){return 1},getAllChildMarkers:function(){return[t]}});return e}}),L.MarkerClusterGroup.include({_mapBoundsInfinite:new L.LatLngBounds(new L.LatLng(-1/0,-1/0),new L.LatLng(1/0,1/0))}),L.MarkerClusterGroup.include({_noAnimation:{_animationStart:function(){},_animationZoomIn:function(t,e){this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,t),this._topClusterLevel._recursivelyAddChildrenToMap(null,e,this._getExpandedVisibleBounds()),this.fire("animationend")},_animationZoomOut:function(t,e){this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,t),this._topClusterLevel._recursivelyAddChildrenToMap(null,e,this._getExpandedVisibleBounds()),this.fire("animationend")},_animationAddLayer:function(t,e){this._animationAddLayerNonAnimated(t,e)}},_withAnimation:{_animationStart:function(){this._map._mapPane.className+=" leaflet-cluster-anim",this._inZoomAnimation++},_animationZoomIn:function(t,e){var i,n=this._getExpandedVisibleBounds(),s=this._featureGroup;this._topClusterLevel._recursively(n,t,0,function(r){var o,a=r._latlng,h=r._markers;for(n.contains(a)||(a=null),r._isSingleParent()&&t+1===e?(s.removeLayer(r),r._recursivelyAddChildrenToMap(null,e,n)):(r.clusterHide(),r._recursivelyAddChildrenToMap(a,e,n)),i=h.length-1;i>=0;i--)o=h[i],n.contains(o._latlng)||s.removeLayer(o)}),this._forceLayout(),this._topClusterLevel._recursivelyBecomeVisible(n,e),s.eachLayer(function(t){t instanceof L.MarkerCluster||!t._icon||t.clusterShow()}),this._topClusterLevel._recursively(n,t,e,function(t){t._recursivelyRestoreChildPositions(e)}),this._enqueue(function(){this._topClusterLevel._recursively(n,t,0,function(t){s.removeLayer(t),t.clusterShow()}),this._animationEnd()})},_animationZoomOut:function(t,e){this._animationZoomOutSingle(this._topClusterLevel,t-1,e),this._topClusterLevel._recursivelyAddChildrenToMap(null,e,this._getExpandedVisibleBounds()),this._topClusterLevel._recursivelyRemoveChildrenFromMap(this._currentShownBounds,t,this._getExpandedVisibleBounds())},_animationAddLayer:function(t,e){var i=this,n=this._featureGroup;n.addLayer(t),e!==t&&(e._childCount>2?(e._updateIcon(),this._forceLayout(),this._animationStart(),t._setPos(this._map.latLngToLayerPoint(e.getLatLng())),t.clusterHide(),this._enqueue(function(){n.removeLayer(t),t.clusterShow(),i._animationEnd()})):(this._forceLayout(),i._animationStart(),i._animationZoomOutSingle(e,this._map.getMaxZoom(),this._map.getZoom())))}},_animationZoomOutSingle:function(t,e,i){var n=this._getExpandedVisibleBounds();t._recursivelyAnimateChildrenInAndAddSelfToMap(n,e+1,i);var s=this;this._forceLayout(),t._recursivelyBecomeVisible(n,i),this._enqueue(function(){if(1===t._childCount){var r=t._markers[0];r.setLatLng(r.getLatLng()),r.clusterShow&&r.clusterShow()}else t._recursively(n,i,0,function(t){t._recursivelyRemoveChildrenFromMap(n,e+1)});s._animationEnd()})},_animationEnd:function(){this._map&&(this._map._mapPane.className=this._map._mapPane.className.replace(" leaflet-cluster-anim","")),this._inZoomAnimation--,this.fire("animationend")},_forceLayout:function(){L.Util.falseFn(e.body.offsetWidth)}}),L.markerClusterGroup=function(t){return new L.MarkerClusterGroup(t)},L.MarkerCluster=L.Marker.extend({initialize:function(t,e,i,n){L.Marker.prototype.initialize.call(this,i?i._cLatLng||i.getLatLng():new L.LatLng(0,0),{icon:this}),this._group=t,this._zoom=e,this._markers=[],this._childClusters=[],this._childCount=0,this._iconNeedsUpdate=!0,this._boundsNeedUpdate=!0,this._bounds=new L.LatLngBounds,i&&this._addChild(i),n&&this._addChild(n)},getAllChildMarkers:function(t){t=t||[];for(var e=this._childClusters.length-1;e>=0;e--)this._childClusters[e].getAllChildMarkers(t);for(var i=this._markers.length-1;i>=0;i--)t.push(this._markers[i]);return t},getChildCount:function(){return this._childCount},zoomToBounds:function(){for(var t,e=this._childClusters.slice(),i=this._group._map,n=i.getBoundsZoom(this._bounds),s=this._zoom+1,r=i.getZoom();e.length>0&&n>s;){s++;var o=[];for(t=0;t<e.length;t++)o=o.concat(e[t]._childClusters);e=o}n>s?this._group._map.setView(this._latlng,s):r>=n?this._group._map.setView(this._latlng,r+1):this._group._map.fitBounds(this._bounds)},getBounds:function(){var t=new L.LatLngBounds;return t.extend(this._bounds),t},_updateIcon:function(){this._iconNeedsUpdate=!0,this._icon&&this.setIcon(this)},createIcon:function(){return this._iconNeedsUpdate&&(this._iconObj=this._group.options.iconCreateFunction(this),this._iconNeedsUpdate=!1),this._iconObj.createIcon()},createShadow:function(){return this._iconObj.createShadow()},_addChild:function(t,e){this._iconNeedsUpdate=!0,this._boundsNeedUpdate=!0,this._setClusterCenter(t),t instanceof L.MarkerCluster?(e||(this._childClusters.push(t),t.__parent=this),this._childCount+=t._childCount):(e||this._markers.push(t),this._childCount++),this.__parent&&this.__parent._addChild(t,!0)},_setClusterCenter:function(t){this._cLatLng||(this._cLatLng=t._cLatLng||t._latlng)},_resetBounds:function(){var t=this._bounds;t._southWest&&(t._southWest.lat=1/0,t._southWest.lng=1/0),t._northEast&&(t._northEast.lat=-1/0,t._northEast.lng=-1/0)},_recalculateBounds:function(){var t,e,i,n,s=this._markers,r=this._childClusters,o=0,a=0,h=this._childCount;if(0!==h){for(this._resetBounds(),t=0;t<s.length;t++)i=s[t]._latlng,this._bounds.extend(i),o+=i.lat,a+=i.lng;for(t=0;t<r.length;t++)e=r[t],e._boundsNeedUpdate&&e._recalculateBounds(),this._bounds.extend(e._bounds),i=e._wLatLng,n=e._childCount,o+=i.lat*n,a+=i.lng*n;this._latlng=this._wLatLng=new L.LatLng(o/h,a/h),this._boundsNeedUpdate=!1}},_addToMap:function(t){t&&(this._backupLatlng=this._latlng,this.setLatLng(t)),this._group._featureGroup.addLayer(this)},_recursivelyAnimateChildrenIn:function(t,e,i){this._recursively(t,0,i-1,function(t){var i,n,s=t._markers;for(i=s.length-1;i>=0;i--)n=s[i],n._icon&&(n._setPos(e),n.clusterHide())},function(t){var i,n,s=t._childClusters;for(i=s.length-1;i>=0;i--)n=s[i],n._icon&&(n._setPos(e),n.clusterHide())})},_recursivelyAnimateChildrenInAndAddSelfToMap:function(t,e,i){this._recursively(t,i,0,function(n){n._recursivelyAnimateChildrenIn(t,n._group._map.latLngToLayerPoint(n.getLatLng()).round(),e),n._isSingleParent()&&e-1===i?(n.clusterShow(),n._recursivelyRemoveChildrenFromMap(t,e)):n.clusterHide(),n._addToMap()})},_recursivelyBecomeVisible:function(t,e){this._recursively(t,0,e,null,function(t){t.clusterShow()})},_recursivelyAddChildrenToMap:function(t,e,i){this._recursively(i,-1,e,function(n){if(e!==n._zoom)for(var s=n._markers.length-1;s>=0;s--){var r=n._markers[s];i.contains(r._latlng)&&(t&&(r._backupLatlng=r.getLatLng(),r.setLatLng(t),r.clusterHide&&r.clusterHide()),n._group._featureGroup.addLayer(r))}},function(e){e._addToMap(t)})},_recursivelyRestoreChildPositions:function(t){for(var e=this._markers.length-1;e>=0;e--){var i=this._markers[e];i._backupLatlng&&(i.setLatLng(i._backupLatlng),delete i._backupLatlng)}if(t-1===this._zoom)for(var n=this._childClusters.length-1;n>=0;n--)this._childClusters[n]._restorePosition();else for(var s=this._childClusters.length-1;s>=0;s--)this._childClusters[s]._recursivelyRestoreChildPositions(t)},_restorePosition:function(){this._backupLatlng&&(this.setLatLng(this._backupLatlng),delete this._backupLatlng)},_recursivelyRemoveChildrenFromMap:function(t,e,i){var n,s;this._recursively(t,-1,e-1,function(t){for(s=t._markers.length-1;s>=0;s--)n=t._markers[s],i&&i.contains(n._latlng)||(t._group._featureGroup.removeLayer(n),n.clusterShow&&n.clusterShow())},function(t){for(s=t._childClusters.length-1;s>=0;s--)n=t._childClusters[s],i&&i.contains(n._latlng)||(t._group._featureGroup.removeLayer(n),n.clusterShow&&n.clusterShow())})},_recursively:function(t,e,i,n,s){var r,o,a=this._childClusters,h=this._zoom;if(e>h)for(r=a.length-1;r>=0;r--)o=a[r],t.intersects(o._bounds)&&o._recursively(t,e,i,n,s);else if(n&&n(this),s&&this._zoom===i&&s(this),i>h)for(r=a.length-1;r>=0;r--)o=a[r],t.intersects(o._bounds)&&o._recursively(t,e,i,n,s)},_isSingleParent:function(){return this._childClusters.length>0&&this._childClusters[0]._childCount===this._childCount}}),L.Marker.include({clusterHide:function(){return this.options.opacityWhenUnclustered=this.options.opacity||1,this.setOpacity(0)},clusterShow:function(){var t=this.setOpacity(this.options.opacity||this.options.opacityWhenUnclustered);return delete this.options.opacityWhenUnclustered,t}}),L.DistanceGrid=function(t){this._cellSize=t,this._sqCellSize=t*t,this._grid={},this._objectPoint={}},L.DistanceGrid.prototype={addObject:function(t,e){var i=this._getCoord(e.x),n=this._getCoord(e.y),s=this._grid,r=s[n]=s[n]||{},o=r[i]=r[i]||[],a=L.Util.stamp(t);this._objectPoint[a]=e,o.push(t)},updateObject:function(t,e){this.removeObject(t),this.addObject(t,e)},removeObject:function(t,e){var i,n,s=this._getCoord(e.x),r=this._getCoord(e.y),o=this._grid,a=o[r]=o[r]||{},h=a[s]=a[s]||[];for(delete this._objectPoint[L.Util.stamp(t)],i=0,n=h.length;n>i;i++)if(h[i]===t)return h.splice(i,1),1===n&&delete a[s],!0},eachObject:function(t,e){var i,n,s,r,o,a,h,u=this._grid;for(i in u){o=u[i];for(n in o)for(a=o[n],s=0,r=a.length;r>s;s++)h=t.call(e,a[s]),h&&(s--,r--)}},getNearObject:function(t){var e,i,n,s,r,o,a,h,u=this._getCoord(t.x),_=this._getCoord(t.y),l=this._objectPoint,d=this._sqCellSize,c=null;for(e=_-1;_+1>=e;e++)if(s=this._grid[e])for(i=u-1;u+1>=i;i++)if(r=s[i])for(n=0,o=r.length;o>n;n++)a=r[n],h=this._sqDist(l[L.Util.stamp(a)],t),d>h&&(d=h,c=a);return c},_getCoord:function(t){return Math.floor(t/this._cellSize)},_sqDist:function(t,e){var i=e.x-t.x,n=e.y-t.y;return i*i+n*n}},function(){L.QuickHull={getDistant:function(t,e){var i=e[1].lat-e[0].lat,n=e[0].lng-e[1].lng;return n*(t.lat-e[0].lat)+i*(t.lng-e[0].lng)},findMostDistantPointFromBaseLine:function(t,e){var i,n,s,r=0,o=null,a=[];for(i=e.length-1;i>=0;i--)n=e[i],s=this.getDistant(n,t),s>0&&(a.push(n),s>r&&(r=s,o=n));return{maxPoint:o,newPoints:a}},buildConvexHull:function(t,e){var i=[],n=this.findMostDistantPointFromBaseLine(t,e);return n.maxPoint?(i=i.concat(this.buildConvexHull([t[0],n.maxPoint],n.newPoints)),i=i.concat(this.buildConvexHull([n.maxPoint,t[1]],n.newPoints))):[t[0]]},getConvexHull:function(t){var e,i=!1,n=!1,s=!1,r=!1,o=null,a=null,h=null,u=null,_=null,l=null;for(e=t.length-1;e>=0;e--){var d=t[e];(i===!1||d.lat>i)&&(o=d,i=d.lat),(n===!1||d.lat<n)&&(a=d,n=d.lat),(s===!1||d.lng>s)&&(h=d,s=d.lng),(r===!1||d.lng<r)&&(u=d,r=d.lng)}n!==i?(l=a,_=o):(l=u,_=h);var c=[].concat(this.buildConvexHull([l,_],t),this.buildConvexHull([_,l],t));return c}}}(),L.MarkerCluster.include({getConvexHull:function(){var t,e,i=this.getAllChildMarkers(),n=[];for(e=i.length-1;e>=0;e--)t=i[e].getLatLng(),n.push(t);return L.QuickHull.getConvexHull(n)}}),L.MarkerCluster.include({_2PI:2*Math.PI,_circleFootSeparation:25,_circleStartAngle:Math.PI/6,_spiralFootSeparation:28,_spiralLengthStart:11,_spiralLengthFactor:5,_circleSpiralSwitchover:9,spiderfy:function(){if(this._group._spiderfied!==this&&!this._group._inZoomAnimation){var t,e=this.getAllChildMarkers(),i=this._group,n=i._map,s=n.latLngToLayerPoint(this._latlng);this._group._unspiderfy(),this._group._spiderfied=this,e.length>=this._circleSpiralSwitchover?t=this._generatePointsSpiral(e.length,s):(s.y+=10,t=this._generatePointsCircle(e.length,s)),this._animationSpiderfy(e,t)}},unspiderfy:function(t){this._group._inZoomAnimation||(this._animationUnspiderfy(t),this._group._spiderfied=null)},_generatePointsCircle:function(t,e){var i,n,s=this._group.options.spiderfyDistanceMultiplier*this._circleFootSeparation*(2+t),r=s/this._2PI,o=this._2PI/t,a=[];for(a.length=t,i=t-1;i>=0;i--)n=this._circleStartAngle+i*o,a[i]=new L.Point(e.x+r*Math.cos(n),e.y+r*Math.sin(n))._round();return a},_generatePointsSpiral:function(t,e){var i,n=this._group.options.spiderfyDistanceMultiplier,s=n*this._spiralLengthStart,r=n*this._spiralFootSeparation,o=n*this._spiralLengthFactor*this._2PI,a=0,h=[];for(h.length=t,i=t-1;i>=0;i--)a+=r/s+5e-4*i,h[i]=new L.Point(e.x+s*Math.cos(a),e.y+s*Math.sin(a))._round(),s+=o/a;return h},_noanimationUnspiderfy:function(){var t,e,i=this._group,n=i._map,s=i._featureGroup,r=this.getAllChildMarkers();for(this.setOpacity(1),e=r.length-1;e>=0;e--)t=r[e],s.removeLayer(t),t._preSpiderfyLatlng&&(t.setLatLng(t._preSpiderfyLatlng),delete t._preSpiderfyLatlng),t.setZIndexOffset&&t.setZIndexOffset(0),t._spiderLeg&&(n.removeLayer(t._spiderLeg),delete t._spiderLeg);i.fire("unspiderfied",{cluster:this,markers:r}),i._spiderfied=null}}),L.MarkerClusterNonAnimated=L.MarkerCluster.extend({_animationSpiderfy:function(t,e){var i,n,s,r,o=this._group,a=o._map,h=o._featureGroup,u=this._group.options.spiderLegPolylineOptions;for(i=0;i<t.length;i++)r=a.layerPointToLatLng(e[i]),n=t[i],s=new L.Polyline([this._latlng,r],u),a.addLayer(s),n._spiderLeg=s,n._preSpiderfyLatlng=n._latlng,n.setLatLng(r),n.setZIndexOffset&&n.setZIndexOffset(1e6),h.addLayer(n);this.setOpacity(.3),o.fire("spiderfied",{cluster:this,markers:t})},_animationUnspiderfy:function(){this._noanimationUnspiderfy()}}),L.MarkerCluster.include({_animationSpiderfy:function(t,e){var n,s,r,o,a,h,u=this,_=this._group,l=_._map,d=_._featureGroup,c=this._latlng,p=l.latLngToLayerPoint(c),f=L.Path.SVG,m=L.extend({},this._group.options.spiderLegPolylineOptions),g=m.opacity;for(g===i&&(g=L.MarkerClusterGroup.prototype.options.spiderLegPolylineOptions.opacity),f?(m.opacity=0,m.className=(m.className||"")+" leaflet-cluster-spider-leg"):m.opacity=g,n=0;n<t.length;n++)s=t[n],h=l.layerPointToLatLng(e[n]),r=new L.Polyline([c,h],m),l.addLayer(r),s._spiderLeg=r,f&&(o=r._path,a=o.getTotalLength()+.1,o.style.strokeDasharray=a,o.style.strokeDashoffset=a),s.setZIndexOffset&&s.setZIndexOffset(1e6),s.clusterHide&&s.clusterHide(),d.addLayer(s),s._setPos&&s._setPos(p);for(_._forceLayout(),_._animationStart(),n=t.length-1;n>=0;n--)h=l.layerPointToLatLng(e[n]),s=t[n],s._preSpiderfyLatlng=s._latlng,s.setLatLng(h),s.clusterShow&&s.clusterShow(),f&&(r=s._spiderLeg,o=r._path,o.style.strokeDashoffset=0,r.setStyle({opacity:g}));this.setOpacity(.3),setTimeout(function(){_._animationEnd(),_.fire("spiderfied",{cluster:u,markers:t})},200)},_animationUnspiderfy:function(t){var e,i,n,s,r,o,a=this,h=this._group,u=h._map,_=h._featureGroup,l=t?u._latLngToNewLayerPoint(this._latlng,t.zoom,t.center):u.latLngToLayerPoint(this._latlng),d=this.getAllChildMarkers(),c=L.Path.SVG;for(h._animationStart(),this.setOpacity(1),i=d.length-1;i>=0;i--)e=d[i],e._preSpiderfyLatlng&&(e.setLatLng(e._preSpiderfyLatlng),delete e._preSpiderfyLatlng,o=!0,e._setPos&&(e._setPos(l),o=!1),e.clusterHide&&(e.clusterHide(),o=!1),o&&_.removeLayer(e),c&&(n=e._spiderLeg,s=n._path,r=s.getTotalLength()+.1,s.style.strokeDashoffset=r,n.setStyle({opacity:0})));setTimeout(function(){var t=0;for(i=d.length-1;i>=0;i--)e=d[i],e._spiderLeg&&t++;for(i=d.length-1;i>=0;i--)e=d[i],e._spiderLeg&&(e.clusterShow&&e.clusterShow(),e.setZIndexOffset&&e.setZIndexOffset(0),t>1&&_.removeLayer(e),u.removeLayer(e._spiderLeg),delete e._spiderLeg);h._animationEnd(),h.fire("unspiderfied",{cluster:a,markers:d})},200)}}),L.MarkerClusterGroup.include({_spiderfied:null,_spiderfierOnAdd:function(){this._map.on("click",this._unspiderfyWrapper,this),this._map.options.zoomAnimation&&this._map.on("zoomstart",this._unspiderfyZoomStart,this),this._map.on("zoomend",this._noanimationUnspiderfy,this)},_spiderfierOnRemove:function(){this._map.off("click",this._unspiderfyWrapper,this),this._map.off("zoomstart",this._unspiderfyZoomStart,this),this._map.off("zoomanim",this._unspiderfyZoomAnim,this),this._map.off("zoomend",this._noanimationUnspiderfy,this),this._noanimationUnspiderfy()},_unspiderfyZoomStart:function(){this._map&&this._map.on("zoomanim",this._unspiderfyZoomAnim,this)},_unspiderfyZoomAnim:function(t){L.DomUtil.hasClass(this._map._mapPane,"leaflet-touching")||(this._map.off("zoomanim",this._unspiderfyZoomAnim,this),this._unspiderfy(t))},_unspiderfyWrapper:function(){this._unspiderfy()},_unspiderfy:function(t){this._spiderfied&&this._spiderfied.unspiderfy(t)},_noanimationUnspiderfy:function(){this._spiderfied&&this._spiderfied._noanimationUnspiderfy()},_unspiderfyLayer:function(t){t._spiderLeg&&(this._featureGroup.removeLayer(t),t.clusterShow&&t.clusterShow(),t.setZIndexOffset&&t.setZIndexOffset(0),this._map.removeLayer(t._spiderLeg),delete t._spiderLeg)}}),L.MarkerClusterGroup.include({refreshClusters:function(t){return t?t instanceof L.MarkerClusterGroup?t=t._topClusterLevel.getAllChildMarkers():t instanceof L.LayerGroup?t=t._layers:t instanceof L.MarkerCluster?t=t.getAllChildMarkers():t instanceof L.Marker&&(t=[t]):t=this._topClusterLevel.getAllChildMarkers(),this._flagParentsIconsNeedUpdate(t),this._refreshClustersIcons(),this.options.singleMarkerMode&&this._refreshSingleMarkerModeMarkers(t),this},_flagParentsIconsNeedUpdate:function(t){var e,i;for(e in t)for(i=t[e].__parent;i;)i._iconNeedsUpdate=!0,i=i.__parent},_refreshClustersIcons:function(){this._featureGroup.eachLayer(function(t){t instanceof L.MarkerCluster&&t._iconNeedsUpdate&&t._updateIcon()})},_refreshSingleMarkerModeMarkers:function(t){var e,i;for(e in t)i=t[e],this.hasLayer(i)&&i.setIcon(this._overrideMarkerIcon(i))}}),L.Marker.include({refreshIconOptions:function(t,e){var i=this.options.icon;return L.setOptions(i,t),this.setIcon(i),e&&this.__parent&&this.__parent._group.refreshClusters(this),this}})}(window,document);
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet.markercluster/dist/leaflet.markercluster.js","/node_modules/leaflet.markercluster/dist")
 
-},{"_process":52,"buffer":16}],47:[function(require,module,exports){
+},{"_process":53,"buffer":17}],48:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
@@ -19038,18 +19197,18 @@ L.Map.include({
 }(window, document));
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/leaflet/dist/leaflet-src.js","/node_modules/leaflet/dist")
 
-},{"_process":52,"buffer":16}],48:[function(require,module,exports){
+},{"_process":53,"buffer":17}],49:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 !function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a="function"==typeof require&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}for(var i="function"==typeof require&&require,o=0;o<r.length;o++)s(r[o]);return s}({1:[function(require,module,exports){function corslite(url,callback,cors){function isSuccessful(status){return status>=200&&300>status||304===status}function loaded(){void 0===x.status||isSuccessful(x.status)?callback.call(x,null,x):callback.call(x,x,null)}var sent=!1;if("undefined"==typeof window.XMLHttpRequest)return callback(Error("Browser not supported"));if("undefined"==typeof cors){var m=url.match(/^\s*https?:\/\/[^\/]*/);cors=m&&m[0]!==location.protocol+"//"+location.domain+(location.port?":"+location.port:"")}var x=new window.XMLHttpRequest;if(cors&&!("withCredentials"in x)){x=new window.XDomainRequest;var original=callback;callback=function(){if(sent)original.apply(this,arguments);else{var that=this,args=arguments;setTimeout(function(){original.apply(that,args)},0)}}}return"onload"in x?x.onload=loaded:x.onreadystatechange=function(){4===x.readyState&&loaded()},x.onerror=function(evt){callback.call(this,evt||!0,null),callback=function(){}},x.onprogress=function(){},x.ontimeout=function(evt){callback.call(this,evt,null),callback=function(){}},x.onabort=function(evt){callback.call(this,evt,null),callback=function(){}},x.open("GET",url,!0),x.send(null),sent=!0,x}"undefined"!=typeof module&&(module.exports=corslite)},{}],2:[function(require,module,exports){function encode(coordinate,factor){coordinate=Math.round(coordinate*factor),coordinate<<=1,0>coordinate&&(coordinate=~coordinate);for(var output="";coordinate>=32;)output+=String.fromCharCode((32|31&coordinate)+63),coordinate>>=5;return output+=String.fromCharCode(coordinate+63)}var polyline={};polyline.decode=function(str,precision){for(var latitude_change,longitude_change,index=0,lat=0,lng=0,coordinates=[],shift=0,result=0,byte=null,factor=Math.pow(10,precision||5);index<str.length;){byte=null,shift=0,result=0;do byte=str.charCodeAt(index++)-63,result|=(31&byte)<<shift,shift+=5;while(byte>=32);latitude_change=1&result?~(result>>1):result>>1,shift=result=0;do byte=str.charCodeAt(index++)-63,result|=(31&byte)<<shift,shift+=5;while(byte>=32);longitude_change=1&result?~(result>>1):result>>1,lat+=latitude_change,lng+=longitude_change,coordinates.push([lat/factor,lng/factor])}return coordinates},polyline.encode=function(coordinates,precision){if(!coordinates.length)return"";for(var factor=Math.pow(10,precision||5),output=encode(coordinates[0][0],factor)+encode(coordinates[0][1],factor),i=1;i<coordinates.length;i++){var a=coordinates[i],b=coordinates[i-1];output+=encode(a[0]-b[0],factor),output+=encode(a[1]-b[1],factor)}return output},void 0!==typeof module&&(module.exports=polyline)},{}],3:[function(require,module,exports){(function(global){!function(){"use strict";var t="undefined"!=typeof window?window.L:"undefined"!=typeof global?global.L:null,e=require("corslite"),n=require("polyline");t.Routing=t.Routing||{},t.Routing.Mapzen=t.Class.extend({options:{timeout:3e4},initialize:function(e,n){t.Util.setOptions(this,n),this._accessToken=e,this._hints={locations:{}}},route:function(n,i,o,s){var a,r,l,u,p=!1,c=[],h={};for(h=this.options||{},a=this.buildRouteUrl(n,h),r=setTimeout(function(){p=!0,i.call(o||i,{status:-1,message:"Time out."})},this.options.timeout),u=0;u<n.length;u++)l=n[u],c.push({latLng:l.latLng,name:l.name||"",options:l.options||{}});return e(a,t.bind(function(t,e){var n;clearTimeout(r),p||(t?(console.log("Error : "+t.response),i.call(o||i,{status:t.status,message:t.response})):(n=JSON.parse(e.responseText),this._routeDone(n,c,h,i,o)))},this),!0),this},_routeDone:function(t,e,i,o,s){var a,r,l,u;if(s=s||o,0!==t.trip.status)return void o.call(s,{status:t.status,message:t.status_message});for(var p=[],a=[],c=0,u=0;u<t.trip.legs.length;u++){for(var h=n.decode(t.trip.legs[u].shape,6),g=0;g<h.length;g++)a.push(h[g]);for(var _=0;_<t.trip.legs[u].maneuvers.length;_++){var m=t.trip.legs[u].maneuvers[_];m.distance=t.trip.legs[u].maneuvers[_].length,m.index=c+t.trip.legs[u].maneuvers[_].begin_shape_index,p.push(m)}"multimodal"===i.costing&&(p=this._unifyTransitManeuver(p)),c+=t.trip.legs[u].maneuvers[t.trip.legs[u].maneuvers.length-1].begin_shape_index}l=this._toWaypoints(e,t.trip.locations);var v;"multimodal"==i.costing&&(v=this._getSubRoutes(t.trip.legs)),r=[{name:this._trimLocationKey(e[0].latLng)+" , "+this._trimLocationKey(e[1].latLng),unit:t.trip.units,costing:i.costing,coordinates:a,subRoutes:v,instructions:p,summary:t.trip.summary?this._convertSummary(t.trip.summary):[],inputWaypoints:e,waypoints:l,waypointIndices:this._clampIndices([0,t.trip.legs[0].maneuvers.length],a)}],t.hint_data&&this._saveHintData(t.hint_data,e),o.call(s,null,r)},_unifyTransitManeuver:function(t){for(var e,n=t,i=0;i<n.length;i++)if(30==n[i].type){e=n[i].travel_type;break}for(var o=0;o<n.length;o++)n[o].type>29&&(n[o].edited_travel_type=e);return n},_getSubRoutes:function(t){for(var e=[],i=0;i<t.length;i++){for(var o,s=n.decode(t[i].shape,6),a=[],r=0;r<t[i].maneuvers.length;r++){var l=t[i].maneuvers[r],u=l.travel_type;u===o&&31!==l.type||(l.begin_shape_index>0&&a.push(l.begin_shape_index),l.transit_info?e.push({travel_type:u,styles:this._getPolylineColor(l.transit_info.color)}):e.push({travel_type:u})),o=u}a.push(s.length);for(var p=0,c=0;c<a.length;c++){var h=[],g=0;c!==a.length-1&&(g=1);for(var _=p;_<a[c]+g;_++)h.push(s[_]);var m=h;p=a[c],e[c].coordinates=m}}return e},_getPolylineColor:function(t){var e=t>>16&255,n=t>>8&255,i=t>>0&255,o=.299*e+.587*n+.114*i,s=o>187,a=16777216|16777215&t,r=a.toString(16).substring(1,7),l=[s?{color:"#000",opacity:.4,weight:10}:{color:"#fff",opacity:.8,weight:10},{color:"#"+r.toUpperCase(),opacity:1,weight:6}];return l},_saveHintData:function(t,e){var n;this._hints={checksum:t.checksum,locations:{}};for(var i=t.locations.length-1;i>=0;i--)n=e[i].latLng,this._hints.locations[this._locationKey(n)]=t.locations[i]},_toWaypoints:function(e,n){var i,o=[];for(i=0;i<n.length;i++)o.push(t.Routing.waypoint(t.latLng([n[i].lat,n[i].lon]),"name",{}));return o},buildRouteUrl:function(t,e){for(var n,i="https://valhalla.mapzen.com",o=[],s=e.costing,a=e.costing_options,r=e.directions_options,l=e.date_time,u=0;u<t.length;u++){var p;n=this._locationKey(t[u].latLng).split(","),p=0===u||u===t.length-1?{lat:parseFloat(n[0]),lon:parseFloat(n[1]),type:"break"}:{lat:parseFloat(n[0]),lon:parseFloat(n[1]),type:"through"},o.push(p)}var c=JSON.stringify({locations:o,costing:s,costing_options:a,directions_options:r,date_time:l});return i+"/route?json="+c+"&api_key="+this._accessToken},_locationKey:function(t){return t.lat+","+t.lng},_trimLocationKey:function(t){var e=(t.lat,t.lng,Math.floor(1e3*t.lat)/1e3),n=Math.floor(1e3*t.lng)/1e3;return e+" , "+n},_convertSummary:function(t){return{totalDistance:t.length,totalTime:t.time}},_convertInstructions:function(t){var e,n,i,o,s=[];for(e=0;e<t.length;e++)n=t[e],i=this._drivingDirectionType(n[0]),o=n[0].split("-"),i&&s.push({type:i,distance:n[2],time:n[4],road:n[1],direction:n[6],exit:o.length>1?o[1]:void 0,index:n[3]});return s},_clampIndices:function(t,e){var n,i=e.length-1;for(n=0;n<t.length;n++)t[n]=Math.min(i,Math.max(t[n],0))}}),t.Routing.mapzen=function(e,n){return new t.Routing.Mapzen(e,n)},module.exports=t.Routing.Mapzen}()}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{corslite:1,polyline:2}],4:[function(require,module,exports){(function(global){!function(){"use strict";var t="undefined"!=typeof window?window.L:"undefined"!=typeof global?global.L:null;t.Routing=t.Routing||{},t.Routing.MapzenFormatter=t.Class.extend({options:{units:"metric",unitNames:{meters:"m",kilometers:"km",yards:"yd",miles:"mi",hours:"h",minutes:"mín",seconds:"s"},language:"en",roundingSensitivity:1,distanceTemplate:"{value} {unit}"},initialize:function(e){t.setOptions(this,e)},formatDistance:function(e){var n,r,i=this.options.unitNames;return"imperial"===this.options.units?(e=1e3*e,e/=1.609344,r=e>=1e3?{value:this._round(e)/1e3,unit:i.miles}:{value:this._round(e/1.76),unit:i.yards}):(n=e,r={value:n>=1?n:1e3*n,unit:n>=1?i.kilometers:i.meters}),t.Util.template(this.options.distanceTemplate,r)},_round:function(t){var e=Math.pow(10,(Math.floor(t/this.options.roundingSensitivity)+"").length-1),n=Math.floor(t/e),r=n>5?e:e/2;return Math.round(t/r)*r},formatTime:function(t){return t>86400?Math.round(t/3600)+" h":t>3600?Math.floor(t/3600)+" h "+Math.round(t%3600/60)+" min":t>300?Math.round(t/60)+" min":t>60?Math.floor(t/60)+" min"+(t%60!==0?" "+t%60+" s":""):t+" s"},formatInstruction:function(t,e){return t.instruction},getIconName:function(t,e){switch(t.type){case 0:return"kNone";case 1:return"kStart";case 2:return"kStartRight";case 3:return"kStartLeft";case 4:return"kDestination";case 5:return"kDestinationRight";case 6:return"kDestinationLeft";case 7:return"kBecomes";case 8:return"kContinue";case 9:return"kSlightRight";case 10:return"kRight";case 11:return"kSharpRight";case 12:return"kUturnRight";case 13:return"kUturnLeft";case 14:return"kSharpLeft";case 15:return"kLeft";case 16:return"kSlightLeft";case 17:return"kRampStraight";case 18:return"kRampRight";case 19:return"kRampLeft";case 20:return"kExitRight";case 21:return"kExitLeft";case 22:return"kStayStraight";case 23:return"kStayRight";case 24:return"kStayLeft";case 25:return"kMerge";case 26:return"kRoundaboutEnter";case 27:return"kRoundaboutExit";case 28:return"kFerryEnter";case 29:return"kFerryExit";case 30:case 31:case 32:case 33:case 34:case 35:case 36:return t.edited_travel_type?"kTransit"+this._getCapitalizedName(t.edited_travel_type):"kTransit"}},_getInstructionTemplate:function(t,e){return t.instruction+" "+t.length},_getCapitalizedName:function(t){return t.charAt(0).toUpperCase()+t.slice(1)}}),t.Routing.mapzenFormatter=function(){return new t.Routing.MapzenFormatter},module.exports=t.Routing}()}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{}],5:[function(require,module,exports){(function(global){!function(){"use strict";var t="undefined"!=typeof window?window.L:"undefined"!=typeof global?global.L:null;t.Routing=t.Routing||{},t.Routing.MapzenLine=t.LayerGroup.extend({includes:t.Mixin.Events,options:{styles:[{color:"black",opacity:.15,weight:9},{color:"white",opacity:.8,weight:6},{color:"red",opacity:1,weight:2}],missingRouteStyles:[{color:"black",opacity:.15,weight:7},{color:"white",opacity:.6,weight:4},{color:"gray",opacity:.8,weight:2,dashArray:"7,12"}],addWaypoints:!0,extendToWaypoints:!0,missingRouteTolerance:10},initialize:function(i,e){if(t.setOptions(this,e),t.LayerGroup.prototype.initialize.call(this,e),this._route=i,this.options.extendToWaypoints&&this._extendToWaypoints(),i.subRoutes)for(var n=0;n<i.subRoutes.length;n++)i.subRoutes[n].styles||(i.subRoutes[n].styles=this.options.styles),this._addSegment(i.subRoutes[n].coordinates,i.subRoutes[n].styles,this.options.addWaypoints);else this._addSegment(i.coordinates,this.options.styles,this.options.addWaypoints)},addTo:function(t){return t.addLayer(this),this},getBounds:function(){return t.latLngBounds(this._route.coordinates)},_findWaypointIndices:function(){var t,i=this._route.inputWaypoints,e=[];for(t=0;t<i.length;t++)e.push(this._findClosestRoutePoint(i[t].latLng));return e},_findClosestRoutePoint:function(t){var i,e,n,o=Number.MAX_VALUE;for(e=this._route.coordinates.length-1;e>=0;e--)n=t.distanceTo(this._route.coordinates[e]),o>n&&(i=e,o=n);return i},_extendToWaypoints:function(){var i,e,n,o=this._route.inputWaypoints,s=this._getWaypointIndices();for(i=0;i<o.length;i++)e=o[i].latLng,n=t.latLng(this._route.coordinates[s[i]]),e.distanceTo(n)>this.options.missingRouteTolerance&&this._addSegment([e,n],this.options.missingRouteStyles)},_addSegment:function(i,e,n){var o,s;for(o=0;o<e.length;o++)s=t.polyline(i,e[o]),this.addLayer(s),n&&s.on("mousedown",this._onLineTouched,this)},_findNearestWpBefore:function(t){for(var i=this._getWaypointIndices(),e=i.length-1;e>=0&&i[e]>t;)e--;return e},_onLineTouched:function(t){var i=this._findNearestWpBefore(this._findClosestRoutePoint(t.latlng));this.fire("linetouched",{afterIndex:i,latlng:t.latlng})},_getWaypointIndices:function(){return this._wpIndices||(this._wpIndices=this._route.waypointIndices||this._findWaypointIndices()),this._wpIndices}}),t.Routing.mapzenLine=function(i,e){return new t.Routing.MapzenLine(i,e)},module.exports=t.Routing}()}).call(this,"undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{})},{}]},{},[3,4,5]);
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/lrm-mapzen/dist/lrm-mapzen.min.js","/node_modules/lrm-mapzen/dist")
 
-},{"_process":52,"buffer":16,"corslite":17,"polyline":51}],49:[function(require,module,exports){
+},{"_process":53,"buffer":17,"corslite":18,"polyline":52}],50:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports=function(n){var t={},e=[];n=n||this,n.on=function(n,e,l){(t[n]=t[n]||[]).push([e,l])},n.off=function(n,l){n||(t={});for(var o=t[n]||e,i=o.length=l?o.length:0;i--;)l==o[i][0]&&o.splice(i,1)},n.emit=function(n){for(var l,o=t[n]||e,i=o.length>0?o.slice(0,o.length):o,c=0;l=i[c++];)l[0].apply(l[1],e.slice.call(arguments,1))}};
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/minivents/dist/minivents.commonjs.min.js","/node_modules/minivents/dist")
 
-},{"_process":52,"buffer":16}],50:[function(require,module,exports){
+},{"_process":53,"buffer":17}],51:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 "use strict";
 
@@ -23478,7 +23637,7 @@ numeric.svd= function svd(A) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/numeric/numeric-1.2.6.js","/node_modules/numeric")
 
-},{"_process":52,"buffer":16}],51:[function(require,module,exports){
+},{"_process":53,"buffer":17}],52:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var polyline = {};
 
@@ -23572,7 +23731,7 @@ if (typeof module !== undefined) module.exports = polyline;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/polyline/src/polyline.js","/node_modules/polyline/src")
 
-},{"_process":52,"buffer":16}],52:[function(require,module,exports){
+},{"_process":53,"buffer":17}],53:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 // shim for using process in browser
 
@@ -23671,7 +23830,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/process/browser.js","/node_modules/process")
 
-},{"_process":52,"buffer":16}],53:[function(require,module,exports){
+},{"_process":53,"buffer":17}],54:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * URI.js - Mutating URLs
@@ -23861,7 +24020,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/IPv6.js","/node_modules/urijs/src")
 
-},{"_process":52,"buffer":16}],54:[function(require,module,exports){
+},{"_process":53,"buffer":17}],55:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * URI.js - Mutating URLs
@@ -24106,7 +24265,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/SecondLevelDomains.js","/node_modules/urijs/src")
 
-},{"_process":52,"buffer":16}],55:[function(require,module,exports){
+},{"_process":53,"buffer":17}],56:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * URI.js - Mutating URLs
@@ -26321,7 +26480,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/URI.js","/node_modules/urijs/src")
 
-},{"./IPv6":53,"./SecondLevelDomains":54,"./punycode":56,"_process":52,"buffer":16}],56:[function(require,module,exports){
+},{"./IPv6":54,"./SecondLevelDomains":55,"./punycode":57,"_process":53,"buffer":17}],57:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*! https://mths.be/punycode v1.4.0 by @mathias */
 ;(function(root) {
@@ -26859,7 +27018,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/urijs/src/punycode.js","/node_modules/urijs/src")
 
-},{"_process":52,"buffer":16}],57:[function(require,module,exports){
+},{"_process":53,"buffer":17}],58:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function(self) {
   'use strict';
@@ -27297,7 +27456,7 @@ process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/whatwg-fetch/fetch.js","/node_modules/whatwg-fetch")
 
-},{"_process":52,"buffer":16}]},{},[12])
+},{"_process":53,"buffer":17}]},{},[13])
 
 
 //# sourceMappingURL=portal.js.map
