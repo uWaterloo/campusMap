@@ -1199,6 +1199,12 @@ var BuildingLayer = function (_UnclusteredDataLayer) {
                 _this2._indoorMapElement.id = 'im-map';
                 var active_floor = null;
 
+                // Setup room selector
+                _this2._roomSelector = _leaflet2.default.DomUtil.create('select', 'room-selector', im);
+                _leaflet2.default.DomEvent.addListener(_this2._roomSelector, 'change', function (event) {
+                    _this2.selectRoom(_this2._roomSelector.value);
+                });
+
                 // Setup floor selector
                 var floor_selector = _leaflet2.default.DomUtil.create('ul', 'im-floors', im);
                 var floors = data.floors.slice(0);
@@ -1297,8 +1303,7 @@ var BuildingLayer = function (_UnclusteredDataLayer) {
             to: target
         });
 
-        var mapel = _leaflet2.default.DomUtil.create('div');
-        mapel.id = 'im-map';
+        var mapel = _leaflet2.default.DomUtil.create('div', 'im-map-map');
         this._mapWrapper.replaceChild(mapel, this._indoorMapElement);
         this._indoorMapElement = mapel;
 
@@ -1321,6 +1326,14 @@ var BuildingLayer = function (_UnclusteredDataLayer) {
         tiles.addTo(this._indoorMap);
 
         // Add room labels
+        while (this._roomSelector.firstChild) {
+            this._roomSelector.removeChild(this._roomSelector.firstChild);
+        } // End of while
+
+        var default_room = _leaflet2.default.DomUtil.create('option', '', this._roomSelector);
+        default_room.value = '';
+        default_room.innerText = 'Select a room...';
+
         this._markers = [];
         this._room_labels = _leaflet2.default.markerClusterGroup({
             disableClusteringAtZoom: this._indoorMap.getMaxZoom()
@@ -1351,6 +1364,10 @@ var BuildingLayer = function (_UnclusteredDataLayer) {
                 } // End of if/else
             });
             _this4._markers.push(marker);
+
+            var dropdown_option = _leaflet2.default.DomUtil.create('option', '', _this4._roomSelector);
+            dropdown_option.value = location.name;
+            dropdown_option.innerText = location.name;
         });
         this._room_labels.addTo(this._indoorMap);
 
@@ -1362,16 +1379,20 @@ var BuildingLayer = function (_UnclusteredDataLayer) {
 
     BuildingLayer.prototype.selectRoom = function selectRoom(room) {
         if (typeof room === 'string') {
-            console.debug('Identifying room \'' + room + '\' from string\'');
-            var matches = this._markers.filter(function (m) {
-                return m.location.name === room;
-            });
-            if (matches.length !== 1) {
-                console.error('Room \'' + floor + '\' matched ' + matches.length + ' rooms\'. Expected 1.');
-                return false;
-            } // End of if
+            if (room === '') {
+                room = null;
+            } else {
+                console.debug('Identifying room \'' + room + '\' from string\'');
+                var matches = this._markers.filter(function (m) {
+                    return m.location.name === room;
+                });
+                if (matches.length !== 1) {
+                    console.error('Room \'' + floor + '\' matched ' + matches.length + ' rooms\'. Expected 1.');
+                    return false;
+                } // End of if
 
-            room = matches[0].location;
+                room = matches[0].location;
+            } // End of else
         } // End of if
 
         console.debug('Selecting room', room);
@@ -2359,12 +2380,6 @@ var layers = [{
 	name: 'Information',
 	sublayers: [{
 		type: 'uwapi',
-		id: 'photospheres',
-		name: 'Photospheres',
-		icon_class: 'icon-camera',
-		endpoint: 'v2/poi/photospheres'
-	}, {
-		type: 'uwapi',
 		id: 'visitor-information',
 		name: 'Visitor Information',
 		icon_class: 'icon-info',
@@ -2376,6 +2391,24 @@ var layers = [{
 		icon_class: 'icon-construction',
 		endpoint: 'v2/poi/constructionsites'
 	}, reused_layers['help-lines'], {
+		type: 'uwapi',
+		id: 'photospheres',
+		name: 'Photospheres',
+		icon_class: 'icon-camera',
+		endpoint: 'v2/poi/photospheres',
+		options: {
+			popupContent: function popupContent(config, feature, latlng) {
+				var content = _leaflet2.default.DomUtil.create('div');
+
+				var link_container = _leaflet2.default.DomUtil.create('div', 'large-popup-label', content);
+				var link = _leaflet2.default.DomUtil.create('a', '', link_container);
+				link.innerHTML = 'View Photosphere';
+				link.href = feature.properties.url;
+
+				return content;
+			}
+		}
+	}, {
 		type: 'uwapi',
 		id: 'atms',
 		name: 'ATMs',
@@ -2736,6 +2769,35 @@ app.controller('campusMapCtrl', ['$scope', '$timeout', 'directionsService', func
 				$(element).appendTo($pres);
 				$('#campusMapPresent').replaceWith($pres);
 			}, 100);
+
+			function animate(animationLength) {
+				if (window.requestAnimationFrame) {
+					var animationFrameRequest;
+
+					(function () {
+						animationFrameRequest = null;
+
+						var callback = function callback() {
+							$scope.campusMap.value.map.invalidateSize();
+							animationFrameRequest = requestAnimationFrame(callback);
+						};
+						animationFrameRequest = requestAnimationFrame(callback);
+
+						setTimeout(function () {
+							cancelAnimationFrame(animationFrameRequest);
+						}, animationLength);
+					})();
+				} else {
+					setTimeout(function () {
+						$scope.campusMap.value.map.invalidateSize();
+					}, animationLength);
+				}
+			}
+
+			animate(1500);
+			$('.widgetCloseButton').click(function () {
+				animate(1100);
+			});
 		});
 	};
 
@@ -2772,7 +2834,8 @@ app.controller('campusMapCtrl', ['$scope', '$timeout', 'directionsService', func
 			});
 		});
 
-		var uri = new _uri2.default(campusMap, new _urijs2.default('https://uwaterloo.ca/map/'));
+		var uri = new _uri2.default(new_value, new _urijs2.default('https://uwaterloo.ca/map/'));
+		$scope.uri.value = uri.uri.href();
 		uri.on('urichanged', function (uri) {
 			if (!$scope.$$phase) {
 				$scope.$apply(function () {
@@ -2786,16 +2849,14 @@ app.controller('campusMapCtrl', ['$scope', '$timeout', 'directionsService', func
 
 	// Set the view
 	$scope.portalHelpers.showView('campusMap.html', 1);
+
+	// When destroyed, remove autocomplete results
+	$scope.$on('$destroy', function () {
+		$('.leaflet-routing-geocoder-result').remove();
+	});
 }]).directive('campusmap', ['$timeout', function ($timeout) {
 	function link(scope, element, attrs) {
-		console.debug(scope);
-		console.debug(element);
-		console.debug(attrs);
-
 		scope.campusMap.value = new _campusmap2.default(_config2.default, element[0]);
-		console.debug(scope.campusMap.value);
-		window.campusMap = scope.campusMap.value;
-		window.mapscope = scope;
 
 		// Set the layers selector button
 		var menu_button = _leaflet2.default.control({ position: 'topright' });
